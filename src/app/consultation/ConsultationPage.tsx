@@ -46,14 +46,14 @@ export default function ConsultationPage() {
     <div className="min-h-screen bg-white">
       {/* Minimal top bar */}
       <div className="bg-navy border-b border-white/10">
-        <div className="section-container flex items-center justify-between py-4">
+        <div className="section-container flex items-center justify-between py-5">
           <Link href="/">
             <Image
               src="/logo-white.png"
               alt="Reform Smile"
-              width={160}
-              height={160}
-              className="h-12 w-auto"
+              width={280}
+              height={280}
+              className="h-20 md:h-24 w-auto"
             />
           </Link>
           <a
