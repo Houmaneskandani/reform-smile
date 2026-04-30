@@ -51,13 +51,13 @@ function ToothModel({ scrollProgress }: { scrollProgress: React.RefObject<number
     const scale = 18 + Math.sin(s * Math.PI) * 5;
     ref.current.scale.setScalar(scale);
 
-    // Position — stays on the right, shifts as you scroll
+    // Position — right-center, shifts as you scroll
     ref.current.position.y = -0.3 + Math.sin(s * Math.PI * 2) * 0.4;
-    ref.current.position.x = 1.8 + Math.sin(s * Math.PI) * 0.5;
+    ref.current.position.x = 0.8 + Math.sin(s * Math.PI) * 0.5;
   });
 
   return (
-    <group ref={ref} position={[1.8, -0.3, 0]} scale={18}>
+    <group ref={ref} position={[0.8, -0.3, 0]} scale={18}>
       <primitive object={gltf.scene.clone()} />
     </group>
   );
