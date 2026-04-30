@@ -5,137 +5,86 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { ContactShadows, Environment } from "@react-three/drei";
 import * as THREE from "three";
 
-// ─── Tooth profiles traced from reference silhouettes ──────────────────────
-
-function createIncisorShape(): THREE.Shape {
-  const s = new THREE.Shape();
-  // Narrow blade-like tooth with rounded top and long single root
-  s.moveTo(0, -1.2); // root tip
-  s.quadraticCurveTo(0.08, -0.9, 0.12, -0.5); // root widens
-  s.quadraticCurveTo(0.16, -0.2, 0.22, 0); // crown starts
-  s.quadraticCurveTo(0.26, 0.15, 0.24, 0.35); // crown widens
-  s.quadraticCurveTo(0.22, 0.48, 0.15, 0.52); // crown rounds
-  s.quadraticCurveTo(0, 0.56, -0.15, 0.52); // crown top
-  s.quadraticCurveTo(-0.22, 0.48, -0.24, 0.35);
-  s.quadraticCurveTo(-0.26, 0.15, -0.22, 0);
-  s.quadraticCurveTo(-0.16, -0.2, -0.12, -0.5);
-  s.quadraticCurveTo(-0.08, -0.9, 0, -1.2);
-  return s;
-}
-
-function createCanineShape(): THREE.Shape {
-  const s = new THREE.Shape();
-  // Pointed crown, long fang-like root
-  s.moveTo(0, -1.4); // long root tip
-  s.quadraticCurveTo(0.07, -1.0, 0.1, -0.6);
-  s.quadraticCurveTo(0.14, -0.3, 0.2, 0);
-  s.quadraticCurveTo(0.24, 0.15, 0.22, 0.3);
-  s.quadraticCurveTo(0.18, 0.45, 0.08, 0.55); // slopes to point
-  s.quadraticCurveTo(0, 0.62, -0.08, 0.55); // pointed tip
-  s.quadraticCurveTo(-0.18, 0.45, -0.22, 0.3);
-  s.quadraticCurveTo(-0.24, 0.15, -0.2, 0);
-  s.quadraticCurveTo(-0.14, -0.3, -0.1, -0.6);
-  s.quadraticCurveTo(-0.07, -1.0, 0, -1.4);
-  return s;
-}
-
-function createPremolarShape(): THREE.Shape {
-  const s = new THREE.Shape();
-  // Wider crown with two cusps, shorter root
-  s.moveTo(0, -1.0); // root tip
-  s.quadraticCurveTo(0.06, -0.7, 0.1, -0.4);
-  s.quadraticCurveTo(0.15, -0.15, 0.25, 0);
-  s.quadraticCurveTo(0.3, 0.1, 0.28, 0.25);
-  s.quadraticCurveTo(0.26, 0.35, 0.18, 0.42); // first cusp
-  s.quadraticCurveTo(0.1, 0.38, 0, 0.4); // valley between cusps
-  s.quadraticCurveTo(-0.1, 0.38, -0.18, 0.42); // second cusp
-  s.quadraticCurveTo(-0.26, 0.35, -0.28, 0.25);
-  s.quadraticCurveTo(-0.3, 0.1, -0.25, 0);
-  s.quadraticCurveTo(-0.15, -0.15, -0.1, -0.4);
-  s.quadraticCurveTo(-0.06, -0.7, 0, -1.0);
-  return s;
-}
-
-function createMolarShape(): THREE.Shape {
-  const s = new THREE.Shape();
-  // Wide crown, multiple cusps, split roots
-  // Left root
-  s.moveTo(-0.1, -1.1);
-  s.quadraticCurveTo(-0.15, -0.8, -0.18, -0.5);
-  s.quadraticCurveTo(-0.22, -0.25, -0.3, -0.05);
-  s.quadraticCurveTo(-0.35, 0.1, -0.32, 0.25);
-  s.quadraticCurveTo(-0.3, 0.35, -0.22, 0.42); // cusp 1
-  s.quadraticCurveTo(-0.12, 0.38, -0.05, 0.4);
-  s.quadraticCurveTo(0, 0.42, 0.05, 0.4); // cusp 2
-  s.quadraticCurveTo(0.12, 0.38, 0.22, 0.42); // cusp 3
-  s.quadraticCurveTo(0.3, 0.35, 0.32, 0.25);
-  s.quadraticCurveTo(0.35, 0.1, 0.3, -0.05);
-  s.quadraticCurveTo(0.22, -0.25, 0.18, -0.5);
-  s.quadraticCurveTo(0.15, -0.8, 0.1, -1.1); // right root
-  // Connect roots at bottom
-  s.quadraticCurveTo(0.05, -1.0, 0, -0.85); // root fork
-  s.quadraticCurveTo(-0.05, -1.0, -0.1, -1.1);
-  return s;
-}
-
-// ─── Extruded Tooth Component ──────────────────────────────────────────────
-function ExtrudedTooth({
+// ─── Realistic Tooth Shape using Lathe geometry ────────────────────────────
+function RealisticTooth({
   position,
-  rotation,
+  rotation = [0, 0, 0],
   scale = 1,
   toothType,
+  spreadFactor,
 }: {
   position: [number, number, number];
-  rotation: [number, number, number];
+  rotation?: [number, number, number];
   scale?: number;
   toothType: "incisor" | "canine" | "premolar" | "molar";
+  spreadFactor: React.RefObject<number>;
 }) {
   const ref = useRef<THREE.Mesh>(null);
+  const basePos = useMemo(() => new THREE.Vector3(...position), [position]);
+  const spreadDir = useMemo(() => {
+    const dir = basePos.clone().normalize();
+    dir.y *= 0.2;
+    return dir;
+  }, [basePos]);
 
+  // Create tooth profile based on type
   const geometry = useMemo(() => {
-    let shape: THREE.Shape;
-    let depth: number;
+    const points: THREE.Vector2[] = [];
 
-    switch (toothType) {
-      case "incisor":
-        shape = createIncisorShape();
-        depth = 0.18;
-        break;
-      case "canine":
-        shape = createCanineShape();
-        depth = 0.22;
-        break;
-      case "premolar":
-        shape = createPremolarShape();
-        depth = 0.28;
-        break;
-      case "molar":
-        shape = createMolarShape();
-        depth = 0.35;
-        break;
+    if (toothType === "incisor") {
+      // Flat, blade-like front teeth
+      points.push(new THREE.Vector2(0, -0.18));
+      points.push(new THREE.Vector2(0.06, -0.16));
+      points.push(new THREE.Vector2(0.08, -0.08));
+      points.push(new THREE.Vector2(0.1, 0));
+      points.push(new THREE.Vector2(0.1, 0.06));
+      points.push(new THREE.Vector2(0.09, 0.12));
+      points.push(new THREE.Vector2(0.07, 0.16));
+      points.push(new THREE.Vector2(0.04, 0.19));
+      points.push(new THREE.Vector2(0, 0.2));
+    } else if (toothType === "canine") {
+      // Pointed, fang-like
+      points.push(new THREE.Vector2(0, -0.2));
+      points.push(new THREE.Vector2(0.06, -0.17));
+      points.push(new THREE.Vector2(0.09, -0.08));
+      points.push(new THREE.Vector2(0.11, 0));
+      points.push(new THREE.Vector2(0.1, 0.08));
+      points.push(new THREE.Vector2(0.07, 0.15));
+      points.push(new THREE.Vector2(0.03, 0.22));
+      points.push(new THREE.Vector2(0, 0.25));
+    } else if (toothType === "premolar") {
+      // Medium, two cusps
+      points.push(new THREE.Vector2(0, -0.15));
+      points.push(new THREE.Vector2(0.07, -0.12));
+      points.push(new THREE.Vector2(0.1, -0.04));
+      points.push(new THREE.Vector2(0.12, 0.02));
+      points.push(new THREE.Vector2(0.12, 0.08));
+      points.push(new THREE.Vector2(0.1, 0.12));
+      points.push(new THREE.Vector2(0.08, 0.14));
+      points.push(new THREE.Vector2(0.05, 0.15));
+      points.push(new THREE.Vector2(0, 0.16));
+    } else {
+      // Molar — wide, flat top
+      points.push(new THREE.Vector2(0, -0.14));
+      points.push(new THREE.Vector2(0.08, -0.11));
+      points.push(new THREE.Vector2(0.12, -0.04));
+      points.push(new THREE.Vector2(0.14, 0.02));
+      points.push(new THREE.Vector2(0.14, 0.06));
+      points.push(new THREE.Vector2(0.13, 0.09));
+      points.push(new THREE.Vector2(0.11, 0.11));
+      points.push(new THREE.Vector2(0.07, 0.12));
+      points.push(new THREE.Vector2(0, 0.12));
     }
 
-    const geo = new THREE.ExtrudeGeometry(shape, {
-      depth,
-      bevelEnabled: true,
-      bevelThickness: 0.06,
-      bevelSize: 0.05,
-      bevelSegments: 12,
-      curveSegments: 24,
-    });
-
-    geo.center();
-    geo.computeVertexNormals();
-    return geo;
+    return new THREE.LatheGeometry(points, 24);
   }, [toothType]);
 
-  // Gentle floating
-  useFrame((state) => {
+  useFrame(() => {
     if (!ref.current) return;
-    const t = state.clock.elapsedTime;
-    const offset = position[0] * 0.5; // unique phase per tooth
-    ref.current.position.y = position[1] + Math.sin(t * 0.4 + offset) * 0.08;
-    ref.current.rotation.y = rotation[1] + Math.sin(t * 0.2 + offset) * 0.05;
+    const spread = spreadFactor.current ?? 0;
+    ref.current.position.x = basePos.x + spreadDir.x * spread * 1.5;
+    ref.current.position.y = basePos.y + spreadDir.y * spread * 0.8;
+    ref.current.position.z = basePos.z + spreadDir.z * spread * 1.5;
   });
 
   return (
@@ -146,129 +95,187 @@ function ExtrudedTooth({
       rotation={rotation}
       scale={scale}
       castShadow
-      receiveShadow
     >
       <meshPhysicalMaterial
-        color="#F0ECE4"
-        roughness={0.1}
-        metalness={0.01}
+        color="#F5F0E8"
+        roughness={0.15}
+        metalness={0.02}
         clearcoat={1.0}
-        clearcoatRoughness={0.04}
-        envMapIntensity={2.0}
-        sheen={0.6}
-        sheenRoughness={0.3}
-        sheenColor={new THREE.Color("#E0D8CC")}
-        transmission={0.05}
-        thickness={0.5}
-        ior={1.5}
+        clearcoatRoughness={0.06}
+        envMapIntensity={1.5}
+        sheen={0.4}
+        sheenColor={new THREE.Color("#E8E0D4")}
       />
     </mesh>
   );
 }
 
-// ─── Scene with scattered teeth ────────────────────────────────────────────
-function TeethScene({
-  scrollProgress,
+// ─── Tooth Arch with realistic tooth types ─────────────────────────────────
+function ToothArch({
+  isUpper,
+  spreadFactor,
 }: {
-  scrollProgress: React.RefObject<number>;
+  isUpper: boolean;
+  spreadFactor: React.RefObject<number>;
 }) {
-  const groupRef = useRef<THREE.Group>(null);
+  const teeth = useMemo(() => {
+    // Tooth types in order: molars -> premolars -> canine -> incisors -> canine -> premolars -> molars
+    const types: Array<"molar" | "premolar" | "canine" | "incisor"> = [
+      "molar", "molar", "premolar", "premolar", "canine",
+      "incisor", "incisor", "incisor", "incisor",
+      "canine", "premolar", "premolar", "molar", "molar",
+    ];
 
-  // Camera orbit based on scroll
-  useFrame(({ camera }) => {
-    const s = scrollProgress.current ?? 0;
+    const result: {
+      pos: [number, number, number];
+      rot: [number, number, number];
+      type: "incisor" | "canine" | "premolar" | "molar";
+      scale: number;
+    }[] = [];
 
-    // Full 360 orbit + height change + zoom
-    const angle = s * Math.PI * 2;
-    const radius = 6 - s * 2;
-    const height = 2 - s * 4;
+    const count = types.length;
+    const archWidth = 2.0;
+    const archDepth = 1.2;
+    const y = isUpper ? 0.2 : -0.2;
 
-    camera.position.x = THREE.MathUtils.lerp(camera.position.x, Math.sin(angle) * radius, 0.03);
-    camera.position.y = THREE.MathUtils.lerp(camera.position.y, height, 0.03);
-    camera.position.z = THREE.MathUtils.lerp(camera.position.z, Math.cos(angle) * radius, 0.03);
-    camera.lookAt(0, 0, 0);
-  });
+    for (let i = 0; i < count; i++) {
+      const t = (i / (count - 1)) * Math.PI;
+      const x = Math.cos(t) * archWidth;
+      const z = Math.sin(t) * archDepth - archDepth * 0.4;
+      const angle = t - Math.PI / 2;
+
+      const type = types[i];
+      const scaleMap = { molar: 1.1, premolar: 0.95, canine: 1.0, incisor: 0.85 };
+
+      result.push({
+        pos: [x, y, z],
+        rot: [isUpper ? 0 : Math.PI, angle, 0],
+        type,
+        scale: scaleMap[type],
+      });
+    }
+    return result;
+  }, [isUpper]);
 
   return (
-    <group ref={groupRef}>
-      {/* 4 large individual teeth spread in space */}
-
-      {/* Incisor — front center */}
-      <ExtrudedTooth
-        position={[-2.5, 0.5, 0]}
-        rotation={[0, 0.3, 0.05]}
-        scale={1.8}
-        toothType="incisor"
-      />
-
-      {/* Canine — right */}
-      <ExtrudedTooth
-        position={[0.5, -0.3, -1]}
-        rotation={[0.1, -0.4, -0.05]}
-        scale={1.6}
-        toothType="canine"
-      />
-
-      {/* Premolar — left back */}
-      <ExtrudedTooth
-        position={[-1, 0, 2]}
-        rotation={[-0.05, 0.8, 0.03]}
-        scale={1.7}
-        toothType="premolar"
-      />
-
-      {/* Molar — right back, biggest */}
-      <ExtrudedTooth
-        position={[2.5, 0.2, 1]}
-        rotation={[0.05, -0.6, -0.03]}
-        scale={1.9}
-        toothType="molar"
-      />
-
-      {/* Extra teeth for depth — smaller, further away */}
-      <ExtrudedTooth
-        position={[1.5, 1.5, -3]}
-        rotation={[0.2, 1.2, 0.1]}
-        scale={1.0}
-        toothType="incisor"
-      />
-      <ExtrudedTooth
-        position={[-3, -1, -2]}
-        rotation={[-0.15, -0.8, 0.08]}
-        scale={1.1}
-        toothType="canine"
-      />
-      <ExtrudedTooth
-        position={[3.5, -0.8, 2.5]}
-        rotation={[0.1, 0.5, -0.1]}
-        scale={1.2}
-        toothType="premolar"
-      />
-      <ExtrudedTooth
-        position={[-2, 1.2, 3]}
-        rotation={[-0.08, 1.5, 0.05]}
-        scale={0.9}
-        toothType="molar"
-      />
+    <group>
+      {teeth.map((tooth, i) => (
+        <RealisticTooth
+          key={`${isUpper ? "u" : "l"}-${i}`}
+          position={tooth.pos}
+          rotation={tooth.rot}
+          scale={tooth.scale}
+          toothType={tooth.type}
+          spreadFactor={spreadFactor}
+        />
+      ))}
     </group>
   );
 }
 
-// ─── Full Scene ────────────────────────────────────────────────────────────
-function Scene({ scrollProgress }: { scrollProgress: React.RefObject<number> }) {
+// ─── Main Teeth Assembly with scroll-driven camera orbit ───────────────────
+function TeethAssembly({
+  clicked,
+  scrollProgress,
+}: {
+  clicked: React.RefObject<boolean>;
+  scrollProgress: React.RefObject<number>;
+}) {
+  const groupRef = useRef<THREE.Group>(null);
+  const upperRef = useRef<THREE.Group>(null);
+  const lowerRef = useRef<THREE.Group>(null);
+  const spreadFactor = useRef(0);
+  const chompPhase = useRef(0);
+  const chompTarget = useRef(0);
+  const lastClicked = useRef(false);
+
+  useFrame((_, delta) => {
+    if (!groupRef.current) return;
+
+    // Slow constant rotation
+    const rotSpeed = (6 * Math.PI) / 180;
+    groupRef.current.rotation.y += rotSpeed * delta;
+
+    // Click chomp
+    if (clicked.current && !lastClicked.current) {
+      chompTarget.current = 1;
+      setTimeout(() => { chompTarget.current = 0; }, 150);
+    }
+    lastClicked.current = clicked.current ?? false;
+
+    const chompSpeed = chompTarget.current === 1 ? 0.25 : 0.06;
+    chompPhase.current = THREE.MathUtils.lerp(chompPhase.current, chompTarget.current, chompSpeed);
+
+    if (upperRef.current) {
+      upperRef.current.position.y = 0.15 - chompPhase.current * 0.3;
+    }
+    if (lowerRef.current) {
+      lowerRef.current.position.y = -0.15 + chompPhase.current * 0.3;
+    }
+
+    // Scroll disassembly
+    const scroll = scrollProgress.current ?? 0;
+    spreadFactor.current = THREE.MathUtils.lerp(spreadFactor.current, scroll * 2, 0.06);
+  });
+
+  return (
+    <group ref={groupRef}>
+      <group ref={upperRef} position={[0, 0.15, 0]}>
+        <ToothArch isUpper={true} spreadFactor={spreadFactor} />
+      </group>
+      <group ref={lowerRef} position={[0, -0.15, 0]}>
+        <ToothArch isUpper={false} spreadFactor={spreadFactor} />
+      </group>
+    </group>
+  );
+}
+
+// ─── Camera controller — orbits based on scroll ────────────────────────────
+function CameraOrbit({ scrollProgress }: { scrollProgress: React.RefObject<number> }) {
+  useFrame(({ camera }) => {
+    const scroll = scrollProgress.current ?? 0;
+
+    // Orbit camera around the teeth as user scrolls
+    const angle = scroll * Math.PI * 1.5; // 270 degrees over full scroll
+    const radius = 5 - scroll * 1.5; // Come closer as we scroll
+    const height = 1.5 - scroll * 2; // Go from above to below
+
+    const targetX = Math.sin(angle) * radius;
+    const targetZ = Math.cos(angle) * radius;
+    const targetY = height;
+
+    camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetX, 0.05);
+    camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetY, 0.05);
+    camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ, 0.05);
+    camera.lookAt(0, 0, 0);
+  });
+
+  return null;
+}
+
+// ─── Scene ─────────────────────────────────────────────────────────────────
+function Scene({
+  clicked,
+  scrollProgress,
+}: {
+  clicked: React.RefObject<boolean>;
+  scrollProgress: React.RefObject<number>;
+}) {
   return (
     <>
-      {/* High-key lighting */}
-      <directionalLight position={[3, 8, 5]} intensity={2.5} castShadow shadow-mapSize={[2048, 2048]} color="#fff" />
-      <directionalLight position={[-4, 6, -3]} intensity={1.5} color="#F0E8DC" />
-      <directionalLight position={[0, -3, 4]} intensity={0.5} color="#C4A265" />
-      <ambientLight intensity={0.7} color="#F5F0EB" />
-      <pointLight position={[0, 0, 5]} intensity={0.8} color="#fff" />
-      <spotLight position={[0, 10, 0]} angle={0.5} penumbra={0.8} intensity={1.5} color="#fff" />
+      {/* Lighting */}
+      <directionalLight position={[0, 10, 3]} intensity={2.5} castShadow shadow-mapSize={[2048, 2048]} color="#ffffff" />
+      <directionalLight position={[0, -5, 2]} intensity={0.4} color="#C4A265" />
+      <ambientLight intensity={0.5} color="#E8E0D6" />
+      <pointLight position={[-5, 3, -3]} intensity={0.5} color="#C4A265" />
+      <pointLight position={[5, 2, 3]} intensity={0.3} color="#89A4C4" />
 
-      <TeethScene scrollProgress={scrollProgress} />
+      <CameraOrbit scrollProgress={scrollProgress} />
 
-      <ContactShadows position={[0, -3, 0]} opacity={0.08} scale={20} blur={4} far={6} />
+      <TeethAssembly clicked={clicked} scrollProgress={scrollProgress} />
+
+      <ContactShadows position={[0, -1, 0]} opacity={0.12} scale={8} blur={3} far={3} color="#0a0a0a" />
+
       <Environment preset="studio" />
     </>
   );
@@ -276,27 +283,39 @@ function Scene({ scrollProgress }: { scrollProgress: React.RefObject<number> }) 
 
 // ─── Export ─────────────────────────────────────────────────────────────────
 export default function ClinicalTeeth() {
+  const clicked = useRef(false);
   const scrollProgress = useRef(0);
 
   useEffect(() => {
+    const handleMouseDown = () => { clicked.current = true; };
+    const handleMouseUp = () => { clicked.current = false; };
+
     const handleScroll = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      scrollProgress.current = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+      // Use total document scroll for the orbit
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      scrollProgress.current = maxScroll > 0 ? Math.min(1, window.scrollY / maxScroll) : 0;
     };
 
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
     <div className="fixed inset-0 z-0">
       <Canvas
-        camera={{ position: [0, 2, 6], fov: 40 }}
+        camera={{ position: [0, 1.5, 5], fov: 35 }}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true }}
         style={{ background: "transparent" }}
       >
-        <Scene scrollProgress={scrollProgress} />
+        <Scene clicked={clicked} scrollProgress={scrollProgress} />
       </Canvas>
     </div>
   );
