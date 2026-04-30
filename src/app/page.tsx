@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import ClinicalHero from "@/components/clinical/ClinicalHero";
+import ScrollContent from "@/components/clinical/ScrollContent";
 import ProceduresSection from "@/components/clinical/ProceduresSection";
 import MethodSection from "@/components/clinical/MethodSection";
 import ClinicalFooter from "@/components/clinical/ClinicalFooter";
@@ -27,30 +28,35 @@ export default function Home() {
       <LoadingScreen onComplete={handleLoadComplete} />
       <CustomCursor />
 
-      {/* 3D scene — FIXED behind everything, camera orbits on scroll */}
+      {/* 3D scene — fixed, rotates on scroll */}
       <div className="hidden md:block">
         <ClinicalTeeth />
       </div>
 
-      {/* Full-page navy background behind the 3D scene */}
+      {/* Navy gradient background */}
       <div
         className="fixed inset-0 -z-10"
-        style={{ background: "linear-gradient(180deg, #0F2440 0%, #1B3A5C 40%, #1B3A5C 60%, #0F2440 100%)" }}
+        style={{ background: "linear-gradient(180deg, #0F2440 0%, #1B3A5C 35%, #2A4F7A 65%, #1B3A5C 100%)" }}
       />
 
-      {/* Scrollable content layered on top */}
+      {/* Scroll-triggered reviews & stats — appears in empty space */}
+      <ScrollContent />
+
+      {/* Scrollable content */}
       <div className="relative z-10">
-        {/* Hero — transparent so 3D shows through */}
         <ClinicalHero loaded={loaded} />
 
-        {/* Spacer — lets user scroll while seeing just 3D + orbiting camera */}
-        <div className="h-[100vh]" />
+        {/* Scroll space — 3D tooth rotates + reviews appear */}
+        <div className="h-[150vh]" />
 
-        {/* Content sections with solid backgrounds */}
-        <ProceduresSection />
-        <MethodSection />
-        <CTASection />
-        <ClinicalFooter />
+        {/* Content sections */}
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#F5F0EB]/95 to-[#F5F0EB] h-[300px] -top-[300px] pointer-events-none" />
+          <ProceduresSection />
+          <MethodSection />
+          <CTASection />
+          <ClinicalFooter />
+        </div>
       </div>
     </>
   );
