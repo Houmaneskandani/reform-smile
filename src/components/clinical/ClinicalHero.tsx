@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 
 const ClinicalTeeth = dynamic(() => import("@/components/3d/ClinicalTeeth"), {
   ssr: false,
@@ -9,26 +9,39 @@ const ClinicalTeeth = dynamic(() => import("@/components/3d/ClinicalTeeth"), {
 });
 
 export default function ClinicalHero({ loaded }: { loaded: boolean }) {
-  const heroRef = useRef<HTMLElement>(null);
-
   return (
     <section
-      ref={heroRef}
       className="relative h-screen flex items-center justify-center overflow-hidden"
-      style={{ background: "#f4f5f7" }}
+      style={{ background: "linear-gradient(180deg, #0F2440 0%, #1B3A5C 50%, #2A4F7A 100%)" }}
     >
       {/* 3D Teeth — hidden on mobile */}
       <div className="hidden md:block">
         <ClinicalTeeth />
       </div>
 
-      {/* Mobile fallback — static image placeholder */}
+      {/* Mobile fallback */}
       <div className="md:hidden absolute inset-0 flex items-center justify-center">
-        <div className="w-64 h-64 rounded-full bg-[#edeef0] flex items-center justify-center">
-          <span className="text-[#b0b3b8] text-xs tracking-widest uppercase font-mono">
+        <div className="w-64 h-64 rounded-full bg-white/5 flex items-center justify-center">
+          <span className="text-white/30 text-xs tracking-widest uppercase font-mono">
             3D View on Desktop
           </span>
         </div>
+      </div>
+
+      {/* Logo at top */}
+      <div
+        className={`absolute top-8 left-1/2 -translate-x-1/2 z-20 transition-all duration-1000 ${
+          loaded ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
+        }`}
+      >
+        <Image
+          src="/logo-white.png"
+          alt="Reform Smile"
+          width={200}
+          height={200}
+          className="h-20 w-auto"
+          priority
+        />
       </div>
 
       {/* Text overlay */}
@@ -38,14 +51,14 @@ export default function ClinicalHero({ loaded }: { loaded: boolean }) {
             loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
           style={{
-            fontFamily: 'var(--font-grotesk)',
-            color: "#0a0a0a",
+            fontFamily: "var(--font-heading)",
+            color: "#ffffff",
             transitionDelay: "200ms",
           }}
         >
           Precision.<br />
           Permanence.<br />
-          <span style={{ color: "#00b8c4" }}>Perfection.</span>
+          <span style={{ color: "#C4A265" }}>Perfection.</span>
         </h1>
 
         <p
@@ -54,11 +67,11 @@ export default function ClinicalHero({ loaded }: { loaded: boolean }) {
           }`}
           style={{
             fontFamily: '"JetBrains Mono", "SF Mono", monospace',
-            color: "#b0b3b8",
+            color: "rgba(196,162,101,0.5)",
             transitionDelay: "600ms",
           }}
         >
-          Specimen 001 / 2026
+          Dr. Ava Pournejad, DDS &middot; Reform Smile
         </p>
 
         {/* Click instruction */}
@@ -68,7 +81,7 @@ export default function ClinicalHero({ loaded }: { loaded: boolean }) {
           }`}
           style={{
             fontFamily: '"JetBrains Mono", "SF Mono", monospace',
-            color: "#c8cad0",
+            color: "rgba(255,255,255,0.2)",
             transitionDelay: "1200ms",
           }}
         >
@@ -76,11 +89,27 @@ export default function ClinicalHero({ loaded }: { loaded: boolean }) {
         </p>
       </div>
 
-      {/* Bottom edge line */}
+      {/* Scroll indicator */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-px"
-        style={{ background: "#e0e2e6" }}
-      />
+        className={`absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 transition-all duration-1000 ${
+          loaded ? "opacity-100" : "opacity-0"
+        }`}
+        style={{ transitionDelay: "1500ms" }}
+      >
+        <span
+          className="text-[9px] tracking-[0.3em] uppercase"
+          style={{
+            fontFamily: '"JetBrains Mono", "SF Mono", monospace',
+            color: "rgba(255,255,255,0.15)",
+          }}
+        >
+          Scroll
+        </span>
+        <div className="w-px h-8 bg-gradient-to-b from-[#C4A265]/40 to-transparent" />
+      </div>
+
+      {/* Bottom fade to cream */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#F5F0EB] to-transparent z-10 pointer-events-none" />
     </section>
   );
 }

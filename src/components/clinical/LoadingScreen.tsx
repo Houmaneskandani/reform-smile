@@ -7,8 +7,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    // Simulate loading progress — thin line fills left to right
-    const duration = 1800; // ms
+    const duration = 1800;
     const start = performance.now();
 
     const animate = (now: number) => {
@@ -19,7 +18,6 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
       if (p < 1) {
         requestAnimationFrame(animate);
       } else {
-        // Fade out
         setTimeout(() => {
           setVisible(false);
           onComplete();
@@ -33,12 +31,11 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-[10000] bg-[#f4f5f7] flex items-center justify-center">
+    <div className="fixed inset-0 z-[10000] bg-[#F5F0EB] flex items-center justify-center">
       <div className="w-48">
-        {/* Progress line — thin, precise */}
-        <div className="h-px bg-[#e0e2e6] w-full relative overflow-hidden">
+        <div className="h-px bg-[#E8E0D6] w-full relative overflow-hidden">
           <div
-            className="h-full bg-[#00b8c4] absolute top-0 left-0 origin-left"
+            className="h-full bg-[#C4A265] absolute top-0 left-0 origin-left"
             style={{
               width: `${progress * 100}%`,
               transition: "width 50ms linear",
@@ -49,7 +46,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
           className="text-center mt-4 text-[10px] tracking-[0.3em] uppercase"
           style={{
             fontFamily: '"JetBrains Mono", "SF Mono", monospace',
-            color: "#b0b3b8",
+            color: "#9A8E7E",
           }}
         >
           Loading

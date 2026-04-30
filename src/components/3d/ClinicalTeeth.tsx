@@ -203,29 +203,31 @@ function TeethAssembly({
   );
 }
 
-// ─── Clinical Lighting ─────────────────────────────────────────────────────
+// ─── Clinical Lighting (navy/gold palette) ─────────────────────────────────
 function ClinicalLighting() {
   return (
     <>
-      {/* Strong overhead key light — white, surgical */}
+      {/* Strong overhead key light */}
       <directionalLight
         position={[0, 10, 3]}
-        intensity={3}
+        intensity={2.5}
         castShadow
         shadow-mapSize={[2048, 2048]}
         shadow-bias={-0.001}
         color="#ffffff"
       />
-      {/* Cool fill from below */}
+      {/* Warm gold fill from below */}
       <directionalLight
         position={[0, -5, 2]}
-        intensity={0.3}
-        color="#cce8ec"
+        intensity={0.4}
+        color="#C4A265"
       />
-      {/* Ambient — high key, overlit feel */}
-      <ambientLight intensity={0.8} color="#f0f2f5" />
-      {/* Subtle rim light */}
-      <pointLight position={[-5, 3, -3]} intensity={0.4} color="#e0e5ea" />
+      {/* Ambient — warm tone */}
+      <ambientLight intensity={0.6} color="#E8E0D6" />
+      {/* Gold rim light */}
+      <pointLight position={[-5, 3, -3]} intensity={0.5} color="#C4A265" />
+      {/* Cool contrast light */}
+      <pointLight position={[5, 2, 3]} intensity={0.3} color="#89A4C4" />
     </>
   );
 }

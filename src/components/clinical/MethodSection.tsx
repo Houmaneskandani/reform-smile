@@ -55,7 +55,7 @@ export default function MethodSection() {
   }, []);
 
   return (
-    <section className="py-32 md:py-40" style={{ background: "#edeef0" }}>
+    <section className="py-32 md:py-40 bg-white">
       <div className="section-container">
         {/* Section label */}
         <div className="flex items-center gap-4 mb-20">
@@ -63,12 +63,12 @@ export default function MethodSection() {
             className="text-[10px] tracking-[0.4em] uppercase"
             style={{
               fontFamily: '"JetBrains Mono", "SF Mono", monospace',
-              color: "#00b8c4",
+              color: "#C4A265",
             }}
           >
             Method
           </span>
-          <div className="flex-1 h-px" style={{ background: "#d8dade" }} />
+          <div className="flex-1 h-px bg-[#E8E0D6]" />
         </div>
 
         {/* Kinetic text lines */}
@@ -78,22 +78,19 @@ export default function MethodSection() {
               key={step.number}
               ref={(el) => { lineRefs.current[index] = el; }}
               data-index={index}
-              className={`flex gap-6 md:gap-12 py-10 md:py-14 border-b transition-all duration-700 ease-out ${
+              className={`flex gap-6 md:gap-12 py-10 md:py-14 border-b border-[#E8E0D6] transition-all duration-700 ease-out ${
                 visibleLines.has(index)
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-[-40px]"
               }`}
-              style={{
-                borderColor: "#d8dade",
-                transitionDelay: `${index * 80}ms`,
-              }}
+              style={{ transitionDelay: `${index * 80}ms` }}
             >
               {/* Line number */}
               <span
                 className="text-[11px] tracking-[0.2em] pt-2 flex-shrink-0 w-8"
                 style={{
                   fontFamily: '"JetBrains Mono", "SF Mono", monospace',
-                  color: "#b0b3b8",
+                  color: "#C4A265",
                 }}
               >
                 {step.number}
@@ -104,8 +101,8 @@ export default function MethodSection() {
                 <h3
                   className="text-2xl md:text-4xl lg:text-5xl font-light tracking-[-0.02em] leading-tight mb-4"
                   style={{
-                    fontFamily: 'var(--font-grotesk)',
-                    color: "#0a0a0a",
+                    fontFamily: "var(--font-heading)",
+                    color: "#1B3A5C",
                   }}
                 >
                   {step.title}
@@ -114,7 +111,7 @@ export default function MethodSection() {
                   className="text-[11px] md:text-[12px] tracking-[0.05em] leading-relaxed"
                   style={{
                     fontFamily: '"JetBrains Mono", "SF Mono", monospace',
-                    color: "#9a9da3",
+                    color: "#9A8E7E",
                   }}
                 >
                   {step.detail}
