@@ -42,6 +42,14 @@ export default function Button({
   const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`;
 
   if (href) {
+    // Use regular <a> for consultation page (different layout) to avoid client-nav crash
+    if (href === "/consultation") {
+      return (
+        <a href={href} className={classes}>
+          {children}
+        </a>
+      );
+    }
     return (
       <Link href={href} className={classes}>
         {children}

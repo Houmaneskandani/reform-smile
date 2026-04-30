@@ -47,7 +47,7 @@ export default function ConsultationPage() {
       {/* Minimal top bar */}
       <div className="bg-navy border-b border-white/10">
         <div className="section-container flex items-center justify-between py-5">
-          <Link href="/">
+          <a href="/">
             <Image
               src="/logo-white.png"
               alt="Reform Smile"
@@ -55,7 +55,7 @@ export default function ConsultationPage() {
               height={280}
               className="h-20 md:h-24 w-auto"
             />
-          </Link>
+          </a>
           <a
             href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
             className="flex items-center gap-2 text-white/80 hover:text-gold transition-colors text-sm font-semibold"
