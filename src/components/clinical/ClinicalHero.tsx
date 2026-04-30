@@ -1,36 +1,13 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import Image from "next/image";
-
-const ClinicalTeeth = dynamic(() => import("@/components/3d/ClinicalTeeth"), {
-  ssr: false,
-  loading: () => null,
-});
 
 export default function ClinicalHero({ loaded }: { loaded: boolean }) {
   return (
-    <section
-      className="relative h-screen flex items-center justify-center overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #0F2440 0%, #1B3A5C 50%, #2A4F7A 100%)" }}
-    >
-      {/* 3D Teeth — hidden on mobile */}
-      <div className="hidden md:block">
-        <ClinicalTeeth />
-      </div>
-
-      {/* Mobile fallback */}
-      <div className="md:hidden absolute inset-0 flex items-center justify-center">
-        <div className="w-64 h-64 rounded-full bg-white/5 flex items-center justify-center">
-          <span className="text-white/30 text-xs tracking-widest uppercase font-mono">
-            3D View on Desktop
-          </span>
-        </div>
-      </div>
-
-      {/* Logo at top */}
+    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      {/* Logo top left */}
       <div
-        className={`absolute top-8 left-1/2 -translate-x-1/2 z-20 transition-all duration-1000 ${
+        className={`absolute top-8 left-8 z-20 transition-all duration-1000 ${
           loaded ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
         }`}
       >
@@ -39,77 +16,92 @@ export default function ClinicalHero({ loaded }: { loaded: boolean }) {
           alt="Reform Smile"
           width={200}
           height={200}
-          className="h-20 w-auto"
+          className="h-16 md:h-20 w-auto"
           priority
         />
       </div>
 
-      {/* Text overlay */}
-      <div className="relative z-10 text-center pointer-events-none select-none">
-        <h1
-          className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-[-0.03em] leading-none transition-all duration-1000 ${
-            loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
-          style={{
-            fontFamily: "var(--font-heading)",
-            color: "#ffffff",
-            transitionDelay: "200ms",
-          }}
-        >
-          Precision.<br />
-          Permanence.<br />
-          <span style={{ color: "#C4A265" }}>Perfection.</span>
-        </h1>
-
-        <p
-          className={`mt-8 text-[10px] sm:text-[11px] tracking-[0.4em] uppercase transition-all duration-1000 ${
-            loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
-          style={{
-            fontFamily: '"JetBrains Mono", "SF Mono", monospace',
-            color: "rgba(196,162,101,0.5)",
-            transitionDelay: "600ms",
-          }}
-        >
-          Dr. Ava Pournejad, DDS &middot; Reform Smile
-        </p>
-
-        {/* Click instruction */}
-        <p
-          className={`mt-16 text-[9px] tracking-[0.3em] uppercase transition-all duration-1000 hidden md:block ${
-            loaded ? "opacity-100" : "opacity-0"
-          }`}
-          style={{
-            fontFamily: '"JetBrains Mono", "SF Mono", monospace',
-            color: "rgba(255,255,255,0.2)",
-            transitionDelay: "1200ms",
-          }}
-        >
-          Click to chomp &middot; Scroll to disassemble
-        </p>
+      {/* Nav top right */}
+      <div
+        className={`absolute top-10 right-8 z-20 hidden md:flex items-center gap-8 transition-all duration-1000 ${
+          loaded ? "opacity-100" : "opacity-0"
+        }`}
+        style={{ transitionDelay: "800ms" }}
+      >
+        {["About", "Services", "Gallery", "Contact"].map((item) => (
+          <a
+            key={item}
+            href={`/${item.toLowerCase()}`}
+            className="text-[11px] tracking-[0.2em] uppercase text-white/40 hover:text-[#C4A265] transition-colors"
+            style={{ fontFamily: '"JetBrains Mono", "SF Mono", monospace' }}
+          >
+            {item}
+          </a>
+        ))}
       </div>
 
-      {/* Scroll indicator */}
+      {/* Center tagline — positioned to the left to avoid 3D overlap */}
+      <div className="relative z-10 section-container w-full">
+        <div className="max-w-lg">
+          <h1
+            className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-[-0.03em] leading-[0.95] transition-all duration-1000 ${
+              loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+            style={{
+              fontFamily: "var(--font-heading)",
+              color: "#ffffff",
+              transitionDelay: "300ms",
+            }}
+          >
+            Precision.<br />
+            Permanence.<br />
+            <span className="text-[#C4A265] italic">Perfection.</span>
+          </h1>
+
+          <div
+            className={`mt-8 transition-all duration-1000 ${
+              loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
+            style={{ transitionDelay: "700ms" }}
+          >
+            <div className="w-12 h-px bg-[#C4A265] mb-6" />
+            <p className="text-white/40 text-sm md:text-base leading-relaxed max-w-sm">
+              Dr. Ava Pournejad specializes in All-on-X dental implants.
+              Permanent, life-changing smiles — engineered with precision.
+            </p>
+          </div>
+
+          <p
+            className={`mt-6 text-[10px] tracking-[0.4em] uppercase transition-all duration-1000 ${
+              loaded ? "opacity-100" : "opacity-0"
+            }`}
+            style={{
+              fontFamily: '"JetBrains Mono", "SF Mono", monospace',
+              color: "#C4A265",
+              opacity: 0.5,
+              transitionDelay: "1000ms",
+            }}
+          >
+            Reform Smile & Dental Implant Center
+          </p>
+        </div>
+      </div>
+
+      {/* Scroll indicator bottom center */}
       <div
-        className={`absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 transition-all duration-1000 ${
+        className={`absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3 transition-all duration-1000 ${
           loaded ? "opacity-100" : "opacity-0"
         }`}
         style={{ transitionDelay: "1500ms" }}
       >
         <span
-          className="text-[9px] tracking-[0.3em] uppercase"
-          style={{
-            fontFamily: '"JetBrains Mono", "SF Mono", monospace',
-            color: "rgba(255,255,255,0.15)",
-          }}
+          className="text-[9px] tracking-[0.3em] uppercase text-white/15"
+          style={{ fontFamily: '"JetBrains Mono", "SF Mono", monospace' }}
         >
-          Scroll
+          Scroll to explore
         </span>
-        <div className="w-px h-8 bg-gradient-to-b from-[#C4A265]/40 to-transparent" />
+        <div className="w-px h-10 bg-gradient-to-b from-[#C4A265]/30 to-transparent" />
       </div>
-
-      {/* Bottom fade to cream */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#F5F0EB] to-transparent z-10 pointer-events-none" />
     </section>
   );
 }
