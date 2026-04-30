@@ -46,8 +46,8 @@ export default function Home() {
       <div className="relative z-10">
         <ClinicalHero loaded={loaded} />
 
-        {/* Scroll space — 3D tooth rotates + reviews appear */}
-        <div className="h-[150vh]" />
+        {/* Scroll space — 3D tooth rotates + reviews appear (longer = more time per review) */}
+        <div className="h-[350vh]" />
 
         {/* Content sections */}
         <div className="relative">

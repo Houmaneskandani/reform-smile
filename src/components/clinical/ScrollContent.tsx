@@ -49,7 +49,7 @@ export default function ScrollContent() {
       // Map scroll position to which section should be visible
       const heroHeight = window.innerHeight;
       const scrollSpaceStart = heroHeight;
-      const scrollSpaceEnd = heroHeight + window.innerHeight * 1.5; // 150vh spacer
+      const scrollSpaceEnd = heroHeight + window.innerHeight * 3.5; // 350vh spacer
       const scrollY = window.scrollY;
 
       if (scrollY < scrollSpaceStart || scrollY > scrollSpaceEnd) {
