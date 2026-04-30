@@ -39,15 +39,12 @@ export default function Home() {
         style={{ background: "linear-gradient(180deg, #0F2440 0%, #1B3A5C 35%, #2A4F7A 65%, #1B3A5C 100%)" }}
       />
 
-      {/* Scroll-triggered reviews & stats — appears in empty space */}
-      <ScrollContent />
-
       {/* Scrollable content */}
       <div className="relative z-10">
         <ClinicalHero loaded={loaded} />
 
-        {/* Scroll space — 3D tooth rotates + reviews appear (longer = more time per review) */}
-        <div className="h-[350vh]" />
+        {/* Reviews scroll naturally on the left, tooth stays on right */}
+        <ScrollContent />
 
         {/* Content sections */}
         <div className="relative">
