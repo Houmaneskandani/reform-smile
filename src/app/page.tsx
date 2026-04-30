@@ -1,25 +1,30 @@
-import HeroV2 from "@/components/sections/HeroV2";
-import TrustBar from "@/components/sections/TrustBar";
-import Services from "@/components/sections/Services";
-import Process from "@/components/sections/Process";
-import BeforeAfter from "@/components/sections/BeforeAfter";
-import About from "@/components/sections/About";
-import VideoTestimonials from "@/components/sections/VideoTestimonials";
-import WhyChooseUs from "@/components/sections/WhyChooseUs";
+"use client";
+
+import { useState, useCallback } from "react";
+import ClinicalHero from "@/components/clinical/ClinicalHero";
+import ProceduresSection from "@/components/clinical/ProceduresSection";
+import MethodSection from "@/components/clinical/MethodSection";
+import ClinicalFooter from "@/components/clinical/ClinicalFooter";
+import CustomCursor from "@/components/clinical/CustomCursor";
+import LoadingScreen from "@/components/clinical/LoadingScreen";
 import CTASection from "@/components/sections/CTASection";
 
 export default function Home() {
+  const [loaded, setLoaded] = useState(false);
+
+  const handleLoadComplete = useCallback(() => {
+    setLoaded(true);
+  }, []);
+
   return (
     <>
-      <HeroV2 />
-      <TrustBar />
-      <Services />
-      <Process />
-      <BeforeAfter />
-      <About />
-      <VideoTestimonials />
-      <WhyChooseUs />
+      <LoadingScreen onComplete={handleLoadComplete} />
+      <CustomCursor />
+      <ClinicalHero loaded={loaded} />
+      <ProceduresSection />
+      <MethodSection />
       <CTASection />
+      <ClinicalFooter />
     </>
   );
 }

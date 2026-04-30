@@ -14,9 +14,10 @@ export default function Header() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const isConsultation = pathname === "/consultation";
+  const isHomeClinical = pathname === "/";
 
-  // Hide header entirely on consultation landing page (it has its own)
-  if (isConsultation) return null;
+  // Hide header on consultation landing page and clinical homepage (they have their own)
+  if (isConsultation || isHomeClinical) return null;
 
   // Only do the transparent->solid transition on the homepage
   const isTransparent = isHome && !scrolled;
