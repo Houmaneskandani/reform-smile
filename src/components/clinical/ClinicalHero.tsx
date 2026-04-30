@@ -16,7 +16,7 @@ export default function ClinicalHero({ loaded }: { loaded: boolean }) {
           alt="Reform Smile"
           width={200}
           height={200}
-          className="h-16 md:h-20 w-auto"
+          className="h-20 md:h-28 w-auto"
           priority
         />
       </div>
