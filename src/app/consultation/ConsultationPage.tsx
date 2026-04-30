@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Phone, Check, Star, Shield, Clock, ArrowRight } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
 
@@ -43,7 +44,30 @@ export default function ConsultationPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero section — minimal nav, conversion-focused */}
+      {/* Minimal top bar */}
+      <div className="bg-navy border-b border-white/10">
+        <div className="section-container flex items-center justify-between py-4">
+          <Link href="/">
+            <Image
+              src="/logo-white.png"
+              alt="Reform Smile"
+              width={160}
+              height={160}
+              className="h-12 w-auto"
+            />
+          </Link>
+          <a
+            href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
+            className="flex items-center gap-2 text-white/80 hover:text-gold transition-colors text-sm font-semibold"
+          >
+            <Phone size={16} />
+            <span className="hidden sm:inline">{SITE_CONFIG.phone}</span>
+            <span className="sm:hidden">Call Us</span>
+          </a>
+        </div>
+      </div>
+
+      {/* Hero section — conversion-focused */}
       <section className="relative bg-navy overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-gold/5 blur-3xl" />

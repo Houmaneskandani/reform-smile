@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import FooterWrapper from "@/components/layout/FooterWrapper";
+import StructuredData from "@/components/StructuredData";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -17,6 +18,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://ava-green.vercel.app"),
   title: {
     default: "Reform Smile & Dental Implant Center | Dr. Ava Pournejad, DDS",
     template: "%s | Reform Smile & Dental Implant Center",
@@ -36,6 +38,10 @@ export const metadata: Metadata = {
     "missing teeth",
     "dental surgeon",
   ],
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -43,6 +49,21 @@ export const metadata: Metadata = {
     title: "Reform Smile & Dental Implant Center | Dr. Ava Pournejad, DDS",
     description:
       "Specializing in All-on-X dental implants and full arch restorations. Transform your smile with Dr. Ava Pournejad.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Reform Smile & Dental Implant Center",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Reform Smile & Dental Implant Center | Dr. Ava Pournejad, DDS",
+    description:
+      "Specializing in All-on-X dental implants and full arch restorations.",
+    images: ["/og-image.jpg"],
   },
 };
 
@@ -54,9 +75,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="min-h-screen flex flex-col font-body">
+        <StructuredData />
         <Header />
         <main className="flex-1">{children}</main>
-        <Footer />
+        <FooterWrapper />
       </body>
     </html>
   );

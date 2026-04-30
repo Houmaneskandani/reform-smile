@@ -13,6 +13,10 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const isConsultation = pathname === "/consultation";
+
+  // Hide header entirely on consultation landing page (it has its own)
+  if (isConsultation) return null;
 
   // Only do the transparent->solid transition on the homepage
   const isTransparent = isHome && !scrolled;
