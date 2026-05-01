@@ -4,6 +4,8 @@ import Header from "@/components/layout/Header";
 import FooterWrapper from "@/components/layout/FooterWrapper";
 import StructuredData from "@/components/StructuredData";
 import StickyBookNow from "@/components/ui/StickyBookNow";
+import SmoothScroll from "@/components/SmoothScroll";
+import IntroSequence from "@/components/IntroSequence";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -76,6 +78,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="min-h-screen flex flex-col font-body">
+        <IntroSequence />
+        <SmoothScroll />
         <StructuredData />
         <Header />
         <main className="flex-1">{children}</main>

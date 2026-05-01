@@ -37,16 +37,36 @@ export default function Hero() {
               </span>
             </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              className="font-heading text-4xl md:text-6xl lg:text-7xl text-white leading-[1.1] mb-5 md:mb-8"
-            >
-              Get Back Your{" "}
-              <span className="text-gold italic">Confident</span>{" "}
-              Smile
-            </motion.h1>
+            <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl text-white leading-[1.1] mb-5 md:mb-8">
+              {["Get", "Back", "Your"].map((word, i) => (
+                <motion.span
+                  key={word}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 + i * 0.12 }}
+                  className="inline-block mr-[0.3em]"
+                >
+                  {word}
+                </motion.span>
+              ))}
+              <br className="hidden md:block" />
+              <motion.span
+                initial={{ opacity: 0, y: 25, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.65 }}
+                className="inline-block text-gold italic mr-[0.3em]"
+              >
+                Confident
+              </motion.span>
+              <motion.span
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.85 }}
+                className="inline-block"
+              >
+                Smile
+              </motion.span>
+            </h1>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
@@ -74,13 +94,14 @@ export default function Hero() {
                   {/* Shine sweep */}
                   <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-20deg]" />
 
+                  <span className="relative">Book My Free Consult</span>
+
                   {/* Smile curve — widens on hover */}
                   <svg
                     className="relative w-7 h-4 flex-shrink-0"
                     viewBox="0 0 28 16"
                     fill="none"
                   >
-                    {/* Small curve at rest */}
                     <path
                       d="M8 6 C11 10, 17 10, 20 6"
                       stroke="currentColor"
@@ -88,7 +109,6 @@ export default function Hero() {
                       strokeLinecap="round"
                       className="opacity-100 group-hover:opacity-0 transition-opacity duration-300"
                     />
-                    {/* Wide grin on hover */}
                     <path
                       d="M4 4 C8 15, 20 15, 24 4"
                       stroke="currentColor"
@@ -97,8 +117,6 @@ export default function Hero() {
                       className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     />
                   </svg>
-
-                  <span className="relative">Book My Free Consult</span>
                 </a>
 
                 {/* Tooltip on hover */}
