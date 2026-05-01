@@ -33,7 +33,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-block bg-gold/20 text-gold px-5 py-2 rounded-full text-sm font-semibold tracking-wide mb-8">
+              <span className="inline-block bg-gold/20 text-gold px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold tracking-wide mb-5 md:mb-8">
                 Now Accepting New Patients
               </span>
             </motion.div>
