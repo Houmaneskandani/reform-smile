@@ -24,8 +24,8 @@ export default function Hero() {
         </video>
       </div>
 
-      {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-navy-dark/95 via-navy/80 to-navy/40" />
+      {/* Dark overlay — lighter on mobile so video face is visible */}
+      <div className="absolute inset-0 bg-gradient-to-b from-navy-dark/70 via-navy/50 to-navy-dark/80 md:bg-gradient-to-r md:from-navy-dark/95 md:via-navy/80 md:to-navy/40" />
 
 
       <div className="relative section-container pt-36 md:pt-44 pb-20 md:pb-28">
