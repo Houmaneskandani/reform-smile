@@ -39,7 +39,7 @@ export default function CTASection() {
           <div className="flex flex-col sm:flex-row gap-5 justify-center mb-14">
             <Button href="/consultation" variant="gold" size="lg">
               <Calendar size={20} className="mr-2" />
-              Book Free Consultation
+              Book My Free Consult
             </Button>
             <a
               href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}

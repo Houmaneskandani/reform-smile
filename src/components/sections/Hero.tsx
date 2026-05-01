@@ -2,13 +2,9 @@
 
 import { motion } from "framer-motion";
 import { Phone } from "lucide-react";
-import Button from "@/components/ui/Button";
 import { SITE_CONFIG } from "@/lib/constants";
-import { useState } from "react";
 
 export default function Hero() {
-  const [showVideo, setShowVideo] = useState(false);
-
   return (
     <section className="relative min-h-[60vh] md:min-h-screen flex items-center overflow-hidden -mt-24">
       {/* Video Background */}
@@ -24,9 +20,8 @@ export default function Hero() {
         </video>
       </div>
 
-      {/* Dark overlay — lighter on mobile so video face is visible */}
+      {/* Dark overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-navy-dark/70 via-navy/50 to-navy-dark/80 md:bg-gradient-to-r md:from-navy-dark/95 md:via-navy/80 md:to-navy/40" />
-
 
       <div className="relative section-container pt-24 md:pt-44 pb-6 md:pb-28">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -70,16 +65,58 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.45 }}
               className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-6 md:mb-16"
             >
-              <Button href="/consultation" variant="gold" size="lg">
-                Schedule Free Consultation
-              </Button>
-              <a
-                href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border-2 border-white/25 text-white hover:bg-white hover:text-navy transition-all duration-300 font-semibold whitespace-nowrap"
-              >
-                <Phone size={18} />
-                {SITE_CONFIG.phone}
-              </a>
+              {/* Primary CTA — shine sweep + arrow reveal + tooltip */}
+              <div className="relative group">
+                <a
+                  href="/consultation"
+                  className="relative inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-white font-bold px-9 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-gold/25 hover:shadow-xl hover:scale-[1.03] overflow-hidden text-lg whitespace-nowrap"
+                >
+                  {/* Shine sweep */}
+                  <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-20deg]" />
+
+                  <span className="relative">Book My Free Consult</span>
+
+                  {/* Arrow slides in */}
+                  <svg
+                    className="relative w-0 group-hover:w-5 overflow-hidden transition-all duration-300 opacity-0 group-hover:opacity-100"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+
+                {/* Tooltip on hover */}
+                <div className="absolute -bottom-14 left-1/2 -translate-x-1/2 bg-navy-dark text-white text-[11px] px-4 py-2 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none hidden md:block shadow-xl">
+                  Free 30-min consult &bull; No obligation &bull; $0 due today
+                  <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-navy-dark rotate-45" />
+                </div>
+              </div>
+
+              {/* Phone button — wiggle + pulse ring */}
+              <div className="relative group">
+                <a
+                  href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
+                  className="relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border-2 border-white/30 text-white hover:bg-white hover:text-navy transition-all duration-300 font-semibold whitespace-nowrap hover:border-white"
+                >
+                  {/* Phone icon with wiggle on hover */}
+                  <motion.span
+                    whileHover={{
+                      rotate: [0, -12, 12, -8, 8, -4, 0],
+                      transition: { duration: 0.6 },
+                    }}
+                    className="inline-flex"
+                  >
+                    <Phone size={18} />
+                  </motion.span>
+                  {SITE_CONFIG.phone}
+                </a>
+
+                {/* Pulse ring — draws attention to call */}
+                <span className="absolute inset-0 rounded-full border-2 border-gold/30 animate-ping pointer-events-none" style={{ animationDuration: "3s" }} />
+              </div>
             </motion.div>
 
             {/* Trust stats */}
