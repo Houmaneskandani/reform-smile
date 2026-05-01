@@ -12,11 +12,11 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <Image
-              src="/logo.png"
+              src="/logo-white.png"
               alt="Reform Smile"
               width={160}
-              height={53}
-              className="h-16 w-auto brightness-0 invert mb-4"
+              height={160}
+              className="h-16 w-auto mb-4"
             />
             <p className="text-white/70 text-sm leading-relaxed mt-4">
               Transforming lives through advanced dental implant solutions.
