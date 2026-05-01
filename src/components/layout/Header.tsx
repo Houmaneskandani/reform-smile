@@ -51,7 +51,7 @@ export default function Header() {
           isTransparent ? "bg-transparent" : "bg-white shadow-lg"
         }`}
       >
-        <div className="section-container flex items-center justify-between h-24">
+        <div className="section-container flex items-center justify-between h-20 md:h-24">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 relative z-50">
             {/* White logo — only visible on homepage when not scrolled */}
@@ -61,7 +61,7 @@ export default function Header() {
               width={320}
               height={320}
               priority
-              className={`w-auto h-24 md:h-32 absolute top-1/2 -translate-y-1/2 left-0 transition-opacity duration-500 ${
+              className={`w-auto h-16 md:h-32 absolute top-1/2 -translate-y-1/2 left-0 transition-opacity duration-500 ${
                 isTransparent ? "opacity-100" : "opacity-0 pointer-events-none"
               }`}
             />
@@ -72,7 +72,7 @@ export default function Header() {
               width={320}
               height={320}
               priority
-              className={`w-auto h-24 md:h-32 transition-opacity duration-500 ${
+              className={`w-auto h-16 md:h-32 transition-opacity duration-500 ${
                 isTransparent ? "opacity-0" : "opacity-100"
               }`}
             />

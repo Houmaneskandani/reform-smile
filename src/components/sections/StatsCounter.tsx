@@ -43,14 +43,14 @@ const stats = [
 
 export default function StatsCounter() {
   return (
-    <section className="py-20 md:py-24 bg-navy relative overflow-hidden">
+    <section className="py-14 md:py-24 bg-navy relative overflow-hidden">
       {/* Subtle gold glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] rounded-full bg-gold/5 blur-[80px]" />
       </div>
 
       <div className="relative section-container">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-16">
           {stats.map((stat, index) => (
             <motion.div
               key={stat.label}

@@ -7,7 +7,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 
 export default function CTASection() {
   return (
-    <section className="relative py-28 md:py-36 overflow-hidden">
+    <section className="relative py-16 md:py-36 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-navy-dark via-navy to-navy-light" />
       <div className="absolute inset-0 pointer-events-none">

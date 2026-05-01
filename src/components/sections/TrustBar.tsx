@@ -29,8 +29,8 @@ const trustItems = [
 export default function TrustBar() {
   return (
     <section className="bg-cream border-y border-cream-dark">
-      <div className="section-container py-14 md:py-16">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-16">
+      <div className="section-container py-10 md:py-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-16">
           {trustItems.map((item, index) => (
             <motion.div
               key={item.title}

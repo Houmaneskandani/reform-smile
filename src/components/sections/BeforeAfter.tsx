@@ -38,7 +38,7 @@ const cases = [
 
 export default function BeforeAfter() {
   return (
-    <section className="py-28 md:py-36 bg-white">
+    <section className="py-16 md:py-36 bg-white">
       <div className="section-container">
         {/* Header */}
         <motion.div
@@ -46,7 +46,7 @@ export default function BeforeAfter() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center max-w-2xl mx-auto mb-20"
+          className="text-center max-w-2xl mx-auto mb-12 md:mb-20"
         >
           <p className="text-gold font-semibold tracking-widest uppercase text-sm mb-4">
             Our Work

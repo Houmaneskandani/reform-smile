@@ -90,7 +90,7 @@ function FAQItem({
 
 export default function FAQ() {
   return (
-    <section className="py-28 md:py-36 bg-cream">
+    <section className="py-16 md:py-36 bg-cream">
       <div className="section-container">
         <div className="max-w-3xl mx-auto">
           <motion.div

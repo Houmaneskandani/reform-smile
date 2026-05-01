@@ -12,7 +12,7 @@ const credentials = [
 
 export default function About() {
   return (
-    <section className="py-28 md:py-36 bg-cream">
+    <section className="py-16 md:py-36 bg-cream">
       <div className="section-container">
         <div className="grid lg:grid-cols-5 gap-16 lg:gap-20 items-center">
           {/* Image — takes 2 columns */}

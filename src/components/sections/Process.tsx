@@ -36,7 +36,7 @@ const steps = [
 
 export default function Process() {
   return (
-    <section className="py-28 md:py-36 bg-navy relative overflow-hidden">
+    <section className="py-16 md:py-36 bg-navy relative overflow-hidden">
       {/* Background accents */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-gold/5 blur-3xl" />
