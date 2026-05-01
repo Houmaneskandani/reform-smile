@@ -114,8 +114,6 @@ export default function Hero() {
                   {SITE_CONFIG.phone}
                 </a>
 
-                {/* Pulse ring — draws attention to call */}
-                <span className="absolute inset-0 rounded-full border-2 border-gold/30 animate-ping pointer-events-none" style={{ animationDuration: "3s" }} />
               </div>
             </motion.div>
 
