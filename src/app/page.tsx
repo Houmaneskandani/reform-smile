@@ -2,6 +2,7 @@ import Hero from "@/components/sections/Hero";
 import TrustBar from "@/components/sections/TrustBar";
 import TrustLogos from "@/components/sections/TrustLogos";
 import Services from "@/components/sections/Services";
+import SmileQuiz from "@/components/sections/SmileQuiz";
 import StatsCounter from "@/components/sections/StatsCounter";
 import BeforeAfterSlider from "@/components/sections/BeforeAfterSlider";
 import Process from "@/components/sections/Process";
@@ -17,6 +18,7 @@ export default function Home() {
       <TrustBar />
       <TrustLogos />
       <Services />
+      <SmileQuiz />
       <StatsCounter />
       <BeforeAfterSlider />
       <Process />
