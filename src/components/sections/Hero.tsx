@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Phone, Play } from "lucide-react";
+import { Phone } from "lucide-react";
 import Button from "@/components/ui/Button";
 import { SITE_CONFIG } from "@/lib/constants";
 import { useState } from "react";

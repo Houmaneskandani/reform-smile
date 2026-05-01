@@ -56,7 +56,7 @@ export default function BookForm() {
   });
 
   const onSubmit = (data: BookingFormData) => {
-    console.log("Booking form:", data);
+    // TODO: Send form data to email service
     setSubmitted(true);
   };
 

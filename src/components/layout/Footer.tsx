@@ -145,14 +145,9 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights
             reserved.
           </p>
-          <div className="flex gap-6 text-sm text-white/50">
-            <Link href="/privacy" className="hover:text-gold transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className="hover:text-gold transition-colors">
-              Terms of Service
-            </Link>
-          </div>
+          <p className="text-white/30 text-sm">
+            Engineered with care
+          </p>
         </div>
       </div>
     </footer>

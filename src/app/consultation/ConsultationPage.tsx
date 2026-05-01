@@ -38,7 +38,7 @@ export default function ConsultationPage() {
   });
 
   const onSubmit = (data: ConsultationFormData) => {
-    console.log("Consultation form:", data);
+    // TODO: Send form data to email service
     setSubmitted(true);
   };
 

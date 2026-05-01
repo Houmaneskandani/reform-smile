@@ -31,7 +31,6 @@ export default function ContactContent() {
 
   const onSubmit = (data: ContactFormData) => {
     // TODO: Send form data to email service
-    console.log("Contact form:", data);
     setSubmitted(true);
   };
 
