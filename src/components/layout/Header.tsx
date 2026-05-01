@@ -116,58 +116,101 @@ export default function Header() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`lg:hidden p-2 cursor-pointer transition-colors ${
-              isTransparent ? "text-white" : "text-navy"
+            className={`lg:hidden p-2 cursor-pointer transition-colors relative z-[60] ${
+              mobileMenuOpen ? "text-white" : isTransparent ? "text-white" : "text-navy"
             }`}
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
-
-        {/* Mobile menu overlay — click to close */}
-        {mobileMenuOpen && (
-          <div
-            className="fixed inset-0 z-[-1] lg:hidden"
-            onClick={() => setMobileMenuOpen(false)}
-          />
-        )}
-
-        {/* Mobile menu */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden bg-white border-t border-gray-lighter">
-            <nav className="flex flex-col px-8 py-6">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="py-3.5 text-dark font-medium hover:text-gold transition-colors text-sm tracking-widest uppercase border-b border-gray-lighter last:border-0"
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <div className="pt-6 flex flex-col gap-4">
-                <a
-                  href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
-                  className="flex items-center justify-center gap-2 text-navy font-semibold py-3"
-                >
-                  <Phone size={18} />
-                  <span>{SITE_CONFIG.phone}</span>
-                </a>
-                <Button
-                  href="/consultation"
-                  variant="gold"
-                  size="md"
-                  className="w-full"
-                >
-                  Free Consultation
-                </Button>
-              </div>
-            </nav>
-          </div>
-        )}
       </header>
+
+      {/* Full-screen mobile menu overlay */}
+      <div
+        className={`fixed inset-0 z-[55] lg:hidden transition-all duration-500 ${
+          mobileMenuOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
+      >
+        {/* Navy background with gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-dark via-navy to-navy-light" />
+
+        {/* Decorative gold accent */}
+        <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-gold/5 blur-[80px]" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-gold/5 blur-[60px]" />
+
+        {/* Menu content */}
+        <div className="relative h-full flex flex-col justify-center px-10">
+          {/* Nav links — large, staggered */}
+          <nav className="space-y-1">
+            {NAV_LINKS.map((link, i) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block py-4 transition-all duration-500 ${
+                  mobileMenuOpen
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 translate-x-[-30px]"
+                }`}
+                style={{ transitionDelay: mobileMenuOpen ? `${150 + i * 80}ms` : "0ms" }}
+              >
+                <span className="text-white/30 text-xs font-mono mr-4">
+                  0{i + 1}
+                </span>
+                <span className="text-white text-2xl font-heading hover:text-gold transition-colors">
+                  {link.label}
+                </span>
+              </Link>
+            ))}
+          </nav>
+
+          {/* Divider */}
+          <div
+            className={`w-12 h-px bg-gold/40 my-10 transition-all duration-500 ${
+              mobileMenuOpen ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
+            }`}
+            style={{ transitionDelay: mobileMenuOpen ? "600ms" : "0ms" }}
+          />
+
+          {/* CTA area */}
+          <div
+            className={`space-y-5 transition-all duration-500 ${
+              mobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[20px]"
+            }`}
+            style={{ transitionDelay: mobileMenuOpen ? "700ms" : "0ms" }}
+          >
+            <a
+              href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
+              className="flex items-center gap-3 text-white/60 hover:text-gold transition-colors"
+            >
+              <Phone size={18} className="text-gold" />
+              <span className="text-lg">{SITE_CONFIG.phone}</span>
+            </a>
+
+            <Button
+              href="/consultation"
+              variant="gold"
+              size="lg"
+              className="w-full mt-4"
+            >
+              Free Consultation
+            </Button>
+          </div>
+
+          {/* Bottom brand text */}
+          <p
+            className={`absolute bottom-10 left-10 text-white/15 text-xs tracking-[0.3em] uppercase transition-all duration-500 ${
+              mobileMenuOpen ? "opacity-100" : "opacity-0"
+            }`}
+            style={{ transitionDelay: mobileMenuOpen ? "900ms" : "0ms" }}
+          >
+            Reform Smile & Dental Implant Center
+          </p>
+        </div>
+      </div>
     </>
   );
 }
