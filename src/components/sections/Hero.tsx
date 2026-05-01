@@ -74,28 +74,25 @@ export default function Hero() {
                   {/* Shine sweep */}
                   <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-20deg]" />
 
-                  {/* Smile icon that grows on hover */}
+                  {/* Smile curve — widens on hover */}
                   <svg
-                    className="relative w-6 h-6 flex-shrink-0"
-                    viewBox="0 0 24 24"
+                    className="relative w-7 h-4 flex-shrink-0"
+                    viewBox="0 0 28 16"
                     fill="none"
                   >
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" className="opacity-80" />
-                    <circle cx="9" cy="10" r="1.2" fill="currentColor" />
-                    <circle cx="15" cy="10" r="1.2" fill="currentColor" />
-                    {/* Small smile — visible at rest */}
+                    {/* Small curve at rest */}
                     <path
-                      d="M9 15 C10 16.5, 14 16.5, 15 15"
+                      d="M8 6 C11 10, 17 10, 20 6"
                       stroke="currentColor"
-                      strokeWidth="1.5"
+                      strokeWidth="2.5"
                       strokeLinecap="round"
                       className="opacity-100 group-hover:opacity-0 transition-opacity duration-300"
                     />
-                    {/* Big smile — visible on hover */}
+                    {/* Wide grin on hover */}
                     <path
-                      d="M7.5 14.5 C9 18, 15 18, 16.5 14.5"
+                      d="M4 4 C8 15, 20 15, 24 4"
                       stroke="currentColor"
-                      strokeWidth="1.5"
+                      strokeWidth="2.5"
                       strokeLinecap="round"
                       className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     />
