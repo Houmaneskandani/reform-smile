@@ -193,11 +193,7 @@ export default function SmileQuiz() {
   return (
     <section
       className="py-16 md:py-36 relative overflow-hidden transition-colors duration-700"
-      style={{
-        background: showResult
-          ? "linear-gradient(135deg, #0F2440 0%, #1B3A5C 40%, #2A3F50 70%, #1B3A5C 100%)"
-          : `linear-gradient(135deg, #0F2440 0%, #1B3A5C ${60 - progress * 0.2}%, #1B3A5C 100%)`,
-      }}
+      style={{ background: "#1B3A5C" }}
     >
       {/* Background glow — grows with quiz progress */}
       <div className="absolute inset-0 pointer-events-none transition-all duration-700">
