@@ -65,27 +65,43 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.45 }}
               className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-6 md:mb-16"
             >
-              {/* Primary CTA — shine sweep + arrow reveal + tooltip */}
+              {/* Primary CTA — smile-meter + shine sweep + tooltip */}
               <div className="relative group">
                 <a
                   href="/consultation"
-                  className="relative inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-white font-bold px-9 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-gold/25 hover:shadow-xl hover:scale-[1.03] overflow-hidden text-lg whitespace-nowrap"
+                  className="relative inline-flex items-center justify-center gap-3 bg-gold hover:bg-gold-dark text-white font-bold px-9 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-gold/25 hover:shadow-xl hover:scale-[1.03] overflow-hidden text-lg whitespace-nowrap"
                 >
                   {/* Shine sweep */}
                   <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-20deg]" />
 
-                  <span className="relative">Book My Free Consult</span>
-
-                  {/* Arrow slides in */}
+                  {/* Smile icon that grows on hover */}
                   <svg
-                    className="relative w-0 group-hover:w-5 overflow-hidden transition-all duration-300 opacity-0 group-hover:opacity-100"
-                    fill="none"
+                    className="relative w-6 h-6 flex-shrink-0"
                     viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2.5}
+                    fill="none"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" className="opacity-80" />
+                    <circle cx="9" cy="10" r="1.2" fill="currentColor" />
+                    <circle cx="15" cy="10" r="1.2" fill="currentColor" />
+                    {/* Small smile — visible at rest */}
+                    <path
+                      d="M9 15 C10 16.5, 14 16.5, 15 15"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      className="opacity-100 group-hover:opacity-0 transition-opacity duration-300"
+                    />
+                    {/* Big smile — visible on hover */}
+                    <path
+                      d="M7.5 14.5 C9 18, 15 18, 16.5 14.5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    />
                   </svg>
+
+                  <span className="relative">Book My Free Consult</span>
                 </a>
 
                 {/* Tooltip on hover */}
