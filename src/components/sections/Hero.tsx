@@ -20,8 +20,9 @@ export default function Hero() {
         </video>
       </div>
 
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-navy-dark/70 via-navy/50 to-navy-dark/80 md:bg-gradient-to-r md:from-navy-dark/95 md:via-navy/80 md:to-navy/40" />
+      {/* Dark overlay — fades to transparent on the right so video face shows */}
+      <div className="absolute inset-0 bg-gradient-to-b from-navy-dark/70 via-navy/50 to-navy-dark/70 md:bg-none" />
+      <div className="absolute inset-0 hidden md:block" style={{ background: "linear-gradient(to right, rgba(15,36,64,0.95) 0%, rgba(27,58,92,0.75) 35%, rgba(27,58,92,0.3) 60%, transparent 80%)" }} />
 
       <div className="relative section-container pt-24 md:pt-44 pb-6 md:pb-28">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">

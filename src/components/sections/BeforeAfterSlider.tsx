@@ -47,27 +47,30 @@ function CompareSlider({
   return (
     <div
       ref={containerRef}
-      className="relative aspect-[16/9] rounded-2xl overflow-hidden cursor-col-resize select-none shadow-xl"
+      className="relative aspect-[16/9] rounded-2xl overflow-hidden cursor-col-resize select-none shadow-xl bg-cream"
       onMouseDown={() => { isDragging.current = true; }}
       onTouchStart={() => { isDragging.current = true; }}
     >
-      {/* After image — full background */}
-      <img src={afterSrc} alt="After" className="absolute inset-0 w-full h-full object-cover" draggable={false} />
+      {/* After image — full background using CSS */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${afterSrc})` }}
+      />
       <span className="absolute top-4 right-4 z-20 bg-gold text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
         After
       </span>
 
-      {/* Before image — clipped */}
+      {/* Before image — clipped by slider, also CSS background */}
       <div
         className="absolute top-0 left-0 bottom-0 overflow-hidden z-10"
         style={{ width: `${sliderPos}%` }}
       >
-        <img
-          src={beforeSrc}
-          alt="Before"
-          className="absolute top-0 left-0 h-full object-cover"
-          style={{ width: `${containerRef.current?.offsetWidth || 9999}px`, maxWidth: "none" }}
-          draggable={false}
+        <div
+          className="absolute top-0 left-0 h-full bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${beforeSrc})`,
+            width: `${(100 / sliderPos) * 100}%`,
+          }}
         />
         <span className="absolute top-4 left-4 bg-navy/80 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
           Before
@@ -112,7 +115,6 @@ export default function BeforeAfterSlider() {
           </p>
         </motion.div>
 
-        {/* Single large slider */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
