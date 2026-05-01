@@ -80,9 +80,17 @@ export default function Process() {
                 {step.number}
               </span>
 
-              {/* Icon */}
-              <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-7">
-                <step.icon size={32} className="text-gold" strokeWidth={1.5} />
+              {/* Icon — animated on hover */}
+              <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-7 group-hover:bg-gold/10 group-hover:border-gold/20 transition-all duration-500 relative">
+                <motion.div
+                  whileInView={{ rotate: [0, -10, 10, -5, 0] }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.5 + index * 0.2 }}
+                >
+                  <step.icon size={32} className="text-gold" strokeWidth={1.5} />
+                </motion.div>
+                {/* Pulse ring */}
+                <div className="absolute inset-0 rounded-2xl border border-gold/10 animate-ping opacity-0 group-hover:opacity-20" style={{ animationDuration: "2s" }} />
               </div>
 
               <h3 className="font-heading text-xl text-white mb-4">

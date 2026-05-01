@@ -122,6 +122,36 @@ export default function FAQ() {
               />
             ))}
           </div>
+
+          {/* Still have questions? */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mt-16 text-center bg-white rounded-2xl p-8 md:p-10 shadow-sm border border-cream-dark"
+          >
+            <h3 className="font-heading text-2xl text-navy mb-3">
+              Still Have Questions?
+            </h3>
+            <p className="text-gray text-[15px] mb-6">
+              We&apos;re here to help. Reach out and we&apos;ll get back to you within 24 hours.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <a
+                href="/contact"
+                className="inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy-light text-white font-semibold px-7 py-3 rounded-full transition-colors text-sm"
+              >
+                Send a Message
+              </a>
+              <a
+                href="/consultation"
+                className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-white font-semibold px-7 py-3 rounded-full transition-colors text-sm"
+              >
+                Book Free Consultation
+              </a>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

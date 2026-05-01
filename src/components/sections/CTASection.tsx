@@ -50,19 +50,27 @@ export default function CTASection() {
             </a>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-8 text-white/50 text-sm">
+          {/* Trust badges */}
+          <div className="flex flex-wrap justify-center gap-6 text-white/50 text-sm mb-8">
             <span className="flex items-center gap-2">
               <Check size={16} className="text-gold" />
               No-obligation consultation
             </span>
             <span className="flex items-center gap-2">
               <Check size={16} className="text-gold" />
-              Financing options available
+              Financing available
             </span>
             <span className="flex items-center gap-2">
               <Check size={16} className="text-gold" />
-              Most insurance accepted
+              Insurance accepted
             </span>
+          </div>
+          <div className="flex justify-center gap-6">
+            <span className="text-white/20 text-[11px] tracking-wider">HIPAA Compliant</span>
+            <span className="text-white/10">|</span>
+            <span className="text-white/20 text-[11px] tracking-wider">5-Star Rated</span>
+            <span className="text-white/10">|</span>
+            <span className="text-white/20 text-[11px] tracking-wider">ADA Member</span>
           </div>
         </motion.div>
       </div>

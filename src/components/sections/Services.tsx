@@ -77,21 +77,34 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.08 }}
-              className="group bg-white rounded-2xl p-8 lg:p-10 border border-gray-lighter hover:border-gold/20 hover:shadow-lg transition-all duration-300"
+              className="group bg-white rounded-2xl p-8 lg:p-10 border border-gray-lighter hover:border-gold/30 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden cursor-pointer"
             >
-              <div className="w-14 h-14 rounded-xl bg-cream flex items-center justify-center mb-7 group-hover:bg-gold/10 transition-colors duration-300">
-                <service.icon
-                  size={26}
-                  className="text-navy group-hover:text-gold transition-colors duration-300"
-                  strokeWidth={1.5}
-                />
+              {/* Gold glow on hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-gold/0 to-gold/0 group-hover:from-gold/[0.02] group-hover:to-gold/[0.06] transition-all duration-500" />
+
+              <div className="relative">
+                <div className="w-14 h-14 rounded-xl bg-cream flex items-center justify-center mb-7 group-hover:bg-gold/10 transition-colors duration-300">
+                  <service.icon
+                    size={26}
+                    className="text-navy group-hover:text-gold transition-colors duration-300"
+                    strokeWidth={1.5}
+                  />
+                </div>
+                <h3 className="font-heading text-xl text-navy mb-4 leading-snug">
+                  {service.title}
+                </h3>
+                <p className="text-gray text-[15px] leading-relaxed mb-4">
+                  {service.description}
+                </p>
+
+                {/* Learn more arrow — slides in on hover */}
+                <span className="inline-flex items-center gap-1.5 text-gold text-sm font-semibold opacity-0 translate-x-[-8px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                  Learn More
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
               </div>
-              <h3 className="font-heading text-xl text-navy mb-4 leading-snug">
-                {service.title}
-              </h3>
-              <p className="text-gray text-[15px] leading-relaxed">
-                {service.description}
-              </p>
             </motion.div>
           ))}
         </div>

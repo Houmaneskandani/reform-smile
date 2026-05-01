@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 import Header from "@/components/layout/Header";
 import FooterWrapper from "@/components/layout/FooterWrapper";
 import StructuredData from "@/components/StructuredData";
+import StickyBookNow from "@/components/ui/StickyBookNow";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -79,6 +80,7 @@ export default function RootLayout({
         <Header />
         <main className="flex-1">{children}</main>
         <FooterWrapper />
+        <StickyBookNow />
       </body>
     </html>
   );

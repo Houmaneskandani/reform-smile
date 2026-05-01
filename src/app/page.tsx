@@ -1,9 +1,10 @@
 import Hero from "@/components/sections/Hero";
 import TrustBar from "@/components/sections/TrustBar";
+import TrustLogos from "@/components/sections/TrustLogos";
 import Services from "@/components/sections/Services";
-import Process from "@/components/sections/Process";
-import BeforeAfter from "@/components/sections/BeforeAfter";
 import StatsCounter from "@/components/sections/StatsCounter";
+import BeforeAfter from "@/components/sections/BeforeAfter";
+import Process from "@/components/sections/Process";
 import About from "@/components/sections/About";
 import Testimonials from "@/components/sections/Testimonials";
 import FAQ from "@/components/sections/FAQ";
@@ -14,6 +15,7 @@ export default function Home() {
     <>
       <Hero />
       <TrustBar />
+      <TrustLogos />
       <Services />
       <StatsCounter />
       <BeforeAfter />
