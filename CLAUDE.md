@@ -208,15 +208,69 @@ Sites Dr. Ava used as inspiration:
 | 2026-04-30 | Added animated stat counters | More engaging than static numbers |
 | 2026-05-01 | Full-screen mobile menu | Plain white dropdown looked cheap |
 
-## TODO (prioritized)
-- [ ] Replace placeholder phone, email, address (update constants.ts)
+## Production Launch Checklist
+
+Everything below is **already built and coded** — just needs keys/content to activate.
+
+### Step 1: Update Practice Info (5 minutes)
+Edit `src/lib/constants.ts` and replace all placeholder values:
+```typescript
+phone: "(555) 123-4567",     // ← Replace with real phone
+email: "info@reformsmile.com", // ← Replace with real email
+address: "123 Main Street, Suite 100", // ← Replace
+city: "Los Angeles",          // ← Replace
+state: "CA",                  // ← Replace
+zip: "90001",                 // ← Replace
+hours: { ... },               // ← Replace with real hours
+social: { instagram: "#", ... }, // ← Replace with real URLs
+```
+Google Maps on the contact page will automatically update to the new address.
+
+### Step 2: Activate Form Emails (5 minutes, FREE)
+Forms currently work in demo mode. To receive real submissions by email:
+1. Go to https://web3forms.com
+2. Enter Dr. Ava's email address
+3. Copy the access key they give you
+4. Paste it in `src/lib/constants.ts`:
+```typescript
+web3formsKey: "paste-key-here",
+```
+5. Deploy — all 3 forms (Contact, Book, Consultation) will now email submissions
+
+### Step 3: Activate Google Analytics (5 minutes, FREE)
+1. Go to https://analytics.google.com
+2. Create a new GA4 property for the website
+3. Copy the Measurement ID (looks like `G-XXXXXXXXXX`)
+4. Paste in `src/lib/constants.ts`:
+```typescript
+gaTrackingId: "G-XXXXXXXXXX",
+```
+5. Deploy — analytics will start tracking immediately
+
+### Step 4: Add Real Content
+- **Dr. Ava's headshot** — Replace placeholder in `src/components/sections/About.tsx` and `src/app/about/DoctorBio.tsx`
+- **Real testimonials** — Update `src/components/sections/Testimonials.tsx`
+- **More before/after photos** — Add to `public/images/cases/` and update `BeforeAfterSlider.tsx`
+- **Certification logos** — Replace text badges in `src/components/sections/TrustLogos.tsx` with real logo images
+
+### Step 5: Connect Domain
+1. Go to Dr. Ava's domain registrar (GoDaddy, Namecheap, etc.)
+2. In Vercel dashboard: Settings → Domains → Add domain
+3. Update DNS records as Vercel instructs (usually a CNAME or A record)
+4. Update `metadataBase` in `src/app/layout.tsx` to the real domain
+5. Update `sitemap.xml` and `robots.txt` URLs to the real domain
+6. Update `url` in `src/components/StructuredData.tsx` to the real domain
+
+### Step 6: Optional — Blog CMS
+For Dr. Ava to write blog posts without touching code:
+1. Set up Sanity CMS (free tier) at https://sanity.io
+2. Connect it to the blog page
+3. She gets a visual editor to publish articles
+
+## TODO (remaining)
+- [ ] Replace placeholder content (Step 1 above)
 - [ ] Add Dr. Ava's professional headshot
 - [ ] Add real patient testimonials
-- [ ] Before/After image drag slider (compare tool)
-- [ ] Floating "Book Now" button on mobile
-- [ ] Insurance/financing banner section
-- [ ] Google Maps embed on contact page
-- [ ] Email service for form submissions (Resend or Nodemailer)
-- [ ] Blog CMS (Sanity recommended for non-technical editing)
-- [ ] Google Analytics
-- [ ] Connect Dr. Ava's existing domain
+- [ ] More before/after photo pairs for slider
+- [ ] Blog CMS setup (Sanity)
+- [ ] Connect custom domain
