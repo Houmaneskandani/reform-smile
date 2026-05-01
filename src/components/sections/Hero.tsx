@@ -6,7 +6,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[60vh] md:min-h-screen flex items-center overflow-hidden -mt-24">
+    <section className="relative min-h-[60vh] md:min-h-screen flex items-end md:items-center overflow-hidden -mt-24">
       {/* Video Background */}
       <div className="absolute inset-0">
         <video
@@ -14,14 +14,15 @@ export default function Hero() {
           muted
           loop
           playsInline
+          preload="metadata"
           className="w-full h-full object-cover object-[85%_20%] md:object-center"
         >
           <source src="/images/video/hero-video.mp4" type="video/mp4" />
         </video>
       </div>
 
-      {/* Dark overlay — fades to transparent on the right so video face shows */}
-      <div className="absolute inset-0 bg-gradient-to-b from-navy-dark/70 via-navy/50 to-navy-dark/70 md:bg-none" />
+      {/* Dark overlay — light on top (face visible), darker at bottom (text readable) */}
+      <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to bottom, rgba(15,36,64,0.3) 0%, rgba(15,36,64,0.4) 30%, rgba(15,36,64,0.75) 55%, rgba(15,36,64,0.92) 80%)" }} />
       <div className="absolute inset-0 hidden md:block" style={{ background: "linear-gradient(to right, rgba(15,36,64,0.95) 0%, rgba(27,58,92,0.75) 35%, rgba(27,58,92,0.3) 60%, transparent 80%)" }} />
 
       <div className="relative section-container pt-24 md:pt-44 pb-6 md:pb-28">
@@ -33,7 +34,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-block bg-gold/20 text-gold px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold tracking-wide mb-5 md:mb-8">
+              <span className="inline-block bg-gold/20 text-gold px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold tracking-wide mb-3 md:mb-8">
                 Now Accepting New Patients
               </span>
             </motion.div>
