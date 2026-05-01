@@ -1,16 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Button from "@/components/ui/Button";
 
 const services = [
   {
-    id: "all-on-4",
-    title: "All-on-4 Dental Implants",
-    tagline: "A Full Smile in Just One Day",
+    id: "full-arch",
+    title: "Full Arch Dental Implants",
+    tagline: "Main Service — Complete Smile Restoration",
+    image: "/images/cases/case-4-prosthetic.jpg",
+    image2: "/images/cases/case-1-full-arch.jpg",
     description: [
-      "The All-on-4 procedure is a revolutionary approach to replacing a full arch of teeth using just four strategically placed dental implants. This technique allows Dr. Pournejad to provide you with a complete set of beautiful, permanent teeth — often in a single appointment.",
-      "By angling the posterior implants, we can maximize bone contact without the need for bone grafting in most cases. This means faster treatment, less discomfort, and stunning results from day one.",
+      "Full arch dental implants are the gold standard for replacing a complete set of teeth. Using the All-on-X technique, Dr. Pournejad places 4-6 strategically positioned implants to support an entire arch of beautiful, permanent teeth.",
+      "This approach delivers stunning, natural-looking results — often in a single visit. No more dentures, no more adhesives. Just a confident, permanent smile you can eat, laugh, and live with.",
     ],
     benefits: [
       "Full arch of permanent teeth in one visit",
@@ -18,22 +21,41 @@ const services = [
       "Eat, smile, and laugh with total confidence",
       "Minimal bone grafting required",
       "Natural look and feel",
+      "Long-lasting, durable results",
     ],
   },
   {
-    id: "all-on-6",
-    title: "All-on-6 Dental Implants",
-    tagline: "Enhanced Stability for Your New Smile",
+    id: "single-implants",
+    title: "Single Dental Implants",
+    tagline: "Replace Individual Missing Teeth",
+    image: "/images/cases/case-3-implant-placement.jpg",
     description: [
-      "For patients who need additional support, the All-on-6 procedure uses six implants per arch to provide enhanced stability and strength. This option is ideal for those with greater bone density or who want maximum durability.",
-      "The extra two implants distribute biting forces more evenly, making this an excellent choice for patients who want the strongest possible foundation for their new smile.",
+      "A single dental implant is the ideal solution for replacing one missing tooth without affecting neighboring teeth. A titanium implant post is placed directly into the jawbone, acting as an artificial root, then topped with a custom-crafted crown.",
+      "The result is indistinguishable from your natural teeth — in look, feel, and function. Single implants also preserve bone structure and prevent the shifting of surrounding teeth.",
     ],
     benefits: [
-      "Six implants for maximum stability",
-      "Ideal for patients with good bone density",
-      "Even distribution of biting forces",
-      "Long-lasting, durable results",
-      "Permanent, non-removable teeth",
+      "Replaces one tooth without affecting others",
+      "Looks and feels like a natural tooth",
+      "Preserves jawbone structure",
+      "Prevents neighboring teeth from shifting",
+      "Easy to care for — brush and floss normally",
+    ],
+  },
+  {
+    id: "veneers",
+    title: "Dental Veneers",
+    tagline: "Transform Your Smile's Appearance",
+    image: "/images/cases/case-2-before-after.jpg",
+    description: [
+      "Dental veneers are ultra-thin, custom-made shells that cover the front surface of your teeth to improve their appearance. They're an excellent solution for teeth that are discolored, chipped, worn, misaligned, or unevenly spaced.",
+      "Dr. Pournejad uses premium porcelain veneers that are designed to match the natural translucency and color of real teeth. The result is a flawless, natural-looking smile that can last for years with proper care.",
+    ],
+    benefits: [
+      "Dramatically improve smile aesthetics",
+      "Fix chips, stains, and uneven teeth",
+      "Ultra-thin — minimal tooth preparation",
+      "Stain-resistant porcelain material",
+      "Natural-looking, long-lasting results",
     ],
   },
   {
@@ -69,22 +91,6 @@ const services = [
     ],
   },
   {
-    id: "full-mouth",
-    title: "Full Mouth Reconstruction",
-    tagline: "A Complete Smile Transformation",
-    description: [
-      "Full mouth reconstruction is a comprehensive approach that combines multiple dental procedures to completely rebuild and restore your smile. This may include dental implants, prosthetics, bone grafting, and other advanced techniques.",
-      "Dr. Pournejad creates a detailed, personalized treatment plan that addresses every aspect of your dental health. The result is a complete, beautiful, and functional smile that can last a lifetime.",
-    ],
-    benefits: [
-      "Comprehensive approach to total smile restoration",
-      "Customized treatment plan for your unique needs",
-      "Addresses both function and aesthetics",
-      "Combines the latest techniques and technology",
-      "Life-changing results",
-    ],
-  },
-  {
     id: "consultation",
     title: "Free Consultation",
     tagline: "Your Journey Starts Here",
@@ -115,26 +121,48 @@ export default function ServicesList() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className={`grid lg:grid-cols-2 gap-16 items-start ${
-                index % 2 === 1 ? "lg:direction-rtl" : ""
-              }`}
+              className="grid lg:grid-cols-2 gap-16 items-start"
             >
-              {/* Image placeholder */}
+              {/* Image */}
               <div className={`${index % 2 === 1 ? "lg:order-2" : ""}`}>
-                <div className="aspect-[4/3] rounded-2xl bg-cream overflow-hidden">
-                  {/* TODO: Replace with real service photo */}
-                  <div className="w-full h-full flex items-center justify-center p-8">
-                    <div className="text-center">
-                      <div className="w-20 h-20 rounded-xl bg-gold/10 mx-auto mb-4 flex items-center justify-center">
-                        <span className="text-gold text-2xl font-heading">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
+                {service.image ? (
+                  <div className="space-y-4">
+                    <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-cream shadow-lg">
+                      <Image
+                        src={service.image}
+                        alt={service.title}
+                        width={800}
+                        height={600}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    {/* Second image if available */}
+                    {service.image2 && (
+                      <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-cream shadow-lg">
+                        <Image
+                          src={service.image2}
+                          alt={`${service.title} — additional example`}
+                          width={800}
+                          height={600}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
-                      <p className="text-navy/30 text-sm">Service Photo</p>
-                      <p className="text-navy/20 text-xs mt-1">(Placeholder)</p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="aspect-[4/3] rounded-2xl bg-cream overflow-hidden">
+                    <div className="w-full h-full flex items-center justify-center p-8">
+                      <div className="text-center">
+                        <div className="w-20 h-20 rounded-xl bg-gold/10 mx-auto mb-4 flex items-center justify-center">
+                          <span className="text-gold text-2xl font-heading">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                        </div>
+                        <p className="text-navy/30 text-sm">Photo coming soon</p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Content */}

@@ -1,21 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Crosshair, Layers, Clock, Bone, Stethoscope, ArrowRight } from "lucide-react";
+import { Crosshair, Sparkles, Clock, Bone, Stethoscope, ArrowRight } from "lucide-react";
 import Button from "@/components/ui/Button";
 
 const services = [
   {
     icon: Crosshair,
-    title: "All-on-4 Dental Implants",
+    title: "Full Arch Dental Implants",
     description:
-      "A full arch of permanent teeth supported by just four strategically placed implants. Restore your complete smile in a single day.",
+      "Complete smile restoration using the All-on-X technique. 4-6 strategically placed implants support an entire arch of permanent, beautiful teeth.",
   },
   {
-    icon: Layers,
-    title: "All-on-6 Dental Implants",
+    icon: Stethoscope,
+    title: "Single Dental Implants",
     description:
-      "Six implants provide enhanced stability and support for a complete arch, ideal for patients who need extra strength and durability.",
+      "Replace individual missing teeth with a titanium implant post and custom crown — looks and feels exactly like your natural tooth.",
   },
   {
     icon: Clock,
@@ -30,10 +30,10 @@ const services = [
       "Advanced bone regeneration to build a strong foundation for implants, even when significant bone loss has occurred.",
   },
   {
-    icon: Stethoscope,
-    title: "Full Mouth Reconstruction",
+    icon: Sparkles,
+    title: "Dental Veneers",
     description:
-      "Comprehensive restoration combining implants, prosthetics, and advanced techniques to rebuild your entire smile.",
+      "Ultra-thin porcelain shells that transform the appearance of your teeth. Fix chips, stains, gaps, and uneven teeth for a flawless smile.",
   },
   {
     icon: ArrowRight,
