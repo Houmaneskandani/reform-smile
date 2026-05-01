@@ -191,33 +191,30 @@ export default function SmileQuiz() {
     : ((currentStep + (answers[questions[currentStep]?.id] ? 1 : 0)) / questions.length) * 100;
 
   return (
-    <section className="py-16 md:py-36 bg-navy relative overflow-hidden">
-      {/* Background accents */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-gold/5 blur-[100px]" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-gold/5 blur-[80px]" />
+    <section
+      className="py-16 md:py-36 relative overflow-hidden transition-colors duration-700"
+      style={{
+        background: showResult
+          ? "linear-gradient(135deg, #0F2440 0%, #1B3A5C 40%, #2A3F50 70%, #1B3A5C 100%)"
+          : `linear-gradient(135deg, #0F2440 0%, #1B3A5C ${60 - progress * 0.2}%, #1B3A5C 100%)`,
+      }}
+    >
+      {/* Background glow — grows with quiz progress */}
+      <div className="absolute inset-0 pointer-events-none transition-all duration-700">
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px] transition-all duration-700"
+          style={{
+            width: `${200 + progress * 5}px`,
+            height: `${200 + progress * 5}px`,
+            backgroundColor: `rgba(196, 162, 101, ${0.03 + (progress / 100) * 0.08})`,
+          }}
+        />
+        <div
+          className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full blur-[100px] transition-opacity duration-700"
+          style={{ backgroundColor: "rgba(196, 162, 101, 0.03)", opacity: started ? 1 : 0.5 }}
+        />
       </div>
 
-      {/* Floating tooth silhouettes */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(12)].map((_, i) => (
-          <svg
-            key={i}
-            className="absolute opacity-[0.04] text-white"
-            style={{
-              width: `${20 + (i % 4) * 15}px`,
-              left: `${(i * 8.3) % 100}%`,
-              top: `${(i * 13 + 5) % 90}%`,
-              animation: `floatTooth ${12 + i * 2}s ease-in-out infinite`,
-              animationDelay: `${i * -1.5}s`,
-            }}
-            viewBox="0 0 24 36"
-            fill="currentColor"
-          >
-            <path d="M12 0C6 0 2 4 2 9c0 3 1 5 2 7l3 10c1 3 2 5 3 7 .5 1 1 3 2 3s1.5-2 2-3c1-2 2-4 3-7l3-10c1-2 2-4 2-7 0-5-4-9-10-9z" />
-          </svg>
-        ))}
-      </div>
 
       <div className="relative section-container">
         <AnimatePresence mode="wait">
