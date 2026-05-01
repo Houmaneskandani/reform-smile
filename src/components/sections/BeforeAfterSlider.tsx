@@ -117,12 +117,12 @@ export default function BeforeAfterSlider() {
             transition={{ duration: 0.5 }}
           >
             <CompareSlider
-              beforeSrc="/images/cases/case-3-implant-placement.jpg"
-              afterSrc="/images/cases/case-2-before-after.jpg"
-              title="Dental Implant Restoration"
+              beforeSrc="/images/cases/veneers-before.jpg"
+              afterSrc="/images/cases/veneers-after.jpg"
+              title="Dental Veneers"
             />
-            <p className="text-center mt-4 text-navy font-heading text-lg">Single Implant Restoration</p>
-            <p className="text-center text-gray text-sm">Before implant vs. final result</p>
+            <p className="text-center mt-4 text-navy font-heading text-lg">Dental Veneers</p>
+            <p className="text-center text-gray text-sm">Same patient — before and after porcelain veneers</p>
           </motion.div>
 
           <motion.div
@@ -132,12 +132,12 @@ export default function BeforeAfterSlider() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <CompareSlider
-              beforeSrc="/images/cases/case-1-full-arch.jpg"
+              beforeSrc="/images/cases/case-3-implant-placement.jpg"
               afterSrc="/images/cases/case-4-prosthetic.jpg"
-              title="Full Arch Transformation"
+              title="Full Arch Implants"
             />
-            <p className="text-center mt-4 text-navy font-heading text-lg">Full Arch Transformation</p>
-            <p className="text-center text-gray text-sm">Implant posts to final prosthetic</p>
+            <p className="text-center mt-4 text-navy font-heading text-lg">Full Arch Implants</p>
+            <p className="text-center text-gray text-sm">From implant placement to final prosthetic</p>
           </motion.div>
         </div>
       </div>
