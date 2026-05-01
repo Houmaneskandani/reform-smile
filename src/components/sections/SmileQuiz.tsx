@@ -198,6 +198,27 @@ export default function SmileQuiz() {
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-gold/5 blur-[80px]" />
       </div>
 
+      {/* Floating tooth silhouettes */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {[...Array(12)].map((_, i) => (
+          <svg
+            key={i}
+            className="absolute opacity-[0.04] text-white"
+            style={{
+              width: `${20 + (i % 4) * 15}px`,
+              left: `${(i * 8.3) % 100}%`,
+              top: `${(i * 13 + 5) % 90}%`,
+              animation: `floatTooth ${12 + i * 2}s ease-in-out infinite`,
+              animationDelay: `${i * -1.5}s`,
+            }}
+            viewBox="0 0 24 36"
+            fill="currentColor"
+          >
+            <path d="M12 0C6 0 2 4 2 9c0 3 1 5 2 7l3 10c1 3 2 5 3 7 .5 1 1 3 2 3s1.5-2 2-3c1-2 2-4 3-7l3-10c1-2 2-4 2-7 0-5-4-9-10-9z" />
+          </svg>
+        ))}
+      </div>
+
       <div className="relative section-container">
         <AnimatePresence mode="wait">
           {!started ? (

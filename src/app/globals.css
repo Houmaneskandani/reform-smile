@@ -66,3 +66,11 @@ h1, h2, h3, h4, h5, h6 {
     padding-right: 4rem;
   }
 }
+
+/* Floating tooth particles */
+@keyframes floatTooth {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-20px) rotate(5deg); }
+  50% { transform: translateY(-8px) rotate(-3deg); }
+  75% { transform: translateY(-25px) rotate(4deg); }
+}
