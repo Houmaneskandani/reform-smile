@@ -125,6 +125,14 @@ export default function Header() {
           </button>
         </div>
 
+        {/* Mobile menu overlay — click to close */}
+        {mobileMenuOpen && (
+          <div
+            className="fixed inset-0 z-[-1] lg:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
+
         {/* Mobile menu */}
         {mobileMenuOpen && (
           <div className="lg:hidden bg-white border-t border-gray-lighter">
