@@ -18,7 +18,7 @@ export default function Hero() {
           muted
           loop
           playsInline
-          className="w-full h-full object-cover object-[center_30%]"
+          className="w-full h-full object-cover object-[center_20%] md:object-center"
         >
           <source src="/images/video/hero-video.mp4" type="video/mp4" />
         </video>
@@ -28,7 +28,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-navy-dark/70 via-navy/50 to-navy-dark/80 md:bg-gradient-to-r md:from-navy-dark/95 md:via-navy/80 md:to-navy/40" />
 
 
-      <div className="relative section-container pt-28 md:pt-44 pb-12 md:pb-28">
+      <div className="relative section-container pt-24 md:pt-44 pb-6 md:pb-28">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left: Content */}
           <div className="text-center lg:text-left">
@@ -46,7 +46,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="font-heading text-5xl md:text-6xl lg:text-7xl text-white leading-[1.1] mb-8"
+              className="font-heading text-4xl md:text-6xl lg:text-7xl text-white leading-[1.1] mb-5 md:mb-8"
             >
               Get Back Your{" "}
               <span className="text-gold italic">Confident</span>{" "}
@@ -57,7 +57,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-white/75 text-lg md:text-xl leading-relaxed mb-12 max-w-xl mx-auto lg:mx-0"
+              className="text-white/75 text-base md:text-xl leading-relaxed mb-6 md:mb-12 max-w-xl mx-auto lg:mx-0"
             >
               Dr. Ava Pournejad specializes in All-on-X dental implants —
               permanent, natural-looking teeth that transform your life.
@@ -68,7 +68,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.45 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-16"
+              className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-6 md:mb-16"
             >
               <Button href="/consultation" variant="gold" size="lg">
                 Schedule Free Consultation
