@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
+import { submitForm } from "@/lib/submitForm";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -29,8 +30,8 @@ export default function ContactContent() {
     resolver: zodResolver(contactSchema),
   });
 
-  const onSubmit = (data: ContactFormData) => {
-    // TODO: Send form data to email service
+  const onSubmit = async (data: ContactFormData) => {
+    await submitForm(data as Record<string, string>, "Contact Form");
     setSubmitted(true);
   };
 
@@ -108,16 +109,18 @@ export default function ContactContent() {
               </div>
             </div>
 
-            {/* Map placeholder */}
+            {/* Google Maps embed */}
             <div className="mt-12 aspect-[4/3] rounded-2xl bg-cream overflow-hidden">
-              {/* TODO: Embed Google Maps here */}
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin size={32} className="text-gold/30 mx-auto mb-3" />
-                  <p className="text-navy/30 text-sm">Google Maps Embed</p>
-                  <p className="text-navy/20 text-xs mt-1">(Will be added)</p>
-                </div>
-              </div>
+              <iframe
+                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(
+                  `${SITE_CONFIG.address}, ${SITE_CONFIG.city}, ${SITE_CONFIG.state} ${SITE_CONFIG.zip}`
+                )}&zoom=14`}
+                className="w-full h-full border-0"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Office Location"
+              />
             </div>
           </motion.div>
 

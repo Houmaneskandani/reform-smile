@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
+import { submitForm } from "@/lib/submitForm";
 import Image from "next/image";
 import Link from "next/link";
 import { Phone, Check, Star, Shield, Clock, ArrowRight } from "lucide-react";
@@ -37,8 +38,8 @@ export default function ConsultationPage() {
     resolver: zodResolver(consultationSchema),
   });
 
-  const onSubmit = (data: ConsultationFormData) => {
-    // TODO: Send form data to email service
+  const onSubmit = async (data: ConsultationFormData) => {
+    await submitForm(data as Record<string, string>, "Free Consultation Request");
     setSubmitted(true);
   };
 

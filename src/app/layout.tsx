@@ -6,6 +6,7 @@ import StructuredData from "@/components/StructuredData";
 import StickyBookNow from "@/components/ui/StickyBookNow";
 import SmoothScroll from "@/components/SmoothScroll";
 import IntroSequence from "@/components/IntroSequence";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -78,6 +79,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="min-h-screen flex flex-col font-body">
+        <GoogleAnalytics />
         <IntroSequence />
         <SmoothScroll />
         <StructuredData />

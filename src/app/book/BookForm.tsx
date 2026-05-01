@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
+import { submitForm } from "@/lib/submitForm";
 import { Calendar, Check, Phone } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
 
@@ -55,8 +56,8 @@ export default function BookForm() {
     resolver: zodResolver(bookingSchema),
   });
 
-  const onSubmit = (data: BookingFormData) => {
-    // TODO: Send form data to email service
+  const onSubmit = async (data: BookingFormData) => {
+    await submitForm(data as Record<string, string>, "Appointment Request");
     setSubmitted(true);
   };
 

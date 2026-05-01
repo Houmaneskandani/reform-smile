@@ -18,6 +18,12 @@ export const SITE_CONFIG = {
     facebook: "#",
     youtube: "#",
   },
+  // Web3Forms access key — get one free at https://web3forms.com
+  // Enter the email you want form submissions sent to, and paste the key here
+  web3formsKey: "", // TODO: Add access key from web3forms.com
+
+  // Google Analytics — get tracking ID from https://analytics.google.com
+  gaTrackingId: "", // TODO: Add GA tracking ID (e.g., G-XXXXXXXXXX)
 } as const;
 
 export const NAV_LINKS = [
