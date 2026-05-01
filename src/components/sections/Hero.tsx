@@ -10,7 +10,7 @@ export default function Hero() {
   const [showVideo, setShowVideo] = useState(false);
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden -mt-24">
+    <section className="relative min-h-[80vh] md:min-h-screen flex items-center overflow-hidden -mt-24">
       {/* Video Background */}
       <div className="absolute inset-0">
         <video
@@ -28,7 +28,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-navy-dark/70 via-navy/50 to-navy-dark/80 md:bg-gradient-to-r md:from-navy-dark/95 md:via-navy/80 md:to-navy/40" />
 
 
-      <div className="relative section-container pt-36 md:pt-44 pb-20 md:pb-28">
+      <div className="relative section-container pt-28 md:pt-44 pb-12 md:pb-28">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left: Content */}
           <div className="text-center lg:text-left">
