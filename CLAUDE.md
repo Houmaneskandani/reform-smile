@@ -267,6 +267,14 @@ For Dr. Ava to write blog posts without touching code:
 2. Connect it to the blog page
 3. She gets a visual editor to publish articles
 
+### Future: Twilio Integration (Email + SMS)
+We plan to migrate from Web3Forms to **Twilio** for:
+- **Email notifications** — SendGrid (Twilio's email service) for form submissions, appointment confirmations, and follow-ups
+- **SMS notifications** — Text message reminders for appointments, confirmations when patients book
+- **Two-way SMS** — Patients can text the practice number directly
+- This will require a Twilio account and API keys stored in environment variables (not in constants.ts)
+- Implementation: Create Next.js API routes (`/api/send-email`, `/api/send-sms`) that call Twilio's SDK
+
 ## TODO (remaining)
 - [ ] Replace placeholder content (Step 1 above)
 - [ ] Add Dr. Ava's professional headshot
@@ -274,3 +282,4 @@ For Dr. Ava to write blog posts without touching code:
 - [ ] More before/after photo pairs for slider
 - [ ] Blog CMS setup (Sanity)
 - [ ] Connect custom domain
+- [ ] Twilio integration for email + SMS notifications
