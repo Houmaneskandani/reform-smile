@@ -10,7 +10,7 @@ export default function Hero() {
   const [showVideo, setShowVideo] = useState(false);
 
   return (
-    <section className="relative min-h-[80vh] md:min-h-screen flex items-center overflow-hidden -mt-24">
+    <section className="relative min-h-[60vh] md:min-h-screen flex items-center overflow-hidden -mt-24">
       {/* Video Background */}
       <div className="absolute inset-0">
         <video
@@ -87,7 +87,7 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.7 }}
-              className="flex justify-center lg:justify-start gap-12 border-t border-white/10 pt-10"
+              className="hidden md:flex justify-center lg:justify-start gap-12 border-t border-white/10 pt-10"
             >
               <div className="text-center lg:text-left">
                 <p className="text-gold text-3xl md:text-4xl font-heading font-bold">500+</p>
