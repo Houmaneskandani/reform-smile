@@ -75,7 +75,7 @@ export default function Hero() {
               </Button>
               <a
                 href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border-2 border-white/25 text-white hover:bg-white hover:text-navy transition-all duration-300 font-semibold"
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border-2 border-white/25 text-white hover:bg-white hover:text-navy transition-all duration-300 font-semibold whitespace-nowrap"
               >
                 <Phone size={18} />
                 {SITE_CONFIG.phone}
