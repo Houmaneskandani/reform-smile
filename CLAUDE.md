@@ -267,6 +267,24 @@ For Dr. Ava to write blog posts without touching code:
 2. Connect it to the blog page
 3. She gets a visual editor to publish articles
 
+### Step 7: Activate Tracking (FREE)
+All tracking is built and respects cookie consent. Just add IDs to `.env.local`:
+
+```bash
+# Google Tag Manager — get at https://tagmanager.google.com
+NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
+
+# Microsoft Clarity (heatmaps + recordings) — get at https://clarity.microsoft.com
+NEXT_PUBLIC_CLARITY_ID=your_clarity_id
+
+# Facebook Pixel (ad retargeting) — get at https://business.facebook.com/events_manager
+NEXT_PUBLIC_FB_PIXEL_ID=your_pixel_id
+```
+
+Conversion events already tracked: quiz_started, quiz_completed, cost_estimator_started, cost_estimator_completed, form_submitted, consultation_booked, chat_opened, phone_clicked.
+
+Cookie consent banner handles legal compliance — tracking only loads after user accepts.
+
 ### Future: Twilio Integration (Email + SMS)
 We plan to migrate from Web3Forms to **Twilio** for:
 - **Email notifications** — SendGrid (Twilio's email service) for form submissions, appointment confirmations, and follow-ups
