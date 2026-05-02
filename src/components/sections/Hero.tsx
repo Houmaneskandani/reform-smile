@@ -6,7 +6,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[55vh] md:min-h-screen flex items-end md:items-center overflow-hidden -mt-24">
+    <section className="relative min-h-[85vh] md:min-h-screen flex items-end md:items-center overflow-hidden -mt-24">
       {/* Video Background */}
       <div className="absolute inset-0">
         <video
@@ -76,7 +76,7 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-white/75 text-base md:text-xl leading-relaxed mb-6 md:mb-12 max-w-xl mx-auto lg:mx-0"
             >
-              <span className="md:hidden">Permanent, natural-looking dental implants — often in just one visit.</span>
+              <span className="md:hidden">Dr. Ava Pournejad — permanent, natural-looking dental implants, often in just one visit.</span>
               <span className="hidden md:inline">Dr. Ava Pournejad specializes in All-on-X dental implants —
               permanent, natural-looking teeth that transform your life.
               Often completed in just one visit.</span>
