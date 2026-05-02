@@ -3,7 +3,58 @@
 import { motion } from "framer-motion";
 import { Phone } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
+import { useEffect, useRef, useState } from "react";
+
+function useGyroShine() {
+  const [position, setPosition] = useState(50);
+  const granted = useRef(false);
+  const [fallback, setFallback] = useState(true);
+
+  useEffect(() => {
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+      if (e.gamma === null) return;
+      granted.current = true;
+      setFallback(false);
+      const normalized = Math.max(0, Math.min(100, ((e.gamma + 45) / 90) * 100));
+      setPosition(normalized);
+    };
+
+    const requestPermission = async () => {
+      const DOE = DeviceOrientationEvent as unknown as {
+        requestPermission?: () => Promise<string>;
+      };
+      if (typeof DOE.requestPermission === "function") {
+        try {
+          const result = await DOE.requestPermission();
+          if (result === "granted") {
+            window.addEventListener("deviceorientation", handleOrientation);
+          }
+        } catch { /* denied */ }
+      } else {
+        window.addEventListener("deviceorientation", handleOrientation);
+        setTimeout(() => { if (!granted.current) setFallback(true); }, 1000);
+      }
+    };
+
+    // iOS requires click gesture for permission
+    const handleClick = () => {
+      requestPermission();
+      document.removeEventListener("click", handleClick);
+    };
+    document.addEventListener("click", handleClick);
+    requestPermission();
+
+    return () => {
+      window.removeEventListener("deviceorientation", handleOrientation);
+      document.removeEventListener("click", handleClick);
+    };
+  }, []);
+
+  return { position, fallback };
+}
+
 export default function Hero() {
+  const { position, fallback } = useGyroShine();
   return (
     <section className="relative min-h-[85vh] md:min-h-screen flex items-end md:items-center overflow-hidden -mt-24">
       {/* Video Background */}
@@ -56,7 +107,14 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 25, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.65 }}
-                className="inline-block italic mr-[0.3em] confident-shine"
+                className={`inline-block italic mr-[0.3em] ${fallback ? "confident-shine" : ""}`}
+                style={!fallback ? {
+                  backgroundImage: `linear-gradient(105deg, #A8884D ${position - 30}%, #F0D890 ${position}%, #A8884D ${position + 30}%)`,
+                  backgroundSize: "200% 100%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                } : undefined}
               >
                 Confident
               </motion.span>
