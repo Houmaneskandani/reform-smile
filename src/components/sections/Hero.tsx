@@ -68,15 +68,16 @@ export default function Hero() {
           loop
           playsInline
           preload="metadata"
-          className="w-full h-full object-cover object-[85%_45%] md:object-center"
+          className="w-full h-full object-cover object-[85%_45%] md:object-[70%_center] lg:object-center"
         >
           <source src="/images/video/hero-video.mp4" type="video/mp4" />
         </video>
       </div>
 
-      {/* Dark overlay — very light on top (face/smile visible), darker at bottom (text readable) */}
+      {/* Dark overlay — mobile: light top, dark bottom / tablet+desktop: dark left, transparent right */}
       <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to bottom, rgba(15,36,64,0.15) 0%, rgba(15,36,64,0.25) 25%, rgba(15,36,64,0.6) 50%, rgba(15,36,64,0.9) 75%)" }} />
-      <div className="absolute inset-0 hidden md:block" style={{ background: "linear-gradient(to right, rgba(15,36,64,0.95) 0%, rgba(27,58,92,0.75) 35%, rgba(27,58,92,0.3) 60%, transparent 80%)" }} />
+      <div className="absolute inset-0 hidden md:block lg:hidden" style={{ background: "linear-gradient(to right, rgba(15,36,64,0.92) 0%, rgba(27,58,92,0.7) 40%, rgba(27,58,92,0.3) 65%, transparent 85%)" }} />
+      <div className="absolute inset-0 hidden lg:block" style={{ background: "linear-gradient(to right, rgba(15,36,64,0.95) 0%, rgba(27,58,92,0.75) 35%, rgba(27,58,92,0.3) 60%, transparent 80%)" }} />
 
       <div className="relative section-container pt-24 md:pt-44 pb-6 md:pb-28">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
