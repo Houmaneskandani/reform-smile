@@ -7,17 +7,51 @@ import { useEffect, useState } from "react";
 
 function useGyroscope() {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [permitted, setPermitted] = useState(false);
 
   useEffect(() => {
     const handleOrientation = (e: DeviceOrientationEvent) => {
-      const x = Math.max(-30, Math.min(30, e.gamma || 0)) / 30; // -1 to 1
+      const x = Math.max(-30, Math.min(30, e.gamma || 0)) / 30;
       const y = Math.max(-30, Math.min(30, (e.beta || 0) - 45)) / 30;
       setTilt({ x, y });
     };
 
-    window.addEventListener("deviceorientation", handleOrientation);
-    return () => window.removeEventListener("deviceorientation", handleOrientation);
-  }, []);
+    const requestPermission = async () => {
+      // iOS 13+ requires permission
+      const DOE = DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> };
+      if (typeof DOE.requestPermission === "function") {
+        try {
+          const permission = await DOE.requestPermission();
+          if (permission === "granted") {
+            setPermitted(true);
+            window.addEventListener("deviceorientation", handleOrientation);
+          }
+        } catch {
+          // Permission denied — fall back to static
+        }
+      } else {
+        // Android or older iOS — no permission needed
+        setPermitted(true);
+        window.addEventListener("deviceorientation", handleOrientation);
+      }
+    };
+
+    // Request on first user touch (iOS requires user gesture)
+    const handleFirstTouch = () => {
+      if (!permitted) requestPermission();
+      window.removeEventListener("touchstart", handleFirstTouch);
+    };
+
+    // Try immediately (works on Android)
+    requestPermission();
+    // Also try on first touch (needed for iOS)
+    window.addEventListener("touchstart", handleFirstTouch);
+
+    return () => {
+      window.removeEventListener("deviceorientation", handleOrientation);
+      window.removeEventListener("touchstart", handleFirstTouch);
+    };
+  }, [permitted]);
 
   return tilt;
 }
