@@ -15,7 +15,7 @@ export default function Hero() {
           loop
           playsInline
           preload="metadata"
-          className="w-full h-full object-cover object-[85%_35%] md:object-center"
+          className="w-full h-full object-cover object-[85%_45%] md:object-center"
         >
           <source src="/images/video/hero-video.mp4" type="video/mp4" />
         </video>
