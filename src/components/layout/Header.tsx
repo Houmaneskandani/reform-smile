@@ -48,7 +48,7 @@ export default function Header() {
       {/* Main header */}
       <header
         className={`sticky top-0 z-40 transition-all duration-500 ${
-          isTransparent ? "bg-transparent" : "bg-white/70 backdrop-blur-xl shadow-sm border-b border-white/50"
+          isTransparent ? "bg-transparent" : "bg-white shadow-lg"
         }`}
       >
         <div className="section-container flex items-center justify-between h-20 md:h-24">
