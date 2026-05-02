@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import FooterWrapper from "@/components/layout/FooterWrapper";
 import StructuredData from "@/components/StructuredData";
 import StickyBookNow from "@/components/ui/StickyBookNow";
+import AIChatAssistant from "@/components/AIChatAssistant";
 import SmoothScroll from "@/components/SmoothScroll";
 import IntroSequence from "@/components/IntroSequence";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -91,6 +92,7 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <FooterWrapper />
         <StickyBookNow />
+        <AIChatAssistant />
       </body>
     </html>
   );

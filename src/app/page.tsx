@@ -5,6 +5,7 @@ import Services from "@/components/sections/Services";
 import SmileQuiz from "@/components/sections/SmileQuiz";
 import StatsCounter from "@/components/sections/StatsCounter";
 import BeforeAfterSlider from "@/components/sections/BeforeAfterSlider";
+import CostEstimator from "@/components/sections/CostEstimator";
 import Process from "@/components/sections/Process";
 import About from "@/components/sections/About";
 import Testimonials from "@/components/sections/Testimonials";
@@ -21,6 +22,7 @@ export default function Home() {
       <SmileQuiz />
       <StatsCounter />
       <BeforeAfterSlider />
+      <CostEstimator />
       <Process />
       <About />
       <Testimonials />

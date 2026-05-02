@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Reform Smile — Project Report</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="data:text/css,body{font-family:Helvetica,Arial,sans-serif;max-width:780px;margin:40px auto;padding:0 24px;font-size:13.5px;line-height:1.7;color:#1a1a2e}h1{color:#1B3A5C;font-size:28px;border-bottom:2px solid #C4A265;padding-bottom:12px;margin-top:40px}h2{color:#1B3A5C;font-size:20px;margin-top:36px;border-bottom:1px solid #E8E0D6;padding-bottom:8px}h3{color:#1B3A5C;font-size:16px;margin-top:24px}table{border-collapse:collapse;width:100%;margin:16px 0}th,td{border:1px solid #E8E0D6;padding:8px 12px;text-align:left;font-size:13px}th{background:#F5F0EB;font-weight:600;color:#1B3A5C}hr{border:none;border-top:1px solid #E8E0D6;margin:30px 0}strong{color:#1B3A5C}code{background:#F5F0EB;padding:2px 6px;border-radius:4px;font-size:12px}" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Reform Smile — Project Report</h1>
+</header>
+<h1 id="reform-smile-dental-implant-center">Reform Smile &amp; Dental
+Implant Center</h1>
+<h2 id="website-development-report">Website Development Report</h2>
+<p><strong>Prepared for:</strong> Dr. Ava Pournejad, DDS
+<strong>Prepared by:</strong> Houman Eskandani <strong>Date:</strong>
+May 1, 2026 <strong>Live Preview:</strong>
+https://ava-green.vercel.app</p>
+<hr />
+<h2 id="project-overview">Project Overview</h2>
+<p>A professional, modern website was designed and built for Reform
+Smile &amp; Dental Implant Center from scratch. The site is built to
+attract new patients, showcase Dr. Pournejad’s expertise, and convert
+visitors into consultations — all while ranking well on Google.</p>
+<hr />
+<h2 id="what-was-built">What Was Built</h2>
+<h3 id="pages-8-total">Pages (8 total)</h3>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 25%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr>
+<th>Page</th>
+<th>URL</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Homepage</strong></td>
+<td><code>/</code></td>
+<td>Full showcase — hero video, services, quiz, gallery, testimonials,
+FAQ</td>
+</tr>
+<tr>
+<td><strong>About</strong></td>
+<td><code>/about</code></td>
+<td>Dr. Pournejad’s bio, credentials, mission, technology</td>
+</tr>
+<tr>
+<td><strong>Services</strong></td>
+<td><code>/services</code></td>
+<td>Detailed service descriptions with real patient photos</td>
+</tr>
+<tr>
+<td><strong>Gallery</strong></td>
+<td><code>/gallery</code></td>
+<td>Before/after patient cases</td>
+</tr>
+<tr>
+<td><strong>Blog</strong></td>
+<td><code>/blog</code></td>
+<td>SEO article placeholders (ready for content)</td>
+</tr>
+<tr>
+<td><strong>Contact</strong></td>
+<td><code>/contact</code></td>
+<td>Contact form, office info, Google Maps</td>
+</tr>
+<tr>
+<td><strong>Book Appointment</strong></td>
+<td><code>/book</code></td>
+<td>Full booking form with date/time picker</td>
+</tr>
+<tr>
+<td><strong>Free Consultation</strong></td>
+<td><code>/consultation</code></td>
+<td>Marketing landing page for ads (no header/footer — conversion
+focused)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-features">Key Features</h3>
+<p><strong>Interactive Smile Quiz / Treatment Finder</strong> -
+5-question interactive quiz that recommends a treatment based on the
+patient’s answers - Recommends: Full Arch Implants, Single Implants,
+Veneers, or Teeth-in-a-Day - Engages visitors AND qualifies leads — no
+competitor dental site has this</p>
+<p><strong>Before/After Drag Slider</strong> - Interactive comparison
+tool — drag the handle to reveal before vs. after - Uses Dr. Pournejad’s
+real patient photos</p>
+<p><strong>Video Hero</strong> - Auto-playing background video in the
+hero section - Optimized overlay — patient face visible, text readable -
+Animated word-by-word headline reveal</p>
+<p><strong>Animated Statistics</strong> - Numbers count up when scrolled
+into view (500+, 5.0, 98%, 1 Day) - More engaging than static
+numbers</p>
+<p><strong>FAQ Accordion</strong> - 7 common patient questions with
+smooth expand/collapse - Great for SEO — Google can pull these into
+search results - “Still Have Questions?” CTA at the bottom</p>
+<p><strong>Logo Intro Animation</strong> - On first visit: navy screen →
+gold “R” appears → site fades in - Skipped on return visits (remembered
+in browser)</p>
+<p><strong>Smooth Scrolling</strong> - Lenis smooth scroll library — the
+entire site feels buttery and premium</p>
+<p><strong>Premium Button Effects</strong> - Shine sweep animation on
+hover (like polished metal) - Smile curve that widens on hover - Phone
+icon wiggle animation - Tooltip showing “Free 30-min consult • No
+obligation • $0”</p>
+<h3 id="mobile-experience">Mobile Experience</h3>
+<ul>
+<li>Fully responsive design — tested on iPhone</li>
+<li>Sticky “Book Now” + Call button at bottom of screen</li>
+<li>Mobile menu with tap-outside-to-close</li>
+<li>Video hero optimized for portrait viewing</li>
+<li>iOS status bar matches the navy brand color</li>
+<li>Compact layout with tighter spacing</li>
+</ul>
+<h3 id="seo-performance">SEO &amp; Performance</h3>
+<table>
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 57%" />
+</colgroup>
+<thead>
+<tr>
+<th>Item</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Meta titles &amp; descriptions</td>
+<td>All 8 pages</td>
+</tr>
+<tr>
+<td>Open Graph tags (social sharing)</td>
+<td>Configured with branded preview image</td>
+</tr>
+<tr>
+<td>Structured data (schema.org)</td>
+<td>Dentist + LocalBusiness for Google</td>
+</tr>
+<tr>
+<td>Sitemap.xml</td>
+<td>All pages listed</td>
+</tr>
+<tr>
+<td>Robots.txt</td>
+<td>Search engines allowed</td>
+</tr>
+<tr>
+<td>Image compression</td>
+<td>~1.9MB saved (images optimized)</td>
+</tr>
+<tr>
+<td>Security headers</td>
+<td>6 headers configured (XSS, clickjacking, HSTS, etc.)</td>
+</tr>
+<tr>
+<td>Favicon + App icons</td>
+<td>Generated from logo</td>
+</tr>
+<tr>
+<td>Web App Manifest</td>
+<td>PWA-ready</td>
+</tr>
+</tbody>
+</table>
+<h3 id="forms-3-total">Forms (3 total)</h3>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr>
+<th>Form</th>
+<th>Page</th>
+<th>Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Contact</strong></td>
+<td><code>/contact</code></td>
+<td>Name, email, phone, subject, message</td>
+</tr>
+<tr>
+<td><strong>Book Appointment</strong></td>
+<td><code>/book</code></td>
+<td>Name, email, phone, service, date, time, new patient, notes</td>
+</tr>
+<tr>
+<td><strong>Free Consultation</strong></td>
+<td><code>/consultation</code></td>
+<td>First/last name, email, phone, primary concern, message</td>
+</tr>
+</tbody>
+</table>
+<p>All forms have: - Real-time validation with error messages - Email
+service ready (Web3Forms — free, just needs activation) - Success
+confirmation screen</p>
+<hr />
+<h2 id="technology">Technology</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Technology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Framework</td>
+<td>Next.js 16 (React)</td>
+</tr>
+<tr>
+<td>Language</td>
+<td>TypeScript</td>
+</tr>
+<tr>
+<td>Styling</td>
+<td>Tailwind CSS v4</td>
+</tr>
+<tr>
+<td>Animations</td>
+<td>Framer Motion</td>
+</tr>
+<tr>
+<td>Smooth Scroll</td>
+<td>Lenis</td>
+</tr>
+<tr>
+<td>Forms</td>
+<td>React Hook Form + Zod</td>
+</tr>
+<tr>
+<td>Icons</td>
+<td>Lucide React</td>
+</tr>
+<tr>
+<td>Hosting</td>
+<td>Vercel (free tier)</td>
+</tr>
+<tr>
+<td>Repository</td>
+<td>GitHub</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="brand-assets-used">Brand Assets Used</h2>
+<table>
+<colgroup>
+<col style="width: 46%" />
+<col style="width: 53%" />
+</colgroup>
+<thead>
+<tr>
+<th>Asset</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Logo (3 variants)</td>
+<td>Provided by Dr. Pournejad — original, transparent bg, white
+version</td>
+</tr>
+<tr>
+<td>Brand colors</td>
+<td>Navy #1B3A5C, Gold #C4A265, Cream #F5F0EB</td>
+</tr>
+<tr>
+<td>Fonts</td>
+<td>Playfair Display (headings), Inter (body)</td>
+</tr>
+<tr>
+<td>Patient photos (4)</td>
+<td>Provided by Dr. Pournejad</td>
+</tr>
+<tr>
+<td>Hero video</td>
+<td>Stock footage (dental)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="whats-ready-to-activate">What’s Ready to Activate</h2>
+<p>These features are fully built — they just need a key or content to
+turn on:</p>
+<table>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 48%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Feature</th>
+<th>What’s Needed</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Form emails</td>
+<td>Web3Forms access key (enter Dr. Ava’s email at web3forms.com)</td>
+<td>Free</td>
+</tr>
+<tr>
+<td>Google Analytics</td>
+<td>GA4 tracking ID from analytics.google.com</td>
+<td>Free</td>
+</tr>
+<tr>
+<td>Google Maps</td>
+<td>Already working — will update when real address is entered</td>
+<td>Free</td>
+</tr>
+<tr>
+<td>Custom domain</td>
+<td>DNS records pointed to Vercel</td>
+<td>Free</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="what-still-needs-your-input">What Still Needs Your Input</h2>
+<table>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 68%" />
+</colgroup>
+<thead>
+<tr>
+<th>Item</th>
+<th>What We Need</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Phone number</strong></td>
+<td>Your real practice phone number</td>
+</tr>
+<tr>
+<td><strong>Email address</strong></td>
+<td>Your real practice email</td>
+</tr>
+<tr>
+<td><strong>Office address</strong></td>
+<td>Full street address</td>
+</tr>
+<tr>
+<td><strong>Office hours</strong></td>
+<td>Monday through Sunday hours</td>
+</tr>
+<tr>
+<td><strong>Professional headshot</strong></td>
+<td>Photo of Dr. Pournejad (replaces placeholder)</td>
+</tr>
+<tr>
+<td><strong>Real testimonials</strong></td>
+<td>3-5 real patient reviews with names</td>
+</tr>
+<tr>
+<td><strong>More before/after photos</strong></td>
+<td>Additional patient case photos</td>
+</tr>
+<tr>
+<td><strong>Social media links</strong></td>
+<td>Instagram, Facebook, YouTube URLs</td>
+</tr>
+<tr>
+<td><strong>Certification logos</strong></td>
+<td>ADA, AAID, dental school logos</td>
+</tr>
+</tbody>
+</table>
+<p><em>A detailed content request form has been provided
+separately.</em></p>
+<hr />
+<h2 id="hosting-costs">Hosting &amp; Costs</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Monthly Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vercel hosting</td>
+<td>$0 (free tier)</td>
+</tr>
+<tr>
+<td>Domain</td>
+<td>Already owned</td>
+</tr>
+<tr>
+<td>Web3Forms (emails)</td>
+<td>$0 (free, 250/month)</td>
+</tr>
+<tr>
+<td>Google Analytics</td>
+<td>$0</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>$0/month</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="future-enhancements-planned">Future Enhancements (Planned)</h2>
+<table>
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 59%" />
+</colgroup>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Twilio Integration</strong></td>
+<td>Email notifications via SendGrid + SMS appointment reminders</td>
+</tr>
+<tr>
+<td><strong>Blog CMS</strong></td>
+<td>Sanity CMS so Dr. Pournejad can publish articles without coding</td>
+</tr>
+<tr>
+<td><strong>Insurance/Financing Banner</strong></td>
+<td>Display accepted plans and CareCredit</td>
+</tr>
+<tr>
+<td><strong>Google Reviews Widget</strong></td>
+<td>Pull in real Google reviews automatically</td>
+</tr>
+<tr>
+<td><strong>Video Testimonials</strong></td>
+<td>Embed patient video stories</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="version-history">Version History</h2>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 26%" />
+<col style="width: 43%" />
+</colgroup>
+<thead>
+<tr>
+<th>Version</th>
+<th>Branch</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>V1 (Production)</strong></td>
+<td><code>main</code></td>
+<td>Classic professional dental site with video hero</td>
+</tr>
+<tr>
+<td><strong>V2 (Experimental)</strong></td>
+<td><code>v2</code></td>
+<td>3D interactive version with Three.js teeth + scroll-orbit
+camera</td>
+</tr>
+</tbody>
+</table>
+<p>Both versions are preserved. V1 is currently live. V2 can be
+activated if desired.</p>
+<hr />
+<h2 id="how-to-continue-development">How to Continue Development</h2>
+<p>All project documentation is stored in <code>CLAUDE.md</code> at the
+project root. This file contains: - Step-by-step deployment commands -
+Architecture map of every file - Production launch checklist - Known
+issues and design decisions - Future enhancement plans</p>
+<p>Any developer or AI assistant can read this file and continue where
+we left off.</p>
+<hr />
+<p><em>Built with Next.js, TypeScript, and Tailwind CSS.</em>
+<em>AI-assisted development by Claude (Anthropic).</em> <em>Repository:
+github.com/Houmaneskandani/reform-smile</em></p>
+</body>
+</html>
