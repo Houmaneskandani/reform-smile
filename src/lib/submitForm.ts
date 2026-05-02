@@ -1,4 +1,5 @@
 import { SITE_CONFIG } from "./constants";
+import { trackEvent } from "./tracking";
 
 export async function submitForm(
   data: Record<string, string>,
@@ -6,10 +7,13 @@ export async function submitForm(
 ): Promise<{ success: boolean; message: string }> {
   const key = SITE_CONFIG.web3formsKey;
 
+  // Track form submission
+  const eventName = formName.toLowerCase().includes("consult")
+    ? "consultation_booked" as const
+    : "form_submitted" as const;
+  trackEvent(eventName, { form: formName });
+
   if (!key) {
-    // No API key configured — log locally and show success
-    // Remove this fallback once the key is added
-    console.warn(`[${formName}] No Web3Forms key configured. Form data:`, data);
     return { success: true, message: "Form submitted (demo mode)" };
   }
 

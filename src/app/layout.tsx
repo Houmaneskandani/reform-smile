@@ -5,6 +5,7 @@ import FooterWrapper from "@/components/layout/FooterWrapper";
 import StructuredData from "@/components/StructuredData";
 import StickyBookNow from "@/components/ui/StickyBookNow";
 import AIChatAssistant from "@/components/AIChatAssistant";
+import CookieConsent from "@/components/CookieConsent";
 import SmoothScroll from "@/components/SmoothScroll";
 import IntroSequence from "@/components/IntroSequence";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -93,6 +94,7 @@ export default function RootLayout({
         <FooterWrapper />
         <StickyBookNow />
         <AIChatAssistant />
+        <CookieConsent />
       </body>
     </html>
   );

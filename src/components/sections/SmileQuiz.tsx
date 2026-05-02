@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { ArrowRight, ArrowLeft, Sparkles, Calendar } from "lucide-react";
+import { trackEvent } from "@/lib/tracking";
 
 type Answer = {
   label: string;
@@ -167,6 +168,7 @@ export default function SmileQuiz() {
         setCurrentStep((prev) => prev + 1);
       } else {
         setShowResult(true);
+        trackEvent("quiz_completed", { result: questionId + "_" + value });
       }
     }, 300);
   };
@@ -239,7 +241,7 @@ export default function SmileQuiz() {
                 treatment option for your unique situation.
               </p>
               <button
-                onClick={() => setStarted(true)}
+                onClick={() => { setStarted(true); trackEvent("quiz_started"); }}
                 className="inline-flex items-center gap-3 bg-gold hover:bg-gold-dark text-white font-bold px-10 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] cursor-pointer text-lg"
               >
                 Take the Quiz

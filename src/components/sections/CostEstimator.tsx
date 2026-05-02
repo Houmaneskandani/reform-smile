@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Calculator, ArrowRight, ArrowLeft, DollarSign, Calendar } from "lucide-react";
+import { trackEvent } from "@/lib/tracking";
 
 type EstimatorStep = {
   id: string;
@@ -180,6 +181,7 @@ export default function CostEstimator() {
         setCurrentStep((prev) => prev + 1);
       } else {
         setShowResult(true);
+        trackEvent("cost_estimator_completed", { procedure: value });
       }
     }, 250);
   };
@@ -221,7 +223,7 @@ export default function CostEstimator() {
                 treatment. No commitment, no contact info required.
               </p>
               <button
-                onClick={() => setStarted(true)}
+                onClick={() => { setStarted(true); trackEvent("cost_estimator_started"); }}
                 className="inline-flex items-center gap-3 bg-navy hover:bg-navy-light text-white font-bold px-10 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer text-lg"
               >
                 <DollarSign size={20} />
