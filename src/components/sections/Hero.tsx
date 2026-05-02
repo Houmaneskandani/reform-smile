@@ -15,7 +15,8 @@ function useGyroShine() {
       if (e.gamma === null) return;
       granted.current = true;
       setFallback(false);
-      const normalized = Math.max(0, Math.min(100, ((e.gamma + 45) / 90) * 100));
+      // Offset by -10 to center the shine for natural phone holding angle
+      const normalized = Math.max(0, Math.min(100, ((e.gamma + 35) / 70) * 100));
       setPosition(normalized);
     };
 
