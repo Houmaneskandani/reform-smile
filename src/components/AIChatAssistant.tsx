@@ -114,7 +114,8 @@ export default function AIChatAssistant() {
   }, [messages]);
 
   useEffect(() => {
-    if (open) inputRef.current?.focus();
+    // Only auto-focus on desktop — prevents keyboard pop on mobile
+    if (open && window.innerWidth >= 768) inputRef.current?.focus();
   }, [open]);
 
   const sendMessage = async () => {
@@ -195,7 +196,7 @@ export default function AIChatAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-24 md:bottom-6 right-4 md:right-6 z-50 w-[340px] md:w-[380px] h-[500px] bg-white rounded-2xl shadow-2xl border border-gray-lighter flex flex-col overflow-hidden"
+            className="fixed inset-0 md:inset-auto md:bottom-6 md:right-6 z-50 md:w-[380px] md:h-[500px] bg-white md:rounded-2xl shadow-2xl md:border md:border-gray-lighter flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="bg-navy px-5 py-4 flex items-center justify-between flex-shrink-0">
@@ -284,8 +285,8 @@ export default function AIChatAssistant() {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask about implants, costs, procedures..."
-                  className="flex-1 bg-gray-lighter rounded-full px-4 py-2.5 text-sm text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30"
+                  placeholder="Ask about implants, costs..."
+                  className="flex-1 bg-gray-lighter rounded-full px-4 py-2.5 text-[16px] md:text-sm text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30"
                 />
                 <button
                   type="submit"
