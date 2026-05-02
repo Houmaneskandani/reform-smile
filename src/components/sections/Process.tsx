@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { Search, ScanLine, Wrench, Smile } from "lucide-react";
+import { useRef } from "react";
 
 const steps = [
   {
@@ -34,6 +35,43 @@ const steps = [
   },
 ];
 
+function TiltCard({ children, index }: { children: React.ReactNode; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), { stiffness: 200, damping: 20 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { stiffness: 200, damping: 20 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    x.set((e.clientX - rect.left) / rect.width - 0.5);
+    y.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.15 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ rotateX, rotateY, transformPerspective: 800 }}
+      className="group cursor-default"
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 export default function Process() {
   return (
     <section className="py-16 md:py-36 bg-navy relative overflow-hidden">
@@ -50,7 +88,7 @@ export default function Process() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center max-w-2xl mx-auto mb-20"
+          className="text-center max-w-2xl mx-auto mb-16 md:mb-20"
         >
           <p className="text-gold font-semibold tracking-widest uppercase text-sm mb-4">
             How It Works
@@ -64,42 +102,51 @@ export default function Process() {
           </p>
         </motion.div>
 
+        {/* Connecting line — desktop only */}
+        <div className="hidden lg:block absolute top-[58%] left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+
         {/* Steps */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
           {steps.map((step, index) => (
-            <motion.div
-              key={step.number}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
-              className="text-center"
-            >
-              {/* Number */}
-              <span className="text-gold/15 text-7xl font-heading font-bold block mb-6">
-                {step.number}
-              </span>
+            <TiltCard key={step.number} index={index}>
+              <div className="text-center bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-8 hover:bg-white/[0.06] hover:border-gold/15 transition-all duration-500 relative">
+                {/* Shimmer effect on hover */}
+                <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
+                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-gold/[0.04] to-transparent skew-x-[-20deg]" />
+                </div>
 
-              {/* Icon — animated on hover */}
-              <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-7 group-hover:bg-gold/10 group-hover:border-gold/20 transition-all duration-500 relative">
-                <motion.div
-                  whileInView={{ rotate: [0, -10, 10, -5, 0] }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.5 + index * 0.2 }}
-                >
-                  <step.icon size={32} className="text-gold" strokeWidth={1.5} />
-                </motion.div>
-                {/* Pulse ring */}
-                <div className="absolute inset-0 rounded-2xl border border-gold/10 animate-ping opacity-0 group-hover:opacity-20" style={{ animationDuration: "2s" }} />
+                {/* Number */}
+                <span className="text-gold/10 text-6xl font-heading font-bold block mb-4">
+                  {step.number}
+                </span>
+
+                {/* Icon with glow */}
+                <div className="relative w-16 h-16 rounded-xl bg-gold/5 border border-gold/10 flex items-center justify-center mx-auto mb-6 group-hover:bg-gold/10 group-hover:border-gold/20 transition-all duration-500">
+                  <motion.div
+                    whileInView={{ rotate: [0, -8, 8, -4, 0] }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.5 + index * 0.2 }}
+                  >
+                    <step.icon size={28} className="text-gold" strokeWidth={1.5} />
+                  </motion.div>
+
+                  {/* Glow behind icon on hover */}
+                  <div className="absolute inset-0 rounded-xl bg-gold/0 group-hover:bg-gold/5 blur-xl transition-all duration-500" />
+                </div>
+
+                <h3 className="font-heading text-xl text-white mb-3 group-hover:text-gold transition-colors duration-300">
+                  {step.title}
+                </h3>
+                <p className="text-white/40 group-hover:text-white/60 text-[14px] leading-relaxed max-w-[240px] mx-auto transition-colors duration-300">
+                  {step.description}
+                </p>
+
+                {/* Step indicator dot */}
+                <div className="hidden lg:flex justify-center mt-6">
+                  <div className="w-2.5 h-2.5 rounded-full bg-gold/20 group-hover:bg-gold/60 transition-colors duration-300" />
+                </div>
               </div>
-
-              <h3 className="font-heading text-xl text-white mb-4">
-                {step.title}
-              </h3>
-              <p className="text-white/50 text-[15px] leading-relaxed max-w-[260px] mx-auto">
-                {step.description}
-              </p>
-            </motion.div>
+            </TiltCard>
           ))}
         </div>
       </div>
