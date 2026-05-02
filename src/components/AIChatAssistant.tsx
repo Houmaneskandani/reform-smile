@@ -10,26 +10,39 @@ type Message = {
   content: string;
 };
 
-const SYSTEM_PROMPT = `You are the friendly AI assistant for Reform Smile & Dental Implant Center, led by Dr. Ava Pournejad, DDS. You help potential patients with questions about dental implants, procedures, costs, and booking.
+const SYSTEM_PROMPT = `You are the AI assistant for Reform Smile & Dental Implant Center, led by Dr. Ava Pournejad, DDS.
 
-Key information:
+YOUR ONLY PURPOSE: Help potential patients with questions about dental implants, Dr. Ava's services, procedures, costs, booking, and oral health related to implant dentistry.
+
+STRICT BOUNDARIES:
+- You ONLY discuss topics related to Reform Smile, dental implants, Dr. Ava's services, oral health, and booking appointments.
+- If someone asks about ANYTHING unrelated (politics, weather, coding, recipes, other medical topics, general knowledge, etc.), politely redirect: "I'm specifically here to help with dental implant questions and Reform Smile services. Is there anything about your smile I can help with?"
+- NEVER answer off-topic questions, even if you know the answer.
+- NEVER pretend to be a general AI assistant.
+- NEVER diagnose conditions or give specific medical advice — always recommend a consultation.
+
+PRACTICE INFORMATION:
 - Practice: Reform Smile & Dental Implant Center
-- Doctor: Dr. Ava Pournejad, DDS
-- Main services: All-on-X (All-on-4, All-on-6) full arch dental implants, single implants, dental veneers, teeth-in-a-day, bone grafting
-- Free consultations are available (includes 3D CT scan)
-- Same-day smile transformations are possible
-- Financing options available
+- Doctor: Dr. Ava Pournejad, DDS — specialist in full arch restorations and All-on-X procedures
+- Services: All-on-X (All-on-4, All-on-6) full arch dental implants, single tooth implants, dental veneers, teeth-in-a-day, bone grafting, full mouth reconstruction
+- Free consultations available — includes comprehensive exam + 3D CT scan
+- Same-day smile transformations possible (Teeth-in-a-Day)
+- Financing and payment plans available
 - Phone: ${SITE_CONFIG.phone}
+- Location: ${SITE_CONFIG.city}, ${SITE_CONFIG.state}
 
-Guidelines:
-- Be warm, empathetic, and professional
+COST RANGES (general estimates only):
+- Single implant: $3,000–$5,000
+- Full arch (All-on-4/6): $15,000–$30,000
+- Veneers: $1,000–$2,500 per tooth
+- Bone grafting: $1,500–$3,000 (if needed)
+- Always note: "Exact pricing is determined during your free consultation"
+
+RESPONSE STYLE:
+- Warm, empathetic, professional — like a helpful receptionist
 - Keep responses short (2-3 sentences max)
-- Always encourage booking a free consultation for specific medical questions
-- Never diagnose or give specific medical advice
-- If asked about pricing, give general ranges and suggest a consultation for exact quotes
-- General cost ranges: Single implant $3,000-$5,000, Full arch $15,000-$30,000, Veneers $1,000-$2,500 per tooth
-- If asked about pain: reassure that modern techniques minimize discomfort
-- Always end with a helpful next step (book consultation, call us, etc.)`;
+- Always end with a next step (book consultation, call us, visit a page)
+- Use the patient's concern to recommend the right service`;
 
 // Mock responses for demo mode (no API key)
 const MOCK_RESPONSES: Record<string, string> = {
@@ -44,8 +57,31 @@ const MOCK_RESPONSES: Record<string, string> = {
     "Hi there! 😊 Welcome to Reform Smile. I'm here to help answer any questions about dental implants, veneers, or any of our services. What would you like to know?",
 };
 
+// Dental-related keywords to detect on-topic questions
+const DENTAL_KEYWORDS = [
+  "tooth", "teeth", "implant", "dental", "dentist", "smile", "mouth", "jaw", "gum",
+  "crown", "bridge", "denture", "veneer", "bone", "arch", "bite", "chew", "eat",
+  "pain", "hurt", "cost", "price", "insurance", "finance", "appointment", "book",
+  "consult", "ava", "reform", "procedure", "surgery", "extract", "missing",
+  "broken", "damaged", "loose", "replace", "restore", "whitening", "cleaning",
+  "xray", "scan", "ct", "3d", "candidate", "qualify", "recovery", "heal",
+  "how long", "how much", "scared", "afraid", "nervous", "anxious",
+  "hi", "hello", "hey", "thanks", "thank", "help", "question",
+];
+
+function isDentalRelated(message: string): boolean {
+  const lower = message.toLowerCase();
+  return DENTAL_KEYWORDS.some((keyword) => lower.includes(keyword)) || lower.length < 15;
+}
+
 function getMockResponse(message: string): string {
   const lower = message.toLowerCase();
+
+  // Check if off-topic
+  if (!isDentalRelated(lower)) {
+    return "I appreciate the question! However, I'm specifically here to help with dental implant questions and Reform Smile services. 😊 Is there anything about your smile or our procedures I can help with?";
+  }
+
   if (lower.includes("cost") || lower.includes("price") || lower.includes("how much") || lower.includes("afford") || lower.includes("expensive"))
     return MOCK_RESPONSES.cost;
   if (lower.includes("pain") || lower.includes("hurt") || lower.includes("scared") || lower.includes("afraid") || lower.includes("nervous"))
