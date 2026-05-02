@@ -3,61 +3,7 @@
 import { motion } from "framer-motion";
 import { Phone } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
-import { useEffect, useState } from "react";
-
-function useGyroscope() {
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [permitted, setPermitted] = useState(false);
-
-  useEffect(() => {
-    const handleOrientation = (e: DeviceOrientationEvent) => {
-      const x = Math.max(-30, Math.min(30, e.gamma || 0)) / 30;
-      const y = Math.max(-30, Math.min(30, (e.beta || 0) - 45)) / 30;
-      setTilt({ x, y });
-    };
-
-    const requestPermission = async () => {
-      // iOS 13+ requires permission
-      const DOE = DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> };
-      if (typeof DOE.requestPermission === "function") {
-        try {
-          const permission = await DOE.requestPermission();
-          if (permission === "granted") {
-            setPermitted(true);
-            window.addEventListener("deviceorientation", handleOrientation);
-          }
-        } catch {
-          // Permission denied — fall back to static
-        }
-      } else {
-        // Android or older iOS — no permission needed
-        setPermitted(true);
-        window.addEventListener("deviceorientation", handleOrientation);
-      }
-    };
-
-    // Request on first user touch (iOS requires user gesture)
-    const handleFirstTouch = () => {
-      if (!permitted) requestPermission();
-      window.removeEventListener("touchstart", handleFirstTouch);
-    };
-
-    // Try immediately (works on Android)
-    requestPermission();
-    // Also try on first touch (needed for iOS)
-    window.addEventListener("touchstart", handleFirstTouch);
-
-    return () => {
-      window.removeEventListener("deviceorientation", handleOrientation);
-      window.removeEventListener("touchstart", handleFirstTouch);
-    };
-  }, [permitted]);
-
-  return tilt;
-}
-
 export default function Hero() {
-  const tilt = useGyroscope();
   return (
     <section className="relative min-h-[85vh] md:min-h-screen flex items-end md:items-center overflow-hidden -mt-24">
       {/* Video Background */}
@@ -110,13 +56,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 25, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.65 }}
-                className="inline-block italic mr-[0.3em] relative"
-                style={{
-                  backgroundImage: `linear-gradient(${105 + tilt.x * 40}deg, #A8884D ${30 + tilt.x * 20}%, #F0D890 ${50 + tilt.x * 15}%, #C4A265 ${70 + tilt.x * 20}%)`,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
+                className="inline-block italic mr-[0.3em] confident-shine"
               >
                 Confident
               </motion.span>

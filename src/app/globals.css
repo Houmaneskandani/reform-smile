@@ -67,6 +67,28 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Confident text shine animation */
+.confident-shine {
+  background: linear-gradient(
+    105deg,
+    #A8884D 0%,
+    #C4A265 30%,
+    #F0D890 50%,
+    #C4A265 70%,
+    #A8884D 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shineText 4s ease-in-out infinite;
+}
+
+@keyframes shineText {
+  0%, 100% { background-position: 100% 0; }
+  50% { background-position: 0% 0; }
+}
+
 /* Floating tooth particles */
 @keyframes floatTooth {
   0%, 100% { transform: translateY(0) rotate(0deg); }
