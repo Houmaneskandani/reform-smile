@@ -6,7 +6,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[60vh] md:min-h-screen flex items-end md:items-center overflow-hidden -mt-24">
+    <section className="relative min-h-[55vh] md:min-h-screen flex items-end md:items-center overflow-hidden -mt-24">
       {/* Video Background */}
       <div className="absolute inset-0">
         <video
@@ -76,9 +76,10 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-white/75 text-base md:text-xl leading-relaxed mb-6 md:mb-12 max-w-xl mx-auto lg:mx-0"
             >
-              Dr. Ava Pournejad specializes in All-on-X dental implants —
+              <span className="md:hidden">Permanent, natural-looking dental implants — often in just one visit.</span>
+              <span className="hidden md:inline">Dr. Ava Pournejad specializes in All-on-X dental implants —
               permanent, natural-looking teeth that transform your life.
-              Often completed in just one visit.
+              Often completed in just one visit.</span>
             </motion.p>
 
             <motion.div
@@ -128,8 +129,8 @@ export default function Hero() {
                 </div>
               </div>
 
-              {/* Phone button — wiggle + pulse ring */}
-              <div className="relative group">
+              {/* Phone button — hidden on mobile (sticky bar handles it) */}
+              <div className="relative group hidden md:block">
                 <a
                   href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
                   className="relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border-2 border-white/30 text-white hover:bg-white hover:text-navy transition-all duration-300 font-semibold whitespace-nowrap hover:border-white"
