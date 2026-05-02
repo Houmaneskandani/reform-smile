@@ -3,8 +3,27 @@
 import { motion } from "framer-motion";
 import { Phone } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
+import { useEffect, useState } from "react";
+
+function useGyroscope() {
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+      const x = Math.max(-30, Math.min(30, e.gamma || 0)) / 30; // -1 to 1
+      const y = Math.max(-30, Math.min(30, (e.beta || 0) - 45)) / 30;
+      setTilt({ x, y });
+    };
+
+    window.addEventListener("deviceorientation", handleOrientation);
+    return () => window.removeEventListener("deviceorientation", handleOrientation);
+  }, []);
+
+  return tilt;
+}
 
 export default function Hero() {
+  const tilt = useGyroscope();
   return (
     <section className="relative min-h-[85vh] md:min-h-screen flex items-end md:items-center overflow-hidden -mt-24">
       {/* Video Background */}
@@ -21,8 +40,8 @@ export default function Hero() {
         </video>
       </div>
 
-      {/* Dark overlay — light on top (face visible), darker at bottom (text readable) */}
-      <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to bottom, rgba(15,36,64,0.3) 0%, rgba(15,36,64,0.4) 30%, rgba(15,36,64,0.75) 55%, rgba(15,36,64,0.92) 80%)" }} />
+      {/* Dark overlay — very light on top (face/smile visible), darker at bottom (text readable) */}
+      <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to bottom, rgba(15,36,64,0.15) 0%, rgba(15,36,64,0.25) 25%, rgba(15,36,64,0.6) 50%, rgba(15,36,64,0.9) 75%)" }} />
       <div className="absolute inset-0 hidden md:block" style={{ background: "linear-gradient(to right, rgba(15,36,64,0.95) 0%, rgba(27,58,92,0.75) 35%, rgba(27,58,92,0.3) 60%, transparent 80%)" }} />
 
       <div className="relative section-container pt-24 md:pt-44 pb-6 md:pb-28">
@@ -56,7 +75,13 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 25, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.65 }}
-                className="inline-block text-gold italic mr-[0.3em]"
+                className="inline-block italic mr-[0.3em] relative"
+                style={{
+                  backgroundImage: `linear-gradient(${105 + tilt.x * 40}deg, #A8884D ${30 + tilt.x * 20}%, #F0D890 ${50 + tilt.x * 15}%, #C4A265 ${70 + tilt.x * 20}%)`,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
               >
                 Confident
               </motion.span>

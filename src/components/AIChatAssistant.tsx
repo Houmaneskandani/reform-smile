@@ -174,9 +174,10 @@ export default function AIChatAssistant() {
       <AnimatePresence>
         {!open && (
           <motion.button
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             onClick={() => setOpen(true)}
             className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-40 w-14 h-14 rounded-full bg-gold hover:bg-gold-dark text-white shadow-xl hover:shadow-2xl flex items-center justify-center cursor-pointer transition-colors"
             aria-label="Open chat"
@@ -192,10 +193,10 @@ export default function AIChatAssistant() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            initial={{ opacity: 0, y: 30, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
+            exit={{ opacity: 0, y: 30, scale: 0.9 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 md:inset-auto md:bottom-6 md:right-6 z-50 md:w-[380px] md:h-[500px] bg-white md:rounded-2xl shadow-2xl md:border md:border-gray-lighter flex flex-col overflow-hidden"
           >
             {/* Header */}
