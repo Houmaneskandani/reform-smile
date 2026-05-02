@@ -81,12 +81,14 @@ export default function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left: Content */}
           <div className="text-center lg:text-left">
+            {/* Badge — top on desktop, moved below CTA on mobile */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
+              className="hidden md:block"
             >
-              <span className="inline-block bg-gold/20 text-gold px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold tracking-wide mb-3 md:mb-8">
+              <span className="inline-block bg-gold/20 text-gold px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide mb-8">
                 Now Accepting New Patients
               </span>
             </motion.div>
@@ -145,7 +147,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.45 }}
-              className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-6 md:mb-16"
+              className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-3 md:mb-16"
             >
               {/* Primary CTA — smile-meter + shine sweep + tooltip */}
               <div className="relative group">
@@ -208,6 +210,18 @@ export default function Hero() {
                 </a>
 
               </div>
+            </motion.div>
+
+            {/* Badge — below CTA on mobile only */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="md:hidden text-center mb-4"
+            >
+              <span className="inline-block bg-gold/20 text-gold px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">
+                Now Accepting New Patients
+              </span>
             </motion.div>
 
             {/* Trust stats */}
