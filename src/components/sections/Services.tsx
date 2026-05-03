@@ -44,59 +44,61 @@ const services = [
   },
 ];
 
-// Short labels for pills
-const pillLabels = ["Full Arch", "Single", "Veneers", "Same-Day", "Bone Graft", "Consult"];
-
-function MobileServiceTabs() {
+function MobileServiceCarousel() {
   const [active, setActive] = useState(0);
-  const service = services[active];
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const scrollLeft = scrollRef.current.scrollLeft;
+    const cardWidth = scrollRef.current.offsetWidth * 0.8 + 12; // card width + gap
+    const index = Math.round(scrollLeft / cardWidth);
+    setActive(Math.min(index, services.length - 1));
+  };
 
   return (
-    <div className="md:hidden">
-      {/* Scrollable pill bar */}
-      <div className="flex gap-2 overflow-x-auto pb-4 -mx-2 px-2 scrollbar-hide">
-        {services.map((s, i) => (
-          <button
-            key={s.title}
-            onClick={() => setActive(i)}
-            className={`flex-shrink-0 px-4 py-2 rounded-full text-[13px] font-semibold transition-all duration-300 cursor-pointer whitespace-nowrap ${
-              active === i
-                ? "bg-navy text-white shadow-md"
-                : "bg-cream text-navy/60 hover:bg-cream-dark"
-            }`}
+    <div className="md:hidden -mx-8">
+      {/* Swipeable cards */}
+      <div
+        ref={scrollRef}
+        onScroll={handleScroll}
+        className="flex gap-3 overflow-x-auto snap-x snap-mandatory px-8 pb-6 scrollbar-hide"
+      >
+        {services.map((service, i) => (
+          <div
+            key={service.title}
+            className="flex-shrink-0 w-[80%] snap-center bg-white rounded-2xl p-6 border border-gray-lighter shadow-sm"
           >
-            {pillLabels[i]}
-          </button>
+            <div className="w-12 h-12 rounded-xl bg-cream flex items-center justify-center mb-5">
+              <service.icon size={24} className="text-navy" strokeWidth={1.5} />
+            </div>
+            <h3 className="font-heading text-xl text-navy mb-3">
+              {service.title}
+            </h3>
+            <p className="text-gray text-[14px] leading-relaxed mb-4">
+              {service.description}
+            </p>
+            <span className="inline-flex items-center gap-1.5 text-gold text-sm font-semibold">
+              Learn More
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
+          </div>
         ))}
       </div>
 
-      {/* Active service card */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={active}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.25 }}
-          className="bg-cream/50 rounded-2xl p-6 mt-4"
-        >
-          <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center mb-5">
-            <service.icon size={24} className="text-gold" strokeWidth={1.5} />
-          </div>
-          <h3 className="font-heading text-xl text-navy mb-3">
-            {service.title}
-          </h3>
-          <p className="text-gray text-[14px] leading-relaxed mb-4">
-            {service.description}
-          </p>
-          <span className="inline-flex items-center gap-1.5 text-gold text-sm font-semibold">
-            Learn More
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </span>
-        </motion.div>
-      </AnimatePresence>
+      {/* Dots indicator */}
+      <div className="flex justify-center gap-2 mt-2">
+        {services.map((_, i) => (
+          <div
+            key={i}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              active === i ? "w-6 bg-gold" : "w-1.5 bg-gray-lighter"
+            }`}
+          />
+        ))}
+      </div>
     </div>
   );
 }
@@ -155,8 +157,8 @@ export default function Services() {
           ))}
         </div>
 
-        {/* Mobile — tab pills */}
-        <MobileServiceTabs />
+        {/* Mobile — horizontal carousel */}
+        <MobileServiceCarousel />
 
         {/* CTA */}
         <motion.div
