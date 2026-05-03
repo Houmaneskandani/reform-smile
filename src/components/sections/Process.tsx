@@ -109,7 +109,7 @@ export default function Process() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
           {steps.map((step, index) => (
             <TiltCard key={step.number} index={index}>
-              <div className="text-center bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-8 hover:bg-white/[0.06] hover:border-gold/15 transition-all duration-500 relative">
+              <div className="text-center bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-8 hover:bg-white/[0.06] hover:border-gold/15 transition-all duration-500 relative h-full">
                 {/* Shimmer effect on hover */}
                 <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
                   <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-gold/[0.04] to-transparent skew-x-[-20deg]" />
