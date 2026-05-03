@@ -73,7 +73,7 @@ export default function Hero() {
       </div>
 
       {/* Dark overlay — mobile: light top, dark bottom / tablet+desktop: dark left, transparent right */}
-      <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to bottom, rgba(15,36,64,0.15) 0%, rgba(15,36,64,0.25) 25%, rgba(15,36,64,0.6) 50%, rgba(15,36,64,0.9) 75%)" }} />
+      <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to bottom, rgba(15,36,64,0.05) 0%, rgba(15,36,64,0.08) 20%, rgba(15,36,64,0.2) 40%, rgba(15,36,64,0.6) 55%, rgba(15,36,64,0.92) 75%)" }} />
       <div className="absolute inset-0 hidden md:block lg:hidden" style={{ background: "linear-gradient(to right, rgba(15,36,64,0.92) 0%, rgba(27,58,92,0.7) 40%, rgba(27,58,92,0.3) 65%, transparent 85%)" }} />
       <div className="absolute inset-0 hidden lg:block" style={{ background: "linear-gradient(to right, rgba(15,36,64,0.95) 0%, rgba(27,58,92,0.75) 35%, rgba(27,58,92,0.3) 60%, transparent 80%)" }} />
 
