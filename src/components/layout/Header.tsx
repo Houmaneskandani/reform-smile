@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { Phone, Menu, X } from "lucide-react";
@@ -126,47 +127,72 @@ export default function Header() {
         </div>
 
         {/* Mobile menu overlay — click to close */}
-        {mobileMenuOpen && (
-          <div
-            className="fixed inset-0 z-[-1] lg:hidden"
-            onClick={() => setMobileMenuOpen(false)}
-          />
-        )}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-[-1] lg:hidden bg-black/20"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+          )}
+        </AnimatePresence>
 
-        {/* Mobile menu */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden bg-white border-t border-gray-lighter">
-            <nav className="flex flex-col px-8 py-6">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="py-3.5 text-dark font-medium hover:text-gold transition-colors text-sm tracking-widest uppercase border-b border-gray-lighter last:border-0"
+        {/* Mobile menu — slides down with staggered items */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="lg:hidden bg-white border-t border-gray-lighter overflow-hidden"
+            >
+              <nav className="flex flex-col px-8 py-6">
+                {NAV_LINKS.map((link, i) => (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 0.1 + i * 0.05 }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block py-3.5 text-dark font-medium hover:text-gold transition-colors text-sm tracking-widest uppercase border-b border-gray-lighter last:border-0"
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.4 }}
+                  className="pt-6 flex flex-col gap-4"
                 >
-                  {link.label}
-                </Link>
-              ))}
-              <div className="pt-6 flex flex-col gap-4">
-                <a
-                  href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
-                  className="flex items-center justify-center gap-2 text-navy font-semibold py-3"
-                >
-                  <Phone size={18} />
-                  <span>{SITE_CONFIG.phone}</span>
-                </a>
-                <Button
-                  href="/consultation"
-                  variant="gold"
-                  size="md"
-                  className="w-full"
-                >
-                  Free Consultation
-                </Button>
-              </div>
-            </nav>
-          </div>
-        )}
+                  <a
+                    href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
+                    className="flex items-center justify-center gap-2 text-navy font-semibold py-3"
+                  >
+                    <Phone size={18} />
+                    <span>{SITE_CONFIG.phone}</span>
+                  </a>
+                  <Button
+                    href="/consultation"
+                    variant="gold"
+                    size="md"
+                    className="w-full"
+                  >
+                    Free Consultation
+                  </Button>
+                </motion.div>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
     </>
   );
