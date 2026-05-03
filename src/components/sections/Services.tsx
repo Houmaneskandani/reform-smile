@@ -1,9 +1,9 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Crosshair, Sparkles, Clock, Bone, Stethoscope, ArrowRight } from "lucide-react";
 import Button from "@/components/ui/Button";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const services = [
   {
@@ -44,49 +44,60 @@ const services = [
   },
 ];
 
-// Mobile card that expands on scroll
-function MobileServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { margin: "-20% 0px -20% 0px" });
+// Short labels for pills
+const pillLabels = ["Full Arch", "Single", "Veneers", "Same-Day", "Bone Graft", "Consult"];
+
+function MobileServiceTabs() {
+  const [active, setActive] = useState(0);
+  const service = services[active];
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
-      className="border-b border-gray-lighter last:border-0"
-    >
-      <div className={`py-5 px-4 transition-all duration-500 ${isInView ? "bg-white rounded-xl shadow-sm my-2" : ""}`}>
-        {/* Always visible: icon + title row */}
-        <div className="flex items-center gap-4">
-          <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors duration-500 ${isInView ? "bg-gold/10" : "bg-cream"}`}>
-            <service.icon
-              size={22}
-              className={`transition-colors duration-500 ${isInView ? "text-gold" : "text-navy"}`}
-              strokeWidth={1.5}
-            />
+    <div className="md:hidden">
+      {/* Scrollable pill bar */}
+      <div className="flex gap-2 overflow-x-auto pb-4 -mx-2 px-2 scrollbar-hide">
+        {services.map((s, i) => (
+          <button
+            key={s.title}
+            onClick={() => setActive(i)}
+            className={`flex-shrink-0 px-4 py-2 rounded-full text-[13px] font-semibold transition-all duration-300 cursor-pointer whitespace-nowrap ${
+              active === i
+                ? "bg-navy text-white shadow-md"
+                : "bg-cream text-navy/60 hover:bg-cream-dark"
+            }`}
+          >
+            {pillLabels[i]}
+          </button>
+        ))}
+      </div>
+
+      {/* Active service card */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={active}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.25 }}
+          className="bg-cream/50 rounded-2xl p-6 mt-4"
+        >
+          <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center mb-5">
+            <service.icon size={24} className="text-gold" strokeWidth={1.5} />
           </div>
-          <h3 className="font-heading text-lg text-navy leading-snug">
+          <h3 className="font-heading text-xl text-navy mb-3">
             {service.title}
           </h3>
-        </div>
-
-        {/* Expands on scroll into view */}
-        <div className={`overflow-hidden transition-all duration-500 ease-out ${isInView ? "max-h-40 opacity-100 mt-4" : "max-h-0 opacity-0 mt-0"}`}>
-          <p className="text-gray text-[14px] leading-relaxed pl-15 ml-15">
+          <p className="text-gray text-[14px] leading-relaxed mb-4">
             {service.description}
           </p>
-          <span className={`inline-flex items-center gap-1.5 text-gold text-sm font-semibold mt-3 ml-15 transition-all duration-300 ${isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"}`}>
+          <span className="inline-flex items-center gap-1.5 text-gold text-sm font-semibold">
             Learn More
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </span>
-        </div>
-      </div>
-    </motion.div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 }
 
@@ -144,12 +155,8 @@ export default function Services() {
           ))}
         </div>
 
-        {/* Mobile — expandable cards on scroll */}
-        <div className="md:hidden">
-          {services.map((service, index) => (
-            <MobileServiceCard key={service.title} service={service} index={index} />
-          ))}
-        </div>
+        {/* Mobile — tab pills */}
+        <MobileServiceTabs />
 
         {/* CTA */}
         <motion.div
