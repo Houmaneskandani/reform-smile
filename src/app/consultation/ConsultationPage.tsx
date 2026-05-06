@@ -108,7 +108,7 @@ export default function ConsultationPage() {
                     "Comprehensive dental examination",
                     "Advanced 3D CT scan imaging",
                     "Personalized treatment plan",
-                    "Full cost breakdown & financing options",
+                    "Full financing options",
                     "No obligation whatsoever",
                   ].map((item) => (
                     <div key={item} className="flex items-center gap-3">
