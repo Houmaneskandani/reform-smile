@@ -9,8 +9,7 @@ You need these installed on your computer:
 1. **Node.js** (v18 or higher) — [Download here](https://nodejs.org)
 2. **Git** — [Download here](https://git-scm.com/downloads)
 3. **GitHub CLI** — Install via terminal: `brew install gh` (Mac) or [download](https://cli.github.com)
-4. **Vercel CLI** — Install via terminal: `npm install -g vercel`
-5. **A code editor** — [VS Code](https://code.visualstudio.com) recommended
+4. **A code editor** — [VS Code](https://code.visualstudio.com) recommended
 
 ## Step 1: Clone the Project
 
@@ -53,9 +52,10 @@ Open [http://localhost:3000](http://localhost:3000) in your browser. You should 
 npm run build                    # Check for errors
 git add -A                       # Stage changes
 git commit -m "Description"      # Commit
-git push origin main             # Push to GitHub
-vercel --prod --yes              # Deploy to live site
+git push origin main             # Push to GitHub → auto-deploys to live site!
 ```
+
+**Auto-deploy is enabled** — every push to `main` automatically updates the live website. No extra steps needed.
 
 ## Project Structure
 
@@ -95,8 +95,9 @@ Find the page in `src/app/[page-name]/` and edit the `.tsx` files
 
 ### Deploy changes
 ```bash
-npm run build && git add -A && git commit -m "your message" && git push origin main && vercel --prod --yes
+npm run build && git add -A && git commit -m "your message" && git push origin main
 ```
+That's it — Vercel auto-deploys when you push. Live in ~30 seconds.
 
 ## Using Claude AI with This Project
 
