@@ -65,6 +65,12 @@ export const SERVICES = [
     icon: "bone" as const,
   },
   {
+    title: "Snap-On Dentures",
+    description:
+      "Removable implant-supported dentures that snap securely into place for improved stability, comfort, and confidence over traditional dentures.",
+    icon: "implant" as const,
+  },
+  {
     title: "Free Consultation",
     description:
       "A comprehensive evaluation with 3D imaging and a personalized treatment plan — at no cost to you.",
