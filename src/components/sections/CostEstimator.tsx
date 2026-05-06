@@ -67,39 +67,34 @@ type CostResult = {
 function calculateCost(answers: Record<string, string>): CostResult {
   const procedure = answers.procedure;
   const jaw = answers.jaw;
-  const bone = answers.bone;
 
-  const boneAddon = bone === "significant" ? 3000 : bone === "some" ? 1500 : 0;
-  const bothMultiplier = jaw === "both" ? 1.8 : 1;
+  const bothMultiplier = jaw === "both" ? 2 : 1;
 
   if (procedure === "full-arch") {
-    const low = Math.round((18000 + boneAddon) * bothMultiplier);
-    const high = Math.round((30000 + boneAddon) * bothMultiplier);
+    const total = 9000 * bothMultiplier;
     return {
       procedure: "Full Arch Dental Implants",
-      lowRange: low.toLocaleString(),
-      highRange: high.toLocaleString(),
-      monthlyFinancing: Math.round(low / 60).toLocaleString(),
+      lowRange: total.toLocaleString(),
+      highRange: total.toLocaleString(),
+      monthlyFinancing: Math.round(total / 60).toLocaleString(),
       includes: [
         "Comprehensive 3D CT scan",
-        "Surgical implant placement (4-6 posts)",
-        "Temporary prosthetic (same day)",
-        "Final zirconia prosthetic",
+        "Surgical implant placement",
+        "Full arch of zirconia teeth",
         "All follow-up appointments",
-        bone !== "none" ? "Bone grafting if needed" : "",
-      ].filter(Boolean),
-      note: "Exact pricing determined during your free consultation based on your specific needs.",
+      ],
+      note: "$9,000 per arch — includes implants and zirconia teeth. Can also be a mix of implants and veneers.",
     };
   }
 
   if (procedure === "single") {
-    const low = 3000 + boneAddon;
-    const high = 5500 + boneAddon;
+    const count = jaw === "both" ? 4 : jaw === "front" ? 2 : 1;
+    const total = 2700 * count;
     return {
-      procedure: "Single Dental Implant",
-      lowRange: low.toLocaleString(),
-      highRange: high.toLocaleString(),
-      monthlyFinancing: Math.round(low / 24).toLocaleString(),
+      procedure: count > 1 ? `Single Implants (${count} teeth)` : "Single Dental Implant",
+      lowRange: total.toLocaleString(),
+      highRange: total.toLocaleString(),
+      monthlyFinancing: Math.round(total / 24).toLocaleString(),
       includes: [
         "3D imaging and treatment planning",
         "Titanium implant post",
@@ -113,36 +108,33 @@ function calculateCost(answers: Record<string, string>): CostResult {
 
   if (procedure === "multiple") {
     const count = jaw === "both" ? 4 : jaw === "front" ? 3 : 2;
-    const low = (2800 + boneAddon) * count;
-    const high = (5000 + boneAddon) * count;
+    const total = 2700 * count;
     return {
-      procedure: `Multiple Implants (estimated ${count} teeth)`,
-      lowRange: low.toLocaleString(),
-      highRange: high.toLocaleString(),
-      monthlyFinancing: Math.round(low / 36).toLocaleString(),
+      procedure: `Multiple Implants (${count} teeth)`,
+      lowRange: total.toLocaleString(),
+      highRange: total.toLocaleString(),
+      monthlyFinancing: Math.round(total / 36).toLocaleString(),
       includes: [
         "3D imaging and planning",
         `${count} titanium implant posts`,
         "Custom abutments",
         "Porcelain crowns",
-        "Package pricing applied",
+        "Follow-up care",
       ],
-      note: "Package pricing available for multiple implants. Exact count determined during consultation.",
+      note: "$2,700 per single implant. Exact count determined during consultation.",
     };
   }
 
   if (procedure === "veneers") {
-    const count = jaw === "front" ? 6 : jaw === "both" ? 16 : 8;
-    const low = 1000 * count;
-    const high = 2500 * count;
+    const total = 9000 * bothMultiplier;
     return {
-      procedure: `Porcelain Veneers (estimated ${count} teeth)`,
-      lowRange: low.toLocaleString(),
-      highRange: high.toLocaleString(),
-      monthlyFinancing: Math.round(low / 24).toLocaleString(),
+      procedure: "Full Arch Veneers",
+      lowRange: total.toLocaleString(),
+      highRange: total.toLocaleString(),
+      monthlyFinancing: Math.round(total / 24).toLocaleString(),
       includes: [
         "Smile design consultation",
-        `${count} custom porcelain veneers`,
+        "Full arch of porcelain veneers",
         "Tooth preparation",
         "Temporary veneers",
         "Final bonding and adjustment",

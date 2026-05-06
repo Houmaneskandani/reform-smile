@@ -11,7 +11,7 @@ type Message = {
   content: string;
 };
 
-const SYSTEM_PROMPT = `You are the AI assistant for Reform Smile & Dental Implant Center, led by Dr. Ava Pournejad, DDS.
+const SYSTEM_PROMPT = `You are the AI assistant for Reform Smile & Dental Implant Center, led by Dr. Ava, DDS.
 
 YOUR ONLY PURPOSE: Help potential patients with questions about dental implants, Dr. Ava's services, procedures, costs, booking, and oral health related to implant dentistry.
 
@@ -24,7 +24,7 @@ STRICT BOUNDARIES:
 
 PRACTICE INFORMATION:
 - Practice: Reform Smile & Dental Implant Center
-- Doctor: Dr. Ava Pournejad, DDS — specialist in full arch restorations and All-on-X procedures
+- Doctor: Dr. Ava, DDS — specialist in full arch restorations and All-on-X procedures
 - Services: All-on-X (All-on-4, All-on-6) full arch dental implants, single tooth implants, dental veneers, teeth-in-a-day, bone grafting, full mouth reconstruction
 - Free consultations available — includes comprehensive exam + 3D CT scan
 - Same-day smile transformations possible (Teeth-in-a-Day)
@@ -33,9 +33,9 @@ PRACTICE INFORMATION:
 - Location: ${SITE_CONFIG.city}, ${SITE_CONFIG.state}
 
 COST RANGES (general estimates only):
-- Single implant: $3,000–$5,000
-- Full arch (All-on-4/6): $15,000–$30,000
-- Veneers: $1,000–$2,500 per tooth
+- Single implant: $2,700 per implant
+- Full arch implants or veneers: $9,000 per arch (limited time offer)
+- Can be implants, veneers, or a mix
 - Bone grafting: $1,500–$3,000 (if needed)
 - Always note: "Exact pricing is determined during your free consultation"
 
@@ -48,12 +48,12 @@ RESPONSE STYLE:
 // Mock responses for demo mode (no API key)
 const MOCK_RESPONSES: Record<string, string> = {
   default:
-    "Great question! I'd love to help. For the most accurate answer, I'd recommend scheduling a free consultation with Dr. Pournejad. Would you like me to help you book one?",
-  cost: `Great question about cost! Here are general ranges:\n\n• **Single implant:** $3,000–$5,000\n• **Full arch (All-on-4/6):** $15,000–$30,000\n• **Veneers:** $1,000–$2,500 per tooth\n\nWe offer financing options to make treatment affordable. For an exact quote, Dr. Pournejad offers a **free consultation** with 3D imaging. Would you like to book one?`,
-  pain: "Most patients are pleasantly surprised by how comfortable the procedure is! Dr. Pournejad uses advanced techniques and anesthesia to minimize discomfort. Many patients compare it to a simple tooth extraction. Would you like to learn more during a free consultation?",
+    "Great question! I'd love to help. For the most accurate answer, I'd recommend scheduling a free consultation with our team. Would you like me to help you book one?",
+  cost: `Great question about cost! Here are our current prices:\n\n• **Single implant:** $2,700 per implant\n• **Full arch (implants or veneers):** $9,000 per arch *(limited time offer!)*\n\nThe $9,000 per arch can include implants with zirconia teeth, veneers, or a combination. We also offer financing options. Would you like to book a **free consultation** for an exact treatment plan?`,
+  pain: "Most patients are pleasantly surprised by how comfortable the procedure is! our team uses advanced techniques and anesthesia to minimize discomfort. Many patients compare it to a simple tooth extraction. Would you like to learn more during a free consultation?",
   time: "With our Teeth-in-a-Day approach, you can walk out with a brand new smile in a single appointment! The implant placement typically takes 2-4 hours. Your final permanent prosthetic is placed after 3-6 months of healing. Want to schedule a free consultation to discuss your timeline?",
   candidate:
-    "Most adults with missing or failing teeth are great candidates for dental implants! Even if you've been told you don't have enough bone, procedures like bone grafting can help. The best way to find out is a **free consultation** with Dr. Pournejad, which includes 3D imaging of your jaw. Shall I help you book one?",
+    "Most adults with missing or failing teeth are great candidates for dental implants! Even if you've been told you don't have enough bone, procedures like bone grafting can help. The best way to find out is a **free consultation** with our team, which includes 3D imaging of your jaw. Shall I help you book one?",
   hello:
     "Hi there! 😊 Welcome to Reform Smile. I'm here to help answer any questions about dental implants, veneers, or any of our services. What would you like to know?",
 };

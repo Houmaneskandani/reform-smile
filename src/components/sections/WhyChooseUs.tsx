@@ -17,7 +17,7 @@ const reasons = [
   {
     icon: ShieldCheck,
     title: "Proven Track Record",
-    description: "Over 500 successful implant procedures. Dr. Pournejad brings the experience your smile deserves.",
+    description: "Over 500 successful implant procedures. The experience and expertise your smile deserves.",
   },
   {
     icon: HandHeart,

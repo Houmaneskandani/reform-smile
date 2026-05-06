@@ -131,17 +131,6 @@ export default function Hero() {
               </motion.span>
             </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-white/75 text-base md:text-xl leading-relaxed mb-6 md:mb-12 max-w-xl mx-auto lg:mx-0"
-            >
-              <span className="md:hidden">Dr. Ava Pournejad — permanent, natural-looking dental implants, often in just one visit.</span>
-              <span className="hidden md:inline">Dr. Ava Pournejad specializes in All-on-X dental implants —
-              permanent, natural-looking teeth that transform your life.
-              Often completed in just one visit.</span>
-            </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 30 }}

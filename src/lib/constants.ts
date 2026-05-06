@@ -1,7 +1,7 @@
 export const SITE_CONFIG = {
   name: "Reform Smile & Dental Implant Center",
   shortName: "Reform Smile",
-  doctor: "Dr. Ava Pournejad, DDS",
+  doctor: "Dr. Ava, DDS",
   phone: "(555) 123-4567", // TODO: Replace with real phone number
   email: "info@reformsmile.com", // TODO: Replace with real email
   address: "123 Main Street, Suite 100", // TODO: Replace with real address
@@ -67,7 +67,7 @@ export const SERVICES = [
   {
     title: "Free Consultation",
     description:
-      "Meet Dr. Pournejad for a comprehensive evaluation, 3D imaging, and a personalized treatment plan — at no cost to you.",
+      "A comprehensive evaluation with 3D imaging and a personalized treatment plan — at no cost to you.",
     icon: "consultation" as const,
   },
 ] as const;

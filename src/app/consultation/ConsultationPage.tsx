@@ -97,7 +97,7 @@ export default function ConsultationPage() {
                   <span className="text-gold italic">Free</span> Consultation
                 </h1>
                 <p className="text-white/70 text-lg leading-relaxed mb-10">
-                  Take the first step toward your new smile. Meet Dr. Pournejad
+                  Take the first step toward your new smile. Meet our team
                   for a comprehensive evaluation, 3D imaging, and personalized
                   treatment plan — at absolutely no cost to you.
                 </p>
@@ -263,7 +263,7 @@ export default function ConsultationPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-4xl mx-auto">
             {[
               {
-                quote: "Dr. Pournejad gave me my life back. I can't stop smiling.",
+                quote: "our team gave me my life back. I can't stop smiling.",
                 name: "Sarah M.",
                 procedure: "All-on-4 Patient",
               },

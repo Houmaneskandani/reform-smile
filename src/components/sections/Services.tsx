@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Crosshair, Sparkles, Clock, Bone, Stethoscope, ArrowRight } from "lucide-react";
+import { Crosshair, Sparkles, Stethoscope, ArrowRight } from "lucide-react";
 import Button from "@/components/ui/Button";
 import { useRef, useState } from "react";
 
@@ -25,22 +25,10 @@ const services = [
       "Ultra-thin porcelain shells that transform the appearance of your teeth. Fix chips, stains, gaps, and uneven teeth for a flawless smile.",
   },
   {
-    icon: Clock,
-    title: "Teeth-in-a-Day",
-    description:
-      "Walk in with missing or failing teeth and walk out the same day with a brand new, beautiful smile. Life-changing results, fast.",
-  },
-  {
-    icon: Bone,
-    title: "Bone Grafting",
-    description:
-      "Advanced bone regeneration to build a strong foundation for implants, even when significant bone loss has occurred.",
-  },
-  {
     icon: ArrowRight,
     title: "Free Consultation",
     description:
-      "Meet Dr. Pournejad for a comprehensive evaluation with 3D imaging and receive a personalized treatment plan — no cost to you.",
+      "A comprehensive evaluation with 3D imaging and a personalized treatment plan — at no cost to you.",
   },
 ];
 

@@ -26,11 +26,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://ava-green.vercel.app"),
   title: {
-    default: "Reform Smile & Dental Implant Center | Dr. Ava Pournejad, DDS",
+    default: "Reform Smile & Dental Implant Center",
     template: "%s | Reform Smile & Dental Implant Center",
   },
   description:
-    "Dr. Ava Pournejad specializes in All-on-X dental implants and full arch restorations. Transform your smile with permanent, natural-looking results. Schedule your free consultation today.",
+    "Reform Smile & Dental Implant Center specializes in All-on-X dental implants and full arch restorations. Transform your smile with permanent, natural-looking results. Schedule your free consultation today.",
   keywords: [
     "dental implants",
     "All-on-4",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     "full arch dental implants",
     "teeth in a day",
     "dental implant center",
-    "Dr. Ava Pournejad",
+    "Reform Smile",
     "Reform Smile",
     "missing teeth",
     "dental surgeon",
@@ -56,9 +56,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Reform Smile & Dental Implant Center",
-    title: "Reform Smile & Dental Implant Center | Dr. Ava Pournejad, DDS",
+    title: "Reform Smile & Dental Implant Center",
     description:
-      "Specializing in All-on-X dental implants and full arch restorations. Transform your smile with Dr. Ava Pournejad.",
+      "Specializing in All-on-X dental implants and full arch restorations. Transform your smile at Reform Smile.",
     images: [
       {
         url: "/og-image.jpg",
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Reform Smile & Dental Implant Center | Dr. Ava Pournejad, DDS",
+    title: "Reform Smile & Dental Implant Center",
     description:
       "Specializing in All-on-X dental implants and full arch restorations.",
     images: ["/og-image.jpg"],

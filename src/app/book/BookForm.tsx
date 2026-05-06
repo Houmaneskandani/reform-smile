@@ -26,9 +26,6 @@ type BookingFormData = z.infer<typeof bookingSchema>;
 const services = [
   "All-on-4 Dental Implants",
   "All-on-6 Dental Implants",
-  "Teeth-in-a-Day",
-  "Bone Grafting",
-  "Full Mouth Reconstruction",
   "Free Consultation",
   "General Checkup",
   "Other",

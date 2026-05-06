@@ -6,7 +6,7 @@ export default function StructuredData() {
     "@type": "Dentist",
     name: SITE_CONFIG.name,
     description:
-      "Dr. Ava Pournejad specializes in All-on-X dental implants and full arch restorations at Reform Smile & Dental Implant Center.",
+      "Reform Smile & Dental Implant Center specializes in All-on-X dental implants and full arch restorations.",
     url: "https://reformsmile.com", // TODO: Update with real domain
     telephone: SITE_CONFIG.phone,
     email: SITE_CONFIG.email,
@@ -44,7 +44,7 @@ export default function StructuredData() {
     ],
     founder: {
       "@type": "Person",
-      name: "Dr. Ava Pournejad",
+      name: "Dr. Ava",
       jobTitle: "DDS",
     },
   };

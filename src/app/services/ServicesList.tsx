@@ -12,7 +12,7 @@ const services = [
     image: "/images/cases/case-4-prosthetic.jpg",
     image2: "/images/cases/case-1-full-arch.jpg",
     description: [
-      "Full arch dental implants are the gold standard for replacing a complete set of teeth. Using the All-on-X technique, Dr. Pournejad places 4-6 strategically positioned implants to support an entire arch of beautiful, permanent teeth.",
+      "Full arch dental implants are the gold standard for replacing a complete set of teeth. Using the All-on-X technique, our team places 4-6 strategically positioned implants to support an entire arch of beautiful, permanent teeth.",
       "This approach delivers stunning, natural-looking results — often in a single visit. No more dentures, no more adhesives. Just a confident, permanent smile you can eat, laugh, and live with.",
     ],
     benefits: [
@@ -48,7 +48,7 @@ const services = [
     image: "/images/cases/case-2-before-after.jpg",
     description: [
       "Dental veneers are ultra-thin, custom-made shells that cover the front surface of your teeth to improve their appearance. They're an excellent solution for teeth that are discolored, chipped, worn, misaligned, or unevenly spaced.",
-      "Dr. Pournejad uses premium porcelain veneers that are designed to match the natural translucency and color of real teeth. The result is a flawless, natural-looking smile that can last for years with proper care.",
+      "our team uses premium porcelain veneers that are designed to match the natural translucency and color of real teeth. The result is a flawless, natural-looking smile that can last for years with proper care.",
     ],
     benefits: [
       "Dramatically improve smile aesthetics",
@@ -59,43 +59,11 @@ const services = [
     ],
   },
   {
-    id: "teeth-in-a-day",
-    title: "Teeth-in-a-Day",
-    tagline: "Walk In, Walk Out Smiling",
-    description: [
-      "Teeth-in-a-Day is exactly what it sounds like: you walk into our office with missing or failing teeth, and you walk out the same day with a brand new set of beautiful teeth. This isn't a temporary solution — these are your new permanent teeth.",
-      "Using advanced 3D imaging and guided surgery, Dr. Pournejad plans and executes your entire treatment with precision, ensuring optimal results in the shortest possible time.",
-    ],
-    benefits: [
-      "Complete transformation in one appointment",
-      "No weeks of waiting with missing teeth",
-      "Immediate improvement in appearance and function",
-      "3D-guided precision placement",
-      "Resume normal activities quickly",
-    ],
-  },
-  {
-    id: "bone-grafting",
-    title: "Bone Grafting",
-    tagline: "Building a Strong Foundation",
-    description: [
-      "When teeth are missing, the jawbone naturally begins to deteriorate over time. Bone grafting is a procedure that rebuilds and strengthens the jawbone, creating a solid foundation for dental implants.",
-      "Dr. Pournejad uses advanced bone grafting techniques and premium materials to regenerate bone where it has been lost. This procedure is often the first step in making dental implants possible for patients who have been told they don't have enough bone.",
-    ],
-    benefits: [
-      "Restores jawbone density and volume",
-      "Makes dental implants possible after bone loss",
-      "Preserves facial structure",
-      "Uses biocompatible, premium materials",
-      "Performed with precision and comfort",
-    ],
-  },
-  {
     id: "consultation",
     title: "Free Consultation",
     tagline: "Your Journey Starts Here",
     description: [
-      "Every great smile transformation begins with a conversation. During your free consultation, Dr. Pournejad will perform a comprehensive examination, take 3D CT scans of your jaw, and discuss your goals and concerns.",
+      "Every great smile transformation begins with a conversation. During your free consultation, our team will perform a comprehensive examination, take 3D CT scans of your jaw, and discuss your goals and concerns.",
       "You'll receive a personalized treatment plan with clear options, a full cost breakdown, and information about financing. There's absolutely no obligation — just expert guidance to help you make the best decision for your smile.",
     ],
     benefits: [

@@ -31,7 +31,7 @@ export default function About() {
                     <span className="text-gold text-4xl font-heading">A</span>
                   </div>
                   <p className="text-navy/40 text-sm text-center">
-                    Dr. Pournejad&apos;s Photo
+                    Doctor&apos;s Photo
                   </p>
                   <p className="text-navy/25 text-xs mt-1">(Placeholder)</p>
                 </div>
@@ -53,18 +53,18 @@ export default function About() {
               Meet Your Doctor
             </p>
             <h2 className="font-heading text-4xl md:text-5xl text-navy mb-8 leading-tight">
-              Dr. Ava Pournejad, DDS
+              Meet Your Doctor
             </h2>
             <p className="text-gray text-[17px] leading-relaxed mb-6">
-              Dr. Pournejad is passionate about transforming lives through
+              Our doctor is passionate about transforming lives through
               advanced dental implant solutions. With extensive training in full arch
-              restorations and All-on-X procedures, she combines clinical expertise
+              restorations, All-on-X procedures, and cosmetic dentistry, she combines clinical expertise
               with a compassionate, patient-first approach.
             </p>
             <p className="text-gray text-[17px] leading-relaxed mb-10">
               At Reform Smile & Dental Implant Center, every treatment plan is
-              personalized. Dr. Pournejad believes that everyone deserves a
-              confident, beautiful smile — and she&apos;s dedicated to making that
+              personalized. We believe that everyone deserves a
+              confident, beautiful smile — and we&apos;re dedicated to making that
               a reality with the latest technology and techniques.
             </p>
 
@@ -81,7 +81,7 @@ export default function About() {
             </div>
 
             <Button href="/about" variant="primary" size="md">
-              Learn More About Dr. Pournejad
+              Learn More About Our Doctor
             </Button>
           </motion.div>
         </div>

@@ -49,26 +49,26 @@ export default function DoctorBio() {
             className="lg:col-span-3"
           >
             <h2 className="font-heading text-4xl md:text-5xl text-navy mb-8 leading-tight">
-              Dr. Ava Pournejad, DDS
+              Dr. Ava, DDS
             </h2>
 
             <div className="space-y-6 text-gray text-[17px] leading-relaxed mb-14">
               <p>
-                Dr. Ava Pournejad is a dedicated dental professional with a passion
+                Dr. Ava is a dedicated dental professional with a passion
                 for transforming lives through advanced implant dentistry. She
                 founded Reform Smile & Dental Implant Center with a clear mission:
                 to provide every patient with access to world-class dental implant
                 solutions in a caring, comfortable environment.
               </p>
               <p>
-                With extensive training in All-on-X procedures, full arch
-                restorations, and bone grafting techniques, Dr. Pournejad brings
+                With extensive training in All-on-X procedures, oral surgery, full arch
+                restorations and cosmetic dentistry, Dr. Ava brings
                 both technical excellence and genuine compassion to every case. She
                 understands that losing teeth affects more than just your smile — it
                 impacts your confidence, your health, and your quality of life.
               </p>
               <p>
-                Dr. Pournejad&apos;s approach begins with listening. Every patient
+                Dr. Ava&apos;s approach begins with listening. Every patient
                 receives a thorough consultation, including advanced 3D imaging, to
                 develop a treatment plan that&apos;s tailored specifically to their
                 needs. Her goal is simple: to help you smile with confidence again.

@@ -1,6 +1,7 @@
 import Hero from "@/components/sections/Hero";
 import TrustBar from "@/components/sections/TrustBar";
 import TrustLogos from "@/components/sections/TrustLogos";
+import LimitedOffer from "@/components/sections/LimitedOffer";
 import Services from "@/components/sections/Services";
 import SmileQuiz from "@/components/sections/SmileQuiz";
 import StatsCounter from "@/components/sections/StatsCounter";
@@ -18,6 +19,7 @@ export default function Home() {
       <Hero />
       <TrustBar />
       <TrustLogos />
+      <LimitedOffer />
       <Services />
       <SmileQuiz />
       <StatsCounter />

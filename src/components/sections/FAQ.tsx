@@ -8,12 +8,12 @@ const faqs = [
   {
     question: "How much do dental implants cost?",
     answer:
-      "The cost varies depending on the type of procedure and your individual needs. During your free consultation, Dr. Pournejad will provide a detailed cost breakdown and discuss financing options. We believe everyone deserves a confident smile and work with you to find a plan that fits your budget.",
+      "The cost varies depending on the type of procedure and your individual needs. During your free consultation, our team will provide a detailed cost breakdown and discuss financing options. We believe everyone deserves a confident smile and work with you to find a plan that fits your budget.",
   },
   {
     question: "Does the procedure hurt?",
     answer:
-      "Most patients are surprised by how comfortable the procedure is. Dr. Pournejad uses advanced techniques and anesthesia to ensure you feel minimal discomfort during treatment. Many patients describe the experience as easier than a tooth extraction. Post-procedure discomfort is typically mild and manageable with over-the-counter medication.",
+      "Most patients are surprised by how comfortable the procedure is. our team uses advanced techniques and anesthesia to ensure you feel minimal discomfort during treatment. Many patients describe the experience as easier than a tooth extraction. Post-procedure discomfort is typically mild and manageable with over-the-counter medication.",
   },
   {
     question: "How long do dental implants last?",
@@ -23,7 +23,7 @@ const faqs = [
   {
     question: "Am I a candidate for dental implants?",
     answer:
-      "Most adults with missing or failing teeth are candidates for dental implants. Even if you've been told you don't have enough bone, procedures like bone grafting can make implants possible. The best way to find out is through a free consultation with Dr. Pournejad, which includes 3D imaging of your jaw.",
+      "Most adults with missing or failing teeth are candidates for dental implants. Even if you've been told you don't have enough bone, procedures like bone grafting can make implants possible. The best way to find out is through a free consultation with our team, which includes 3D imaging of your jaw.",
   },
   {
     question: "How long does the All-on-X procedure take?",

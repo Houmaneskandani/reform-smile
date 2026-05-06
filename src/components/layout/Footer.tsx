@@ -20,7 +20,7 @@ export default function Footer() {
             />
             <p className="text-white/70 text-sm leading-relaxed mt-4">
               Transforming lives through advanced dental implant solutions.
-              Dr. Ava Pournejad and the Reform Smile team are dedicated to
+              The Reform Smile team is dedicated to
               restoring your confidence with beautiful, permanent smiles.
             </p>
           </div>
