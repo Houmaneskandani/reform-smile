@@ -14,7 +14,7 @@ export const SITE_CONFIG = {
     sunday: "Closed",
   },
   social: {
-    instagram: "#", // TODO: Add real links
+    instagram: "https://www.instagram.com/reformdentalimplantcenter?igsh=NTc4MTIwNjQ2YQ%3D%3D&utm_source=qr",
     facebook: "#",
     youtube: "#",
   },
