@@ -62,7 +62,7 @@ export default function Header() {
               width={320}
               height={320}
               priority
-              className={`w-auto h-20 md:h-40 absolute top-1/2 -translate-y-1/2 left-0 transition-opacity duration-500 ${
+              className={`w-auto h-24 md:h-48 absolute top-1/2 -translate-y-1/2 left-0 transition-opacity duration-500 ${
                 isTransparent ? "opacity-100" : "opacity-0 pointer-events-none"
               }`}
             />
@@ -73,7 +73,7 @@ export default function Header() {
               width={320}
               height={320}
               priority
-              className={`w-auto h-20 md:h-40 transition-opacity duration-500 ${
+              className={`w-auto h-24 md:h-48 transition-opacity duration-500 ${
                 isTransparent ? "opacity-0" : "opacity-100"
               }`}
             />
