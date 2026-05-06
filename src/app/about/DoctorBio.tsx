@@ -8,7 +8,7 @@ const credentials = [
   { icon: GraduationCap, title: "Education", text: "Doctor of Dental Surgery\nUniversity of Southern California\n\nOral Surgery Fellowship\nUniversity of Missouri Kansas City" },
   { icon: Award, title: "Specialization", text: "Advanced training in full arch restorations and All-on-X implant procedures. Trained with world leaders in implantology." },
   { icon: Users, title: "Experience", text: "Over 500 successful dental implant procedures performed" },
-  { icon: BookOpen, title: "Continuing Education", text: "Committed to staying at the forefront of implant dentistry through ongoing training" },
+  { icon: BookOpen, title: "Continuing Education", text: "Associate Fellow of the American Academy of Implant Dentistry. 300+ hours in continuing education training across the nation. Committed to staying at the forefront of implant dentistry through ongoing training." },
   { icon: Globe, title: "Technology", text: "Utilizes 3D CT scanning, digital treatment planning, and guided implant surgery" },
   { icon: Heart, title: "Philosophy", text: "Patient-first approach — every treatment plan is tailored to individual needs and goals" },
 ];
