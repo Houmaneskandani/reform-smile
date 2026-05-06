@@ -29,7 +29,7 @@ export default function DoctorBio() {
             <div className="relative w-full max-w-sm">
               <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-lg">
                 <Image
-                  src="/images/dr-ava.jpg"
+                  src="/images/dr-ava.png"
                   alt="Dr. Ava, DDS — Reform Smile & Dental Implant Center"
                   width={400}
                   height={533}
