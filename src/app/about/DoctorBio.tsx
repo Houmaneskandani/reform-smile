@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { GraduationCap, Award, Users, Heart, BookOpen, Globe } from "lucide-react";
+import Image from "next/image";
 
 const credentials = [
   { icon: GraduationCap, title: "Education", text: "Doctor of Dental Surgery (DDS)" },
@@ -26,15 +27,15 @@ export default function DoctorBio() {
             className="lg:col-span-2 flex justify-center lg:sticky lg:top-32"
           >
             <div className="relative w-full max-w-sm">
-              <div className="aspect-[3/4] rounded-2xl bg-cream overflow-hidden shadow-lg">
-                {/* TODO: Replace with Dr. Ava's professional photo */}
-                <div className="w-full h-full flex flex-col items-center justify-center p-8 bg-gradient-to-b from-cream to-white">
-                  <div className="w-28 h-28 rounded-full bg-gold/15 mb-6 flex items-center justify-center">
-                    <span className="text-gold text-4xl font-heading">A</span>
-                  </div>
-                  <p className="text-navy/40 text-sm text-center">Professional Photo</p>
-                  <p className="text-navy/25 text-xs mt-1">(Placeholder)</p>
-                </div>
+              <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-lg">
+                <Image
+                  src="/images/dr-ava.jpg"
+                  alt="Dr. Ava, DDS — Reform Smile & Dental Implant Center"
+                  width={400}
+                  height={533}
+                  className="w-full h-full object-cover object-top"
+                  priority
+                />
               </div>
               <div className="absolute -bottom-3 -right-3 w-24 h-24 border-2 border-gold/30 rounded-2xl -z-10" />
             </div>
