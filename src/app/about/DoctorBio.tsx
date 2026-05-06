@@ -5,7 +5,7 @@ import { GraduationCap, Award, Users, Heart, BookOpen, Globe } from "lucide-reac
 import Image from "next/image";
 
 const credentials = [
-  { icon: GraduationCap, title: "Education", text: "Doctor of Dental Surgery (DDS)" },
+  { icon: GraduationCap, title: "Education", text: "Doctor of Dental Surgery\nUniversity of Southern California\n\nOral Surgery Fellowship\nUniversity of Missouri Kansas City" },
   { icon: Award, title: "Specialization", text: "Advanced training in full arch restorations and All-on-X implant procedures" },
   { icon: Users, title: "Experience", text: "Over 500 successful dental implant procedures performed" },
   { icon: BookOpen, title: "Continuing Education", text: "Committed to staying at the forefront of implant dentistry through ongoing training" },
@@ -92,7 +92,7 @@ export default function DoctorBio() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-navy text-[15px] mb-1">{cred.title}</h3>
-                    <p className="text-gray text-sm leading-relaxed">{cred.text}</p>
+                    <p className="text-gray text-sm leading-relaxed whitespace-pre-line">{cred.text}</p>
                   </div>
                 </motion.div>
               ))}
