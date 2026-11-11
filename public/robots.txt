@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://ava-green.vercel.app/sitemap.xml

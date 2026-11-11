@@ -65,7 +65,7 @@ git checkout main            # Switch back to main
 - **GitHub:** https://github.com/Houmaneskandani/reform-smile
 - **Vercel:** Linked to GitHub account (Houmaneskandani)
 - **Live URL (V1):** https://ava-green.vercel.app
-- **Domain:** TBD — will connect Dr. Ava's existing domain after approval
+- **Domain:** reformdentalimplantcenter.com — registered at Squarespace (renewed to Nov 2027). Added to the Vercel project `ava` (www redirects to the main domain). DNS still points at Squarespace until the records in "Step 5: Connect Domain" are switched.
 
 ### How to authenticate (if needed):
 ```bash
@@ -108,7 +108,10 @@ src/
 │   ├── blog/                   # Blog articles placeholder (SEO)
 │   ├── contact/                # Contact page (info + validated form + map placeholder)
 │   ├── book/                   # Appointment booking (full form with date/time picker)
-│   └── consultation/           # Marketing landing page — has its own minimal layout (no header/footer)
+│   ├── consultation/           # Marketing landing page — has its own minimal layout (no header/footer)
+│   ├── api/chat/route.ts       # Server-side AI chat (Claude). Reads ANTHROPIC_API_KEY on the server only
+│   ├── sitemap.ts              # /sitemap.xml — built from SITE_CONFIG.url
+│   └── robots.ts               # /robots.txt — built from SITE_CONFIG.url
 ├── components/
 │   ├── layout/
 │   │   ├── Header.tsx          # Sticky header — transparent on homepage, solid on other pages
@@ -117,9 +120,10 @@ src/
 │   ├── sections/               # Homepage sections
 │   │   ├── Hero.tsx            # Video background hero with CTAs
 │   │   ├── TrustBar.tsx        # 4 trust indicators
-│   │   ├── Services.tsx        # 6-card service grid
+│   │   ├── TrustLogos.tsx      # Credential badges (icons, no trademarks) — claims need Dr. Ava's confirmation
+│   │   ├── Services.tsx        # Service cards built from SERVICES (4 treatments + highlighted consultation)
 │   │   ├── StatsCounter.tsx    # Animated number counters (500+, 5.0, 98%, 1 Day)
-│   │   ├── BeforeAfter.tsx     # Gallery with real patient photos
+│   │   ├── BeforeAfterSlider.tsx # Drag-to-compare before/after with real patient photos
 │   │   ├── Process.tsx         # 4-step "How It Works"
 │   │   ├── About.tsx           # Dr. Ava section
 │   │   ├── Testimonials.tsx    # Patient review cards
@@ -127,9 +131,13 @@ src/
 │   │   └── CTASection.tsx      # Final call-to-action
 │   ├── ui/
 │   │   └── Button.tsx          # Reusable button (uses <a> for /consultation to avoid nav crash)
-│   └── StructuredData.tsx      # JSON-LD schema for Google (Dentist/LocalBusiness)
+│   ├── AIChatAssistant.tsx     # Chat widget — calls /api/chat, falls back to demo answers without a key
+│   ├── CookieConsent.tsx       # Consent banner — analytics/pixels load only after "Accept"
+│   └── StructuredData.tsx      # JSON-LD for Google (Dentist) — built from SITE_CONFIG + SERVICES
 ├── lib/
-│   └── constants.ts            # Site config (phone, email, address, hours, nav links, services)
+│   ├── constants.ts            # Site config (url, phone, email, address, hours) + the ONE canonical SERVICES list
+│   ├── submitForm.ts           # Web3Forms submit — never fakes success in production; honeypot spam check
+│   └── tracking.ts             # Conversion events (only after cookie consent)
 └── public/
     ├── logo.png, logo-transparent.png, logo-white.png
     ├── favicon.ico, apple-touch-icon.png, icon-192.png, icon-512.png
@@ -144,6 +152,16 @@ src/
 ```
 
 ## Key Design Decisions & Gotchas
+
+### Dr. Ava's content rules (follow these in every change)
+- **Name:** the surname "Pournejad" must not appear anywhere. "Dr. Ava" appears **only on the About page** (and as alt text on her headshot). Everywhere else write "our team", "our doctor", or "Reform Smile". The AI chat is told the same.
+- **Services:** `SERVICES` in `src/lib/constants.ts` is the single list (Full Arch, Single Implants, Veneers, Snap-On Dentures, Free Consultation). Homepage cards, Services page, booking dropdown, Google structured data and the AI chat all read it — add/rename a service there, then add its long-form copy in `src/app/services/ServicesList.tsx`.
+- **Claims:** prices ($9,000/arch, $2,700/implant), stats (500+, 5.0, 98%) and credentials/badges (Board Certified, ADA, AAID, HIPAA, CareCredit, insurance) must be confirmed by Dr. Ava — don't add or change them on your own.
+
+### Secrets vs public keys
+- Anything prefixed `NEXT_PUBLIC_` is shipped to every visitor's browser. Only public IDs go there (Web3Forms key, GA/GTM/Clarity/Pixel IDs).
+- Secret keys (`ANTHROPIC_API_KEY`, Twilio, SendGrid) **never** get the `NEXT_PUBLIC_` prefix and are only read in `src/app/api/*` server routes.
+- Real values live in Vercel → Project `ava` → Settings → Environment Variables (and `.env.local` for local dev). `.env.example` lists them all.
 
 ### Navigation between consultation page and other pages
 The `/consultation` page has its own minimal layout (no header/footer). Using Next.js `<Link>` for client-side navigation between this page and regular pages causes a crash. **Always use regular `<a>` tags** for links to/from `/consultation`. This is handled in `Button.tsx` automatically.
@@ -177,9 +195,10 @@ All placeholder content is marked with TODO comments in the code. Key items:
 - **Email:** Currently `info@reformsmile.com` — update in `src/lib/constants.ts`
 - **Address:** Currently placeholder — update in `src/lib/constants.ts`
 - **Hours:** Currently placeholder — update in `src/lib/constants.ts`
-- **Dr. Ava's photo:** Still placeholder "A" circle — replace in About section
-- **Testimonials:** Sample reviews — replace with real patient quotes
-- **Social links:** All `#` — update in `src/lib/constants.ts`
+- **Testimonials:** Sample reviews — replace with real patient quotes (fake reviews on a live medical site are an FTC risk)
+- **Social links:** Facebook/YouTube still `#` — update in `src/lib/constants.ts` (Instagram is real)
+- **Snap-On Dentures copy** on the Services page is a draft — needs Dr. Ava's clinical review
+- **Trust claims / stats** — see "Dr. Ava's content rules" above
 
 ## Design References
 Sites Dr. Ava used as inspiration:
@@ -207,6 +226,11 @@ Sites Dr. Ava used as inspiration:
 | 2026-04-30 | Added FAQ accordion | Good for SEO + answers common patient questions |
 | 2026-04-30 | Added animated stat counters | More engaging than static numbers |
 | 2026-05-01 | Full-screen mobile menu | Plain white dropdown looked cheap |
+| 2026-11-11 | AI chat moved to server route `/api/chat` | The old `NEXT_PUBLIC_` key would have published the secret; the route didn't exist |
+| 2026-11-11 | Forms never fake success in production | Missing key made every lead silently disappear |
+| 2026-11-11 | `SERVICES` is the single services list | Snap-On Dentures was added to an unused list and never appeared |
+| 2026-11-11 | Trust badges use icons, not logos | Letter-box placeholders looked broken; real logos need permission |
+| 2026-11-11 | Next.js 16.2.4 → 16.4.6 | Critical security advisories in 16.2.x |
 
 ## Production Launch Checklist
 
@@ -226,40 +250,35 @@ social: { instagram: "#", ... }, // ← Replace with real URLs
 ```
 Google Maps on the contact page will automatically update to the new address.
 
-### Step 2: Activate Form Emails (5 minutes, FREE)
-Forms currently work in demo mode. To receive real submissions by email:
-1. Go to https://web3forms.com
-2. Enter Dr. Ava's email address
-3. Copy the access key they give you
-4. Paste it in `src/lib/constants.ts`:
-```typescript
-web3formsKey: "paste-key-here",
-```
-5. Deploy — all 3 forms (Contact, Book, Consultation) will now email submissions
+### Step 2: Activate Form Emails (5 minutes, FREE) — REQUIRED before launch
+Without this key, production forms show "please call us" (they never pretend to send). Local dev shows a demo success.
+1. Go to https://web3forms.com and enter the email that should receive patient requests
+2. Copy the access key
+3. Add it to Vercel: `vercel env add NEXT_PUBLIC_WEB3FORMS_KEY production` (and `preview`), plus `.env.local` for local testing
+4. Redeploy — Contact, Book and Consultation forms will email submissions
 
 ### Step 3: Activate Google Analytics (5 minutes, FREE)
-1. Go to https://analytics.google.com
-2. Create a new GA4 property for the website
-3. Copy the Measurement ID (looks like `G-XXXXXXXXXX`)
-4. Paste in `src/lib/constants.ts`:
-```typescript
-gaTrackingId: "G-XXXXXXXXXX",
-```
-5. Deploy — analytics will start tracking immediately
+1. Create a GA4 property at https://analytics.google.com and copy the Measurement ID (`G-XXXXXXXXXX`)
+2. `vercel env add NEXT_PUBLIC_GA_TRACKING_ID production` → redeploy (loads only after cookie consent)
+
+### Step 3b: Activate the AI chat (optional, pay-per-use)
+1. Create an API key at https://console.anthropic.com (set a monthly spend limit there)
+2. `vercel env add ANTHROPIC_API_KEY production` — **no `NEXT_PUBLIC_` prefix**
+3. Redeploy. Without the key the chat answers with built-in demo replies. `/api/chat` has input validation, a same-site check and a per-visitor rate limit.
 
 ### Step 4: Add Real Content
-- **Dr. Ava's headshot** — Replace placeholder in `src/components/sections/About.tsx` and `src/app/about/DoctorBio.tsx`
 - **Real testimonials** — Update `src/components/sections/Testimonials.tsx`
 - **More before/after photos** — Add to `public/images/cases/` and update `BeforeAfterSlider.tsx`
-- **Certification logos** — Replace text badges in `src/components/sections/TrustLogos.tsx` with real logo images
+- **Credential badges** — confirm each claim in `src/components/sections/TrustLogos.tsx` with Dr. Ava (they use generic icons on purpose — no organization logos without permission)
 
-### Step 5: Connect Domain
-1. Go to Dr. Ava's domain registrar (GoDaddy, Namecheap, etc.)
-2. In Vercel dashboard: Settings → Domains → Add domain
-3. Update DNS records as Vercel instructs (usually a CNAME or A record)
-4. Update `metadataBase` in `src/app/layout.tsx` to the real domain
-5. Update `sitemap.xml` and `robots.txt` URLs to the real domain
-6. Update `url` in `src/components/StructuredData.tsx` to the real domain
+### Step 5: Connect Domain (reformdentalimplantcenter.com)
+Already done: domain added to Vercel project `ava`; `www` 308-redirects to the main domain.
+Remaining (in Squarespace → Domains → reformdentalimplantcenter.com → DNS — needs Owner/Admin access):
+1. Remove the "Squarespace Defaults" records
+2. Add: `A @ 216.198.79.1`, `A @ 64.29.17.1`, `CNAME www 036862443cbcb748.vercel-dns-017.com`
+3. Check with `vercel domains verify reformdentalimplantcenter.com` (HTTPS is automatic)
+4. Change `url` in `src/lib/constants.ts` to `https://reformdentalimplantcenter.com` — metadata, sitemap, robots and structured data all follow it
+5. Then cancel only the Squarespace *website* plan — keep the domain registration on auto-renew
 
 ### Step 6: Optional — Blog CMS
 For Dr. Ava to write blog posts without touching code:
@@ -295,7 +314,9 @@ We plan to migrate from Web3Forms to **Twilio** for:
 
 ## TODO (remaining)
 - [ ] Replace placeholder content (Step 1 above)
-- [ ] Add Dr. Ava's professional headshot
+- [ ] Set NEXT_PUBLIC_WEB3FORMS_KEY on Vercel (Step 2) — forms can't send without it
+- [ ] Dr. Ava to confirm prices, stats and credential badges; review Snap-On Dentures copy
+- [x] Add Dr. Ava's professional headshot
 - [ ] Add real patient testimonials
 - [ ] More before/after photo pairs for slider
 - [ ] Blog CMS setup (Sanity)

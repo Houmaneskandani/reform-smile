@@ -21,8 +21,8 @@ export default function GalleryHero() {
             Real Patients, <span className="text-gold italic">Real Results</span>
           </h1>
           <p className="text-white/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            See the life-changing smile transformations achieved by Dr. Pournejad
-            and the Reform Smile team.
+            See the life-changing smile transformations achieved by the Reform
+            Smile team.
           </p>
         </motion.div>
       </div>

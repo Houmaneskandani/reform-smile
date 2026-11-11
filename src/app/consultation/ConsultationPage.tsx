@@ -7,9 +7,9 @@ import { z } from "zod";
 import { useState } from "react";
 import { submitForm } from "@/lib/submitForm";
 import Image from "next/image";
-import Link from "next/link";
 import { Phone, Check, Star, Shield, Clock, ArrowRight } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
+import { CookieSettingsButton } from "@/components/CookieConsent";
 
 const consultationSchema = z.object({
   firstName: z.string().min(2, "First name is required"),
@@ -18,6 +18,7 @@ const consultationSchema = z.object({
   phone: z.string().min(7, "Phone number is required"),
   concern: z.string().min(1, "Please select your primary concern"),
   message: z.string().optional(),
+  botcheck: z.string().optional(), // spam honeypot — must stay empty
 });
 
 type ConsultationFormData = z.infer<typeof consultationSchema>;
@@ -26,28 +27,43 @@ const concerns = [
   "Missing teeth",
   "Failing or damaged teeth",
   "Uncomfortable dentures",
-  "Interested in All-on-4",
-  "Interested in All-on-6",
+  "Interested in full arch implants (All-on-X)",
+  "Interested in snap-on dentures",
   "Need a second opinion",
   "Other",
 ];
 
 export default function ConsultationPage() {
   const [submitted, setSubmitted] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm<ConsultationFormData>({
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<ConsultationFormData>({
     resolver: zodResolver(consultationSchema),
   });
 
   const onSubmit = async (data: ConsultationFormData) => {
-    await submitForm(data as Record<string, string>, "Free Consultation Request");
-    setSubmitted(true);
+    setSubmitError(null);
+    const result = await submitForm(data as Record<string, string>, "Free Consultation Request");
+    if (result.success) {
+      setSubmitted(true);
+    } else {
+      // Keep everything the patient typed so they can retry or call instead.
+      setSubmitError(result.message);
+    }
   };
+
+  // Links each field to its error message for screen readers.
+  const fieldA11y = (name: keyof ConsultationFormData) => ({
+    id: `consult-${name}`,
+    "aria-invalid": errors[name] ? true : undefined,
+    "aria-describedby": errors[name] ? `consult-${name}-error` : undefined,
+  });
 
   return (
     <div className="min-h-screen bg-white">
       {/* Minimal top bar */}
       <div className="bg-navy border-b border-white/10">
         <div className="section-container flex items-center justify-between py-5">
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- cross-layout nav must be a full page load (see CLAUDE.md) */}
           <a href="/">
             <Image
               src="/logo-white.png"
@@ -98,7 +114,7 @@ export default function ConsultationPage() {
                 </h1>
                 <p className="text-white/70 text-lg leading-relaxed mb-10">
                   Take the first step toward your new smile. Meet our team
-                  for a comprehensive evaluation, 3D imaging, and personalized
+                  for a comprehensive evaluation, 3D imaging, and a personalized
                   treatment plan — at absolutely no cost to you.
                 </p>
 
@@ -176,46 +192,62 @@ export default function ConsultationPage() {
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
+                          <label htmlFor="consult-firstName" className="sr-only">First name (required)</label>
                           <input
                             {...register("firstName")}
+                            {...fieldA11y("firstName")}
+                            type="text"
+                            autoComplete="given-name"
                             placeholder="First Name *"
                             className="w-full px-4 py-3.5 rounded-xl border border-gray-lighter bg-gray-lighter/30 text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors text-sm"
                           />
-                          {errors.firstName && <p className="text-red-500 text-[11px] mt-1">{errors.firstName.message}</p>}
+                          {errors.firstName && <p id="consult-firstName-error" className="text-red-500 text-[11px] mt-1">{errors.firstName.message}</p>}
                         </div>
                         <div>
+                          <label htmlFor="consult-lastName" className="sr-only">Last name (required)</label>
                           <input
                             {...register("lastName")}
+                            {...fieldA11y("lastName")}
+                            type="text"
+                            autoComplete="family-name"
                             placeholder="Last Name *"
                             className="w-full px-4 py-3.5 rounded-xl border border-gray-lighter bg-gray-lighter/30 text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors text-sm"
                           />
-                          {errors.lastName && <p className="text-red-500 text-[11px] mt-1">{errors.lastName.message}</p>}
+                          {errors.lastName && <p id="consult-lastName-error" className="text-red-500 text-[11px] mt-1">{errors.lastName.message}</p>}
                         </div>
                       </div>
 
                       <div>
+                        <label htmlFor="consult-email" className="sr-only">Email address (required)</label>
                         <input
                           {...register("email")}
+                          {...fieldA11y("email")}
                           type="email"
+                          autoComplete="email"
                           placeholder="Email Address *"
                           className="w-full px-4 py-3.5 rounded-xl border border-gray-lighter bg-gray-lighter/30 text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors text-sm"
                         />
-                        {errors.email && <p className="text-red-500 text-[11px] mt-1">{errors.email.message}</p>}
+                        {errors.email && <p id="consult-email-error" className="text-red-500 text-[11px] mt-1">{errors.email.message}</p>}
                       </div>
 
                       <div>
+                        <label htmlFor="consult-phone" className="sr-only">Phone number (required)</label>
                         <input
                           {...register("phone")}
+                          {...fieldA11y("phone")}
                           type="tel"
+                          autoComplete="tel"
                           placeholder="Phone Number *"
                           className="w-full px-4 py-3.5 rounded-xl border border-gray-lighter bg-gray-lighter/30 text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors text-sm"
                         />
-                        {errors.phone && <p className="text-red-500 text-[11px] mt-1">{errors.phone.message}</p>}
+                        {errors.phone && <p id="consult-phone-error" className="text-red-500 text-[11px] mt-1">{errors.phone.message}</p>}
                       </div>
 
                       <div>
+                        <label htmlFor="consult-concern" className="sr-only">Primary concern (required)</label>
                         <select
                           {...register("concern")}
+                          {...fieldA11y("concern")}
                           className="w-full px-4 py-3.5 rounded-xl border border-gray-lighter bg-gray-lighter/30 text-dark focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors text-sm appearance-none cursor-pointer"
                           defaultValue=""
                         >
@@ -224,23 +256,42 @@ export default function ConsultationPage() {
                             <option key={c} value={c}>{c}</option>
                           ))}
                         </select>
-                        {errors.concern && <p className="text-red-500 text-[11px] mt-1">{errors.concern.message}</p>}
+                        {errors.concern && <p id="consult-concern-error" className="text-red-500 text-[11px] mt-1">{errors.concern.message}</p>}
                       </div>
 
                       <div>
+                        <label htmlFor="consult-message" className="sr-only">Anything else you&apos;d like us to know (optional)</label>
                         <textarea
                           {...register("message")}
+                          {...fieldA11y("message")}
                           rows={3}
                           placeholder="Anything else you'd like us to know? (optional)"
                           className="w-full px-4 py-3.5 rounded-xl border border-gray-lighter bg-gray-lighter/30 text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors text-sm resize-none"
                         />
                       </div>
 
+                      {/* Spam honeypot — hidden from people; bots that fill it are ignored */}
+                      <input
+                        {...register("botcheck")}
+                        type="text"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        aria-hidden="true"
+                        className="hidden"
+                      />
+
+                      {submitError && (
+                        <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3.5 text-sm text-red-700">
+                          {submitError}
+                        </p>
+                      )}
+
                       <button
                         type="submit"
-                        className="w-full bg-gold hover:bg-gold-dark text-white font-semibold py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer text-base flex items-center justify-center gap-2"
+                        disabled={isSubmitting}
+                        className="w-full bg-gold hover:bg-gold-dark text-white font-semibold py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer text-base flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                       >
-                        Request My Free Consultation
+                        {isSubmitting ? "Sending…" : "Request My Free Consultation"}
                         <ArrowRight size={18} />
                       </button>
 
@@ -263,7 +314,7 @@ export default function ConsultationPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-4xl mx-auto">
             {[
               {
-                quote: "our team gave me my life back. I can't stop smiling.",
+                quote: "The Reform Smile team gave me my life back. I can't stop smiling.",
                 name: "Sarah M.",
                 procedure: "All-on-4 Patient",
               },
@@ -275,7 +326,7 @@ export default function ConsultationPage() {
               {
                 quote: "The whole team made me feel comfortable from day one. Incredible results.",
                 name: "Maria L.",
-                procedure: "Teeth-in-a-Day Patient",
+                procedure: "Dental Implant Patient",
               },
             ].map((t) => (
               <div key={t.name} className="text-center">
@@ -295,6 +346,10 @@ export default function ConsultationPage() {
           <p className="text-center text-gray-light text-[10px] mt-8 italic">
             * Sample testimonials — will be replaced with real patient reviews
           </p>
+          {/* This page has no site footer, so it needs its own way to reopen the cookie choice */}
+          <div className="text-center mt-6">
+            <CookieSettingsButton className="text-gray-light hover:text-navy text-xs underline underline-offset-2 transition-colors cursor-pointer" />
+          </div>
         </div>
       </section>
     </div>

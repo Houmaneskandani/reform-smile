@@ -21,8 +21,9 @@ export default function ServicesHero() {
             Advanced Implant <span className="text-gold italic">Solutions</span>
           </h1>
           <p className="text-white/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            From All-on-4 to full mouth reconstruction, we offer comprehensive
-            dental implant services tailored to your needs.
+            From full arch and single dental implants to snap-on dentures and
+            porcelain veneers, every treatment plan is tailored to your goals —
+            and it all starts with a free consultation.
           </p>
         </motion.div>
       </div>

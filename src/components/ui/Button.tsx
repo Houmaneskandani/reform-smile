@@ -28,6 +28,17 @@ const sizes = {
   lg: "px-9 py-4 text-lg",
 };
 
+// The /consultation page has its own layout, and Next's client-side <Link> crashes when
+// navigating across layouts — so it (and external, phone and email links) get a plain <a>.
+function needsPlainAnchor(href: string) {
+  return (
+    href === "/consultation" ||
+    href.startsWith("/consultation?") ||
+    href.startsWith("/consultation#") ||
+    /^(https?:|tel:|mailto:)/.test(href)
+  );
+}
+
 export default function Button({
   children,
   href,
@@ -38,20 +49,19 @@ export default function Button({
   type = "button",
 }: ButtonProps) {
   const baseClasses =
-    "inline-flex items-center justify-center font-semibold rounded-full transition-all duration-300 tracking-wide cursor-pointer";
+    "inline-flex items-center justify-center font-semibold rounded-full transition-all duration-300 tracking-wide cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2";
   const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`;
 
   if (href) {
-    // Use regular <a> for consultation page (different layout) to avoid client-nav crash
-    if (href === "/consultation") {
+    if (needsPlainAnchor(href)) {
       return (
-        <a href={href} className={classes}>
+        <a href={href} onClick={onClick} className={classes}>
           {children}
         </a>
       );
     }
     return (
-      <Link href={href} className={classes}>
+      <Link href={href} onClick={onClick} className={classes}>
         {children}
       </Link>
     );

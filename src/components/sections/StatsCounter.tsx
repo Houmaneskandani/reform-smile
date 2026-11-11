@@ -11,8 +11,8 @@ function AnimatedNumber({ target, suffix = "", duration = 2000 }: { target: numb
   useEffect(() => {
     if (!inView) return;
 
-    let start = 0;
     const startTime = performance.now();
+    let frame = 0;
 
     const animate = (now: number) => {
       const elapsed = now - startTime;
@@ -24,11 +24,12 @@ function AnimatedNumber({ target, suffix = "", duration = 2000 }: { target: numb
       setCount(current);
 
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        frame = requestAnimationFrame(animate);
       }
     };
 
-    requestAnimationFrame(animate);
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
   }, [inView, target, duration]);
 
   return <span ref={ref}>{count}{suffix}</span>;
@@ -38,12 +39,12 @@ const stats = [
   { value: 500, suffix: "+", label: "Successful Implants", detail: "Procedures performed" },
   { value: 5, suffix: ".0", label: "Patient Rating", detail: "Based on reviews" },
   { value: 98, suffix: "%", label: "Success Rate", detail: "Long-term outcomes" },
-  { value: 1, suffix: " Day", label: "Same-Day Smiles", detail: "Teeth-in-a-Day" },
+  { value: 1, suffix: " Day", label: "Same-Day Smiles", detail: "New teeth in one visit" },
 ];
 
 export default function StatsCounter() {
   return (
-    <section className="py-14 md:py-24 relative overflow-hidden" style={{ background: "#1B3A5C" }}>
+    <section className="py-14 md:py-24 bg-navy relative overflow-hidden">
       {/* Subtle gold glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] rounded-full bg-gold/5 blur-[80px]" />

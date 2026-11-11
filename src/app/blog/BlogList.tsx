@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { ArrowRight, Calendar } from "lucide-react";
 
 const posts = [
@@ -15,7 +14,7 @@ const posts = [
   {
     slug: "am-i-a-candidate-for-dental-implants",
     title: "Am I a Candidate for Dental Implants?",
-    excerpt: "Not sure if dental implants are right for you? Dr. Pournejad explains the factors that determine candidacy and why more people qualify than they think.",
+    excerpt: "Not sure if dental implants are right for you? We explain the factors that determine candidacy and why more people qualify than they think.",
     category: "FAQ",
     date: "Coming Soon",
   },
@@ -28,15 +27,15 @@ const posts = [
   },
   {
     slug: "dental-implants-vs-dentures",
-    title: "Dental Implants vs. Dentures: Why Implants Win",
-    excerpt: "Traditional dentures have limitations. Discover why more patients are choosing permanent dental implants over removable dentures.",
+    title: "Dental Implants vs. Traditional Dentures: Why Implants Win",
+    excerpt: "Traditional dentures have limitations. Discover why more patients are choosing permanent, implant-based solutions instead.",
     category: "Comparison",
     date: "Coming Soon",
   },
   {
-    slug: "what-to-expect-teeth-in-a-day",
-    title: "What to Expect with Teeth-in-a-Day",
-    excerpt: "Curious about the Teeth-in-a-Day procedure? Walk through the entire process from consultation to walking out with your new smile.",
+    slug: "what-are-snap-on-dentures",
+    title: "Snap-On Dentures: A Secure Alternative to Traditional Dentures",
+    excerpt: "Tired of loose, slipping dentures? Learn how implant-supported snap-on dentures lock securely into place for better comfort, stability, and confidence.",
     category: "Procedures",
     date: "Coming Soon",
   },

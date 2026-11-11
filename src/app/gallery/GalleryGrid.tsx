@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 const cases = [
   { id: 1, title: "Full Arch Restoration", procedure: "All-on-4", description: "Patient with multiple missing upper teeth restored with permanent implants." },
   { id: 2, title: "Complete Smile Makeover", procedure: "All-on-6", description: "Severely worn teeth replaced with natural-looking implant prosthetics." },
-  { id: 3, title: "Upper & Lower Restoration", procedure: "Full Mouth", description: "Complete upper and lower arch restoration for a brand new smile." },
+  { id: 3, title: "Upper & Lower Restoration", procedure: "Full Arch", description: "Complete upper and lower arch restoration for a brand new smile." },
   { id: 4, title: "Single Arch Transformation", procedure: "All-on-4", description: "Lower arch restored with four implants and a permanent prosthetic." },
-  { id: 5, title: "Bone Graft + Implants", procedure: "Bone Grafting", description: "Bone regeneration followed by full arch implant placement." },
-  { id: 6, title: "Teeth-in-a-Day Case", procedure: "Teeth-in-a-Day", description: "Complete smile transformation completed in a single appointment." },
+  { id: 5, title: "Secure, Stable Dentures", procedure: "Snap-On Dentures", description: "Loose traditional dentures replaced with implant-supported dentures that snap securely into place." },
+  { id: 6, title: "Single Tooth Replacement", procedure: "Single Implant", description: "A missing tooth replaced with a titanium implant and a custom, natural-looking crown." },
 ];
 
 export default function GalleryGrid() {

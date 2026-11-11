@@ -1,7 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Mail, MapPin, Clock, Globe, MessageCircle, Video } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Camera, MessageCircle, Video } from "lucide-react";
 import { SITE_CONFIG, NAV_LINKS } from "@/lib/constants";
+import { CookieSettingsButton } from "@/components/CookieConsent";
+
+// Only profiles with a real address are shown — placeholders ("#") would be dead links.
+const SOCIAL_LINKS = [
+  { label: "Instagram", href: SITE_CONFIG.social.instagram, icon: Camera },
+  { label: "Facebook", href: SITE_CONFIG.social.facebook, icon: MessageCircle },
+  { label: "YouTube", href: SITE_CONFIG.social.youtube, icon: Video },
+].filter((link) => link.href && link.href !== "#");
 
 export default function Footer() {
   return (
@@ -13,15 +21,15 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <Image
               src="/logo-white.png"
-              alt="Reform Smile"
+              alt={SITE_CONFIG.name}
               width={160}
               height={160}
               className="h-24 md:h-28 w-auto mb-4"
             />
             <p className="text-white/70 text-sm leading-relaxed mt-4">
               Transforming lives through advanced dental implant solutions.
-              The Reform Smile team is dedicated to
-              restoring your confidence with beautiful, permanent smiles.
+              The Reform Smile team is dedicated to restoring your confidence
+              with beautiful, permanent smiles.
             </p>
           </div>
 
@@ -111,29 +119,23 @@ export default function Footer() {
             </ul>
 
             {/* Social */}
-            <div className="flex gap-4 mt-6">
-              <a
-                href={SITE_CONFIG.social.instagram}
-                aria-label="Instagram"
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold transition-colors"
-              >
-                <Globe size={18} />
-              </a>
-              <a
-                href={SITE_CONFIG.social.facebook}
-                aria-label="Facebook"
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold transition-colors"
-              >
-                <MessageCircle size={18} />
-              </a>
-              <a
-                href={SITE_CONFIG.social.youtube}
-                aria-label="YouTube"
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold transition-colors"
-              >
-                <Video size={18} />
-              </a>
-            </div>
+            {SOCIAL_LINKS.length > 0 && (
+              <div className="flex gap-4 mt-6">
+                {SOCIAL_LINKS.map(({ label, href, icon: Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Reform Smile on ${label} (opens in a new tab)`}
+                    title={label}
+                    className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold transition-colors"
+                  >
+                    <Icon size={18} />
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -141,13 +143,18 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="section-container py-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-white/50 text-sm">
+          {/* The year can differ between the prerendered page and the visitor's clock */}
+          <p className="text-white/50 text-sm" suppressHydrationWarning>
             &copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights
             reserved.
           </p>
-          <p className="text-white/30 text-sm">
-            Engineered with care
-          </p>
+          <div className="flex items-center gap-6">
+            {/* Lets visitors change or withdraw their cookie choice at any time */}
+            <CookieSettingsButton className="text-white/50 hover:text-gold transition-colors text-sm cursor-pointer" />
+            <p className="text-white/30 text-sm">
+              Engineered with care
+            </p>
+          </div>
         </div>
       </div>
     </footer>

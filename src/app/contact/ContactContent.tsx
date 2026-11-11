@@ -15,25 +15,40 @@ const contactSchema = z.object({
   phone: z.string().min(7, "Phone number is required"),
   subject: z.string().min(2, "Subject is required"),
   message: z.string().min(10, "Message must be at least 10 characters"),
+  botcheck: z.string().optional(), // spam honeypot — must stay empty
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
 export default function ContactContent() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
   });
 
   const onSubmit = async (data: ContactFormData) => {
-    await submitForm(data as Record<string, string>, "Contact Form");
-    setSubmitted(true);
+    setSubmitError(null);
+    const result = await submitForm(data as Record<string, string>, "Contact Form");
+    if (result.success) {
+      setSubmitted(true);
+    } else {
+      // Keep everything the patient typed so they can retry or call instead.
+      setSubmitError(result.message);
+    }
   };
+
+  // Links each field to its error message for screen readers.
+  const fieldA11y = (name: keyof ContactFormData) => ({
+    id: `contact-${name}`,
+    "aria-invalid": errors[name] ? true : undefined,
+    "aria-describedby": errors[name] ? `contact-${name}-error` : undefined,
+  });
 
   return (
     <section className="py-28 md:py-36 bg-white">
@@ -109,12 +124,12 @@ export default function ContactContent() {
               </div>
             </div>
 
-            {/* Google Maps embed */}
+            {/* Google Maps embed — keyless embed URL, follows the address in constants.ts */}
             <div className="mt-12 aspect-[4/3] rounded-2xl bg-cream overflow-hidden">
               <iframe
-                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(
                   `${SITE_CONFIG.address}, ${SITE_CONFIG.city}, ${SITE_CONFIG.state} ${SITE_CONFIG.zip}`
-                )}&zoom=14`}
+                )}&z=14&output=embed`}
                 className="w-full h-full border-0"
                 allowFullScreen
                 loading="lazy"
@@ -152,65 +167,92 @@ export default function ContactContent() {
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="grid sm:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-navy text-sm font-medium mb-2">Full Name *</label>
+                      <label htmlFor="contact-name" className="block text-navy text-sm font-medium mb-2">Full Name *</label>
                       <input
                         {...register("name")}
+                        {...fieldA11y("name")}
+                        type="text"
+                        autoComplete="name"
                         className="w-full px-5 py-3.5 rounded-xl border border-cream-dark bg-white text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors"
                         placeholder="Your name"
                       />
-                      {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+                      {errors.name && <p id="contact-name-error" className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
                     </div>
                     <div>
-                      <label className="block text-navy text-sm font-medium mb-2">Email *</label>
+                      <label htmlFor="contact-email" className="block text-navy text-sm font-medium mb-2">Email *</label>
                       <input
                         {...register("email")}
+                        {...fieldA11y("email")}
                         type="email"
+                        autoComplete="email"
                         className="w-full px-5 py-3.5 rounded-xl border border-cream-dark bg-white text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors"
                         placeholder="your@email.com"
                       />
-                      {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+                      {errors.email && <p id="contact-email-error" className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
                     </div>
                   </div>
 
                   <div className="grid sm:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-navy text-sm font-medium mb-2">Phone *</label>
+                      <label htmlFor="contact-phone" className="block text-navy text-sm font-medium mb-2">Phone *</label>
                       <input
                         {...register("phone")}
+                        {...fieldA11y("phone")}
                         type="tel"
+                        autoComplete="tel"
                         className="w-full px-5 py-3.5 rounded-xl border border-cream-dark bg-white text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors"
                         placeholder="(555) 123-4567"
                       />
-                      {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
+                      {errors.phone && <p id="contact-phone-error" className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
                     </div>
                     <div>
-                      <label className="block text-navy text-sm font-medium mb-2">Subject *</label>
+                      <label htmlFor="contact-subject" className="block text-navy text-sm font-medium mb-2">Subject *</label>
                       <input
                         {...register("subject")}
+                        {...fieldA11y("subject")}
+                        type="text"
                         className="w-full px-5 py-3.5 rounded-xl border border-cream-dark bg-white text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors"
                         placeholder="How can we help?"
                       />
-                      {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject.message}</p>}
+                      {errors.subject && <p id="contact-subject-error" className="text-red-500 text-xs mt-1">{errors.subject.message}</p>}
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-navy text-sm font-medium mb-2">Message *</label>
+                    <label htmlFor="contact-message" className="block text-navy text-sm font-medium mb-2">Message *</label>
                     <textarea
                       {...register("message")}
+                      {...fieldA11y("message")}
                       rows={5}
                       className="w-full px-5 py-3.5 rounded-xl border border-cream-dark bg-white text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors resize-none"
                       placeholder="Tell us about your dental needs..."
                     />
-                    {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>}
+                    {errors.message && <p id="contact-message-error" className="text-red-500 text-xs mt-1">{errors.message.message}</p>}
                   </div>
+
+                  {/* Spam honeypot — hidden from people; bots that fill it are ignored */}
+                  <input
+                    {...register("botcheck")}
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="hidden"
+                  />
+
+                  {submitError && (
+                    <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-5 py-3.5 text-sm text-red-700">
+                      {submitError}
+                    </p>
+                  )}
 
                   <button
                     type="submit"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer"
+                    disabled={isSubmitting}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     <Send size={18} />
-                    Send Message
+                    {isSubmitting ? "Sending…" : "Send Message"}
                   </button>
                 </form>
               )}

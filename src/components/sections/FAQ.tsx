@@ -13,7 +13,7 @@ const faqs = [
   {
     question: "Does the procedure hurt?",
     answer:
-      "Most patients are surprised by how comfortable the procedure is. our team uses advanced techniques and anesthesia to ensure you feel minimal discomfort during treatment. Many patients describe the experience as easier than a tooth extraction. Post-procedure discomfort is typically mild and manageable with over-the-counter medication.",
+      "Most patients are surprised by how comfortable the procedure is. Our team uses advanced techniques and anesthesia to ensure you feel minimal discomfort during treatment. Many patients describe the experience as easier than a tooth extraction. Post-procedure discomfort is typically mild and manageable with over-the-counter medication.",
   },
   {
     question: "How long do dental implants last?",
@@ -28,12 +28,12 @@ const faqs = [
   {
     question: "How long does the All-on-X procedure take?",
     answer:
-      "With our Teeth-in-a-Day approach, you can receive a full arch of new teeth in a single appointment. The implant placement typically takes 2-4 hours, and you leave the same day with a beautiful provisional set of teeth. Your final permanent prosthetic is placed after the implants have fully integrated, usually 3-6 months later.",
+      "In many cases, you can receive a full arch of new teeth in a single appointment. The implant placement typically takes 2-4 hours, and you leave the same day with a beautiful provisional set of teeth. Your final permanent prosthetic is placed after the implants have fully integrated, usually 3-6 months later.",
   },
   {
     question: "What is the difference between implants and dentures?",
     answer:
-      "Dental implants are permanently fixed in your jaw — they don't move, slip, or require adhesives. You eat, speak, and smile with complete confidence. Dentures sit on top of your gums and can shift, cause discomfort, and limit what you can eat. Implants also preserve your jawbone, while dentures can accelerate bone loss over time.",
+      "Dental implants are permanently fixed in your jaw — they don't move, slip, or require adhesives. You eat, speak, and smile with complete confidence. Traditional dentures sit on top of your gums and can shift, cause discomfort, and limit what you can eat. Implants also preserve your jawbone, while traditional dentures can accelerate bone loss over time. If you prefer a removable option, snap-on dentures are a middle ground: they clip securely onto a few implants, so they stay in place far better than traditional dentures.",
   },
   {
     question: "Do you accept insurance?",

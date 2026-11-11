@@ -6,20 +6,20 @@ import { Star, Quote } from "lucide-react";
 const testimonials = [
   {
     name: "Sarah M.",
-    text: "the team at Reform Smile gave me my life back. I had been hiding my smile for years because of missing teeth. After my All-on-4 procedure, I can't stop smiling. The entire team made me feel comfortable and cared for.",
+    text: "Reform Smile gave me my life back. I had been hiding my smile for years because of missing teeth. After my All-on-4 procedure, I can't stop smiling. The entire team made me feel comfortable and cared for.",
     procedure: "All-on-4 Dental Implants",
     rating: 5,
   },
   {
     name: "James R.",
-    text: "I visited multiple dentists before finding Reform Smile. the team at Reform Smile took the time to explain everything and created a plan that worked for me. The results exceeded my expectations — my new teeth look completely natural.",
+    text: "I visited multiple dentists before finding Reform Smile. The team took the time to explain everything and created a plan that worked for me. The results exceeded my expectations — my new teeth look completely natural.",
     procedure: "Full Arch Restoration",
     rating: 5,
   },
   {
     name: "Maria L.",
-    text: "I was terrified of dental procedures, but the team at Reform Smile and her team were incredibly patient and gentle. The Teeth-in-a-Day procedure was smoother than I ever imagined. I walked out with a brand new smile!",
-    procedure: "Teeth-in-a-Day",
+    text: "I was terrified of dental procedures, but the Reform Smile team was incredibly patient and gentle. The whole process was smoother than I ever imagined, and now I have a brand new smile!",
+    procedure: "Dental Implant Patient",
     rating: 5,
   },
 ];
@@ -43,8 +43,8 @@ export default function Testimonials() {
             Real Results, Real Smiles
           </h2>
           <p className="text-gray text-lg leading-relaxed">
-            Hear from patients whose lives have been transformed by
-            the team at Reform Smile and the Reform Smile team.
+            Hear from patients whose lives have been transformed by the
+            Reform Smile team.
           </p>
         </motion.div>
 

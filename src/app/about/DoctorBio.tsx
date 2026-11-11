@@ -34,7 +34,7 @@ export default function DoctorBio() {
                   width={400}
                   height={533}
                   className="w-full h-full object-cover object-top"
-                  priority
+                  preload
                 />
               </div>
               <div className="absolute -bottom-3 -right-3 w-24 h-24 border-2 border-gold/30 rounded-2xl -z-10" />

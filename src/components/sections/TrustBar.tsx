@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { Shield, Award, Clock, Heart } from "lucide-react";
 
+// "Board Certified", "500+ Implants Placed" and "Same-Day Smiles" are credential/statistic
+// claims — confirm each with the doctor before launch.
 const trustItems = [
   {
     icon: Shield,
@@ -30,16 +32,16 @@ export default function TrustBar() {
   return (
     <section className="bg-cream border-y border-cream-dark">
       <div className="section-container py-8 md:py-16">
-        <motion.p
+        <motion.h2
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           className="text-center text-navy font-heading text-2xl md:text-3xl mb-8 md:mb-12"
         >
-          Making high quality dental care affordable for you.
-        </motion.p>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-16">
+          Making high-quality dental care affordable for you.
+        </motion.h2>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-8 lg:gap-16">
           {trustItems.map((item, index) => (
             <motion.div
               key={item.title}

@@ -1,9 +1,10 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, ArrowLeft, Sparkles, Calendar } from "lucide-react";
 import { trackEvent } from "@/lib/tracking";
+import { SERVICES, type ServiceId } from "@/lib/constants";
 
 type Answer = {
   label: string;
@@ -77,19 +78,54 @@ const questions: Question[] = [
   },
 ];
 
+// Every recommendation points at a real service in SERVICES (constants.ts), so the quiz
+// can never suggest a treatment the practice doesn't offer.
+const SERVICE_TITLES = Object.fromEntries(
+  SERVICES.map((s) => [s.id, s.title])
+) as Record<ServiceId, string>;
+
 type Result = {
+  serviceId: ServiceId;
   title: string;
+  label: string;
   description: string;
   procedure: string;
   benefits: string[];
+  alternative?: string;
 };
+
+function recommend(serviceId: ServiceId, details: Omit<Result, "serviceId" | "title" | "label">): Result {
+  return {
+    serviceId,
+    title: SERVICE_TITLES[serviceId],
+    label: serviceId === "consultation" ? "Your Recommended Next Step" : "Your Recommended Treatment",
+    ...details,
+  };
+}
 
 function getResult(answers: Record<string, string>): Result {
   const situation = answers.situation;
 
   if (situation === "most" || situation === "dentures") {
-    return {
-      title: "Full Arch Dental Implants",
+    // Cost is the top concern: a removable, implant-supported denture is often the best first step.
+    if (answers.concerns === "cost") {
+      return recommend("snap-on-dentures", {
+        procedure: "Implant-Supported Dentures",
+        description:
+          "Based on your answers, snap-on dentures could be a great fit for you. Dental implants anchor a custom denture that snaps securely into place for more stability than a traditional denture, and it comes out easily for cleaning.",
+        benefits: [
+          "Snaps securely into place for added stability",
+          "Supported by dental implants",
+          "More comfortable than traditional dentures",
+          "Eat and speak with more confidence",
+          "Removable for easy cleaning",
+        ],
+        alternative:
+          "Prefer teeth that never come out? Ask us about Full Arch Dental Implants at your consultation.",
+      });
+    }
+
+    return recommend("full-arch", {
       procedure: "All-on-X",
       description:
         "Based on your answers, All-on-X full arch dental implants would be the ideal solution for you. This procedure replaces an entire arch of teeth using 4-6 strategically placed implants — giving you a permanent, beautiful smile, often in just one day.",
@@ -100,12 +136,13 @@ function getResult(answers: Record<string, string>): Result {
         "Often completed in a single visit",
         "Long-lasting results that can last a lifetime",
       ],
-    };
+      alternative:
+        "Prefer a removable option? Ask us about Snap-On Dentures — implant-supported dentures that snap securely into place.",
+    });
   }
 
   if (situation === "few") {
-    return {
-      title: "Single Dental Implants",
+    return recommend("single-implants", {
       procedure: "Individual Implants",
       description:
         "Based on your answers, individual dental implants would be the best solution. Each missing tooth is replaced with a titanium implant post and a custom crown that looks and feels exactly like your natural tooth.",
@@ -116,12 +153,11 @@ function getResult(answers: Record<string, string>): Result {
         "Easy to care for — brush and floss normally",
         "Permanent, long-lasting solution",
       ],
-    };
+    });
   }
 
   if (situation === "cosmetic") {
-    return {
-      title: "Dental Veneers",
+    return recommend("veneers", {
       procedure: "Porcelain Veneers",
       description:
         "Based on your answers, porcelain veneers would be an excellent option for you. These ultra-thin shells are custom-crafted to cover the front surface of your teeth, giving you a flawless, natural-looking smile.",
@@ -132,23 +168,23 @@ function getResult(answers: Record<string, string>): Result {
         "Stain-resistant porcelain material",
         "Results that last 15-20 years",
       ],
-    };
+    });
   }
 
-  // damaged or default
-  return {
-    title: "Teeth-in-a-Day",
-    procedure: "Same-Day Implants",
+  // Damaged or failing teeth (or no answer): the right treatment depends on how many teeth
+  // are affected and the health of the bone, so the honest next step is an evaluation.
+  return recommend("consultation", {
+    procedure: "Exam, 3D Imaging & Treatment Plan",
     description:
-      "Based on your answers, our Teeth-in-a-Day procedure would be the ideal solution. You walk in with damaged or failing teeth and walk out the same day with a brand new set of beautiful, permanent teeth.",
+      "Damaged or failing teeth can be restored in several ways — from a single implant to a full arch of new teeth — depending on how many teeth are affected and the health of the surrounding bone. A free consultation with 3D imaging lets our doctor see exactly what's going on and recommend the right plan for you.",
     benefits: [
-      "Complete transformation in one appointment",
-      "No weeks of waiting without teeth",
-      "Immediate improvement in appearance",
-      "3D-guided precision placement",
-      "Resume normal activities quickly",
+      "A comprehensive evaluation with 3D imaging",
+      "A clear explanation of every option",
+      "A personalized treatment plan",
+      "Financing options explained",
+      "No cost and no obligation",
     ],
-  };
+  });
 }
 
 export default function SmileQuiz() {
@@ -157,23 +193,35 @@ export default function SmileQuiz() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResult, setShowResult] = useState(false);
   const [direction, setDirection] = useState(1);
+  // Pending auto-advance; while set, further clicks are ignored so a quick double-click
+  // can't skip a question.
+  const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (advanceTimer.current) clearTimeout(advanceTimer.current);
+  }, []);
 
   const handleAnswer = (questionId: string, value: string) => {
-    setAnswers((prev) => ({ ...prev, [questionId]: value }));
+    if (advanceTimer.current) return;
+
+    const nextAnswers = { ...answers, [questionId]: value };
+    setAnswers(nextAnswers);
 
     // Auto-advance after short delay
-    setTimeout(() => {
+    advanceTimer.current = setTimeout(() => {
+      advanceTimer.current = null;
       if (currentStep < questions.length - 1) {
         setDirection(1);
         setCurrentStep((prev) => prev + 1);
       } else {
         setShowResult(true);
-        trackEvent("quiz_completed", { result: questionId + "_" + value });
+        trackEvent("quiz_completed", { result: getResult(nextAnswers).serviceId });
       }
     }, 300);
   };
 
   const goBack = () => {
+    if (advanceTimer.current) return;
     if (currentStep > 0) {
       setDirection(-1);
       setCurrentStep((prev) => prev - 1);
@@ -271,7 +319,7 @@ export default function SmileQuiz() {
                   <Sparkles size={28} className="text-gold" />
                 </div>
                 <p className="text-gold text-sm font-semibold tracking-widest uppercase mb-3">
-                  Your Recommended Treatment
+                  {result.label}
                 </p>
                 <h3 className="font-heading text-3xl md:text-4xl text-white mb-2">
                   {result.title}
@@ -283,16 +331,22 @@ export default function SmileQuiz() {
                 {result.description}
               </p>
 
-              <ul className="space-y-3 mb-12">
+              <ul className={`space-y-3 ${result.alternative ? "mb-8" : "mb-12"}`}>
                 {result.benefits.map((b) => (
                   <li key={b} className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                     <span className="text-white/70 text-[15px]">{b}</span>
                   </li>
                 ))}
               </ul>
+
+              {result.alternative && (
+                <p className="text-white/40 text-sm text-center mb-12">
+                  {result.alternative}
+                </p>
+              )}
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
@@ -366,6 +420,8 @@ export default function SmileQuiz() {
                       return (
                         <button
                           key={answer.value}
+                          type="button"
+                          aria-pressed={isSelected}
                           onClick={() => handleAnswer(questions[currentStep].id, answer.value)}
                           className={`w-full text-left px-6 py-4 rounded-xl border transition-all duration-200 cursor-pointer ${
                             isSelected

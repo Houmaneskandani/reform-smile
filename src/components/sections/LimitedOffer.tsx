@@ -3,12 +3,13 @@
 import { motion } from "framer-motion";
 import { Clock, ArrowRight } from "lucide-react";
 
+// Offer wording and price come from the practice — don't change them without the doctor's confirmation.
 export default function LimitedOffer() {
   return (
     <section className="py-10 md:py-14 bg-gold relative overflow-hidden">
       {/* Subtle shine effect */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse" style={{ animationDuration: "3s" }} />
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse motion-reduce:animate-none" style={{ animationDuration: "3s" }} />
       </div>
 
       <div className="relative section-container">
@@ -26,9 +27,9 @@ export default function LimitedOffer() {
             </span>
           </div>
 
-          <h3 className="font-heading text-2xl md:text-4xl text-white mb-3 leading-tight">
+          <h2 className="font-heading text-2xl md:text-4xl text-white mb-3 leading-tight">
             Full Mouth Dental Implants or Veneers
-          </h3>
+          </h2>
 
           <p className="text-white text-3xl md:text-5xl font-heading font-bold mb-4">
             $9,000 <span className="text-white/70 text-lg md:text-2xl font-normal">Per Arch</span>
@@ -40,10 +41,10 @@ export default function LimitedOffer() {
 
           <a
             href="/consultation"
-            className="inline-flex items-center gap-2 bg-white text-gold hover:bg-white/90 font-bold px-8 py-3.5 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl text-sm md:text-base"
+            className="inline-flex items-center gap-2 bg-white text-navy hover:bg-white/90 font-bold px-8 py-3.5 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl text-sm md:text-base"
           >
             Claim This Offer
-            <ArrowRight size={18} />
+            <ArrowRight size={18} aria-hidden="true" />
           </a>
         </motion.div>
       </div>

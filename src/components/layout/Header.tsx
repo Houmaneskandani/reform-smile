@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -9,38 +9,64 @@ import { Phone, Menu, X } from "lucide-react";
 import { SITE_CONFIG, NAV_LINKS } from "@/lib/constants";
 import Button from "@/components/ui/Button";
 
+const PHONE_HREF = `tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`;
+
+// On the homepage the header turns from transparent to solid white past this point.
+const SCROLL_THRESHOLD = 50;
+
+function subscribeToScroll(onChange: () => void) {
+  window.addEventListener("scroll", onChange, { passive: true });
+  return () => window.removeEventListener("scroll", onChange);
+}
+const getIsScrolled = () => window.scrollY > SCROLL_THRESHOLD;
+// The server can't know the scroll position, so it renders the top-of-page state.
+const getIsScrolledOnServer = () => false;
+
+function isActiveLink(pathname: string, href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const scrolled = useSyncExternalStore(
+    subscribeToScroll,
+    getIsScrolled,
+    getIsScrolledOnServer
+  );
   const pathname = usePathname();
-  const isHome = pathname === "/";
-  const isConsultation = pathname === "/consultation";
 
-  // Hide header entirely on consultation landing page (it has its own)
-  if (isConsultation) return null;
+  // Close the mobile menu with the Escape key
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileMenuOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [mobileMenuOpen]);
+
+  // Hide header entirely on consultation landing page (it has its own).
+  // This must stay below every hook so the hooks run in the same order on each render.
+  if (pathname === "/consultation") return null;
 
   // Only do the transparent->solid transition on the homepage
-  const isTransparent = isHome && !scrolled;
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const isTransparent = pathname === "/" && !scrolled;
+  const closeMobileMenu = () => setMobileMenuOpen(false);
 
   return (
     <>
       {/* Top bar */}
       <div className="bg-navy text-white text-sm py-2.5 hidden md:block relative z-50">
-        <div className="section-container flex justify-between items-center">
-          <p className="text-white/80">
+        <div className="section-container flex justify-between items-center gap-6">
+          <p className="text-white/80 truncate">
             Transforming Smiles with All-on-X Dental Implants
           </p>
           <a
-            href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
-            className="flex items-center gap-2 hover:text-gold transition-colors"
+            href={PHONE_HREF}
+            className="flex items-center gap-2 whitespace-nowrap hover:text-gold transition-colors"
           >
-            <Phone size={14} />
+            <Phone size={14} aria-hidden="true" />
             <span>{SITE_CONFIG.phone}</span>
           </a>
         </div>
@@ -52,13 +78,18 @@ export default function Header() {
           isTransparent ? "bg-transparent" : "bg-white shadow-lg"
         }`}
       >
-        <div className="section-container flex items-center justify-between h-20 md:h-24">
+        <div className="section-container flex items-center justify-between gap-6 h-20 md:h-24">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 relative z-50">
-            {/* White logo — only visible on homepage when not scrolled */}
+          <Link
+            href="/"
+            onClick={closeMobileMenu}
+            className="flex-shrink-0 relative z-50"
+          >
+            {/* White logo — only visible on homepage when not scrolled.
+                Empty alt: it duplicates the color logo, which names the link once. */}
             <Image
               src="/logo-white.png"
-              alt="Reform Smile & Dental Implant Center"
+              alt=""
               width={320}
               height={320}
               priority
@@ -79,51 +110,70 @@ export default function Header() {
             />
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-10">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`font-medium transition-colors text-[13px] tracking-widest uppercase ${
-                  isTransparent
-                    ? "text-white/90 hover:text-gold"
-                    : "text-dark hover:text-gold"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+          {/* Desktop Nav — from lg (tighter spacing until xl so everything stays on one line) */}
+          <nav aria-label="Main" className="hidden lg:flex items-center gap-6 xl:gap-8">
+            {NAV_LINKS.map((link) => {
+              const active = isActiveLink(pathname, link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`whitespace-nowrap font-medium transition-colors text-[13px] tracking-wider xl:tracking-widest uppercase ${
+                    active
+                      ? "text-gold"
+                      : isTransparent
+                        ? "text-white/90 hover:text-gold"
+                        : "text-dark hover:text-gold"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
 
-          {/* CTA + Phone */}
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="flex items-center gap-3 xl:gap-6 flex-shrink-0">
+            {/* Phone + CTA from tablet up (phones get the sticky bottom bar). The phone is an
+                icon until xl, then the full number. Between 1024px and 1100px the nav needs
+                the room, so the phone is left to the top bar there. */}
             <a
-              href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
-              className={`flex items-center gap-2 font-semibold transition-colors ${
+              href={PHONE_HREF}
+              aria-label={`Call us at ${SITE_CONFIG.phone}`}
+              className={`hidden md:flex lg:max-[1100px]:hidden items-center justify-center gap-2 whitespace-nowrap font-semibold transition-colors w-10 h-10 rounded-full border xl:w-auto xl:h-auto xl:rounded-none xl:border-0 ${
                 isTransparent
-                  ? "text-white/90 hover:text-gold"
-                  : "text-navy hover:text-gold"
+                  ? "text-white/90 hover:text-gold border-white/30"
+                  : "text-navy hover:text-gold border-navy/15"
               }`}
             >
-              <Phone size={16} />
-              <span className="text-sm">{SITE_CONFIG.phone}</span>
+              <Phone size={16} aria-hidden="true" />
+              <span className="hidden xl:inline text-sm">{SITE_CONFIG.phone}</span>
             </a>
-            <Button href="/consultation" variant="gold" size="sm">
-              Free Consultation
-            </Button>
-          </div>
+            <div className="hidden md:block">
+              <Button
+                href="/consultation"
+                variant="gold"
+                size="sm"
+                className="whitespace-nowrap"
+              >
+                Free Consultation
+              </Button>
+            </div>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`lg:hidden p-2 cursor-pointer transition-colors ${
-              isTransparent ? "text-white" : "text-navy"
-            }`}
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+            {/* Menu button — below lg */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className={`lg:hidden p-2 cursor-pointer transition-colors ${
+                isTransparent ? "text-white" : "text-navy"
+              }`}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
+            >
+              {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile menu overlay — click to close */}
@@ -135,7 +185,7 @@ export default function Header() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
               className="fixed inset-0 z-[-1] lg:hidden bg-black/20"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={closeMobileMenu}
             />
           )}
         </AnimatePresence>
@@ -144,40 +194,48 @@ export default function Header() {
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
+              id="mobile-menu"
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               className="lg:hidden bg-white border-t border-gray-lighter overflow-hidden"
             >
-              <nav className="flex flex-col px-8 py-6">
-                {NAV_LINKS.map((link, i) => (
-                  <motion.div
-                    key={link.href}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: 0.1 + i * 0.05 }}
-                  >
-                    <Link
-                      href={link.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block py-3.5 text-dark font-medium hover:text-gold transition-colors text-sm tracking-widest uppercase border-b border-gray-lighter last:border-0"
+              <nav aria-label="Mobile" className="section-container flex flex-col py-6">
+                {NAV_LINKS.map((link, i) => {
+                  const active = isActiveLink(pathname, link.href);
+                  return (
+                    <motion.div
+                      key={link.href}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: 0.1 + i * 0.05 }}
                     >
-                      {link.label}
-                    </Link>
-                  </motion.div>
-                ))}
+                      <Link
+                        href={link.href}
+                        onClick={closeMobileMenu}
+                        aria-current={active ? "page" : undefined}
+                        className={`block py-3.5 font-medium hover:text-gold transition-colors text-sm tracking-widest uppercase ${
+                          i < NAV_LINKS.length - 1 ? "border-b border-gray-lighter" : ""
+                        } ${active ? "text-gold" : "text-dark"}`}
+                      >
+                        {link.label}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+                {/* Phone + CTA — tablets already show both in the header bar */}
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.4 }}
-                  className="pt-6 flex flex-col gap-4"
+                  className="pt-6 flex flex-col gap-4 md:hidden"
                 >
                   <a
-                    href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
+                    href={PHONE_HREF}
                     className="flex items-center justify-center gap-2 text-navy font-semibold py-3"
                   >
-                    <Phone size={18} />
+                    <Phone size={18} aria-hidden="true" />
                     <span>{SITE_CONFIG.phone}</span>
                   </a>
                   <Button

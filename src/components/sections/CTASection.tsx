@@ -31,9 +31,9 @@ export default function CTASection() {
             <span className="text-gold italic">Your Smile?</span>
           </h2>
           <p className="text-white/70 text-lg md:text-xl leading-relaxed mb-12 max-w-2xl mx-auto">
-            Schedule your free consultation with Dr. Pournejad today. Get a
-            comprehensive evaluation, 3D imaging, and a personalized treatment
-            plan — all at no cost to you.
+            Schedule your free consultation today. Get a comprehensive
+            evaluation, 3D imaging, and a personalized treatment plan — all at
+            no cost to you.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-5 justify-center mb-14">

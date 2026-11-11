@@ -1,7 +1,10 @@
 export const SITE_CONFIG = {
   name: "Reform Smile & Dental Implant Center",
   shortName: "Reform Smile",
-  doctor: "Dr. Ava, DDS",
+  doctor: "Dr. Ava, DDS", // Dr. Ava's request: show her name on the About page only
+  // Public site address — used for SEO metadata, sitemap, robots.txt and structured data.
+  // TODO: Switch to the custom domain once DNS points at Vercel.
+  url: "https://ava-green.vercel.app",
   phone: "(555) 123-4567", // TODO: Replace with real phone number
   email: "info@reformsmile.com", // TODO: Replace with real email
   address: "123 Main Street, Suite 100", // TODO: Replace with real address
@@ -18,10 +21,11 @@ export const SITE_CONFIG = {
     facebook: "#",
     youtube: "#",
   },
-  // Keys loaded from environment variables (.env.local)
+  // Public keys loaded from environment variables (.env.local / Vercel project settings).
+  // These are safe to expose in the browser. Secret keys (Anthropic, Twilio) must NEVER
+  // use the NEXT_PUBLIC_ prefix — they are read only on the server (see src/app/api/).
   web3formsKey: process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "",
   gaTrackingId: process.env.NEXT_PUBLIC_GA_TRACKING_ID || "",
-  anthropicKey: process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY || "",
 } as const;
 
 export const NAV_LINKS = [
@@ -33,47 +37,40 @@ export const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ] as const;
 
+// The single list of services the practice offers. The homepage cards, the Services
+// page, the booking form, structured data (Google) and the AI chat all read from here —
+// add, remove or rename a service in this one place.
 export const SERVICES = [
   {
-    title: "All-on-4 Dental Implants",
+    id: "full-arch",
+    title: "Full Arch Dental Implants",
     description:
-      "A full arch of beautiful, permanent teeth supported by just four strategically placed implants. Restore your smile in a single day.",
-    icon: "implant" as const,
+      "Complete smile restoration using the All-on-X technique. 4-6 strategically placed implants support an entire arch of permanent, beautiful teeth.",
   },
   {
-    title: "All-on-6 Dental Implants",
+    id: "single-implants",
+    title: "Single Dental Implants",
     description:
-      "Six implants provide enhanced stability and support for a complete arch restoration, ideal for patients who need extra strength.",
-    icon: "implant" as const,
+      "Replace individual missing teeth with a titanium implant post and custom crown — looks and feels exactly like your natural tooth.",
   },
   {
-    title: "Full Arch Restoration",
+    id: "veneers",
+    title: "Dental Veneers",
     description:
-      "Complete smile transformation for patients with multiple missing teeth. A permanent, natural-looking solution that changes lives.",
-    icon: "arch" as const,
+      "Ultra-thin porcelain shells that transform the appearance of your teeth. Fix chips, stains, gaps, and uneven teeth for a flawless smile.",
   },
   {
-    title: "Teeth-in-a-Day",
-    description:
-      "Walk in with missing or failing teeth and walk out with a brand new smile — all in a single appointment.",
-    icon: "clock" as const,
-  },
-  {
-    title: "Bone Grafting",
-    description:
-      "Advanced bone regeneration procedures to build a strong foundation for dental implants, even when bone loss has occurred.",
-    icon: "bone" as const,
-  },
-  {
+    id: "snap-on-dentures",
     title: "Snap-On Dentures",
     description:
       "Removable implant-supported dentures that snap securely into place for improved stability, comfort, and confidence over traditional dentures.",
-    icon: "implant" as const,
   },
   {
+    id: "consultation",
     title: "Free Consultation",
     description:
       "A comprehensive evaluation with 3D imaging and a personalized treatment plan — at no cost to you.",
-    icon: "consultation" as const,
   },
 ] as const;
+
+export type ServiceId = (typeof SERVICES)[number]["id"];

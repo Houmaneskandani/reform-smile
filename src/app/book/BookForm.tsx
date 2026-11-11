@@ -7,7 +7,7 @@ import { z } from "zod";
 import { useState } from "react";
 import { submitForm } from "@/lib/submitForm";
 import { Calendar, Check, Phone } from "lucide-react";
-import { SITE_CONFIG } from "@/lib/constants";
+import { SERVICES, SITE_CONFIG } from "@/lib/constants";
 
 const bookingSchema = z.object({
   firstName: z.string().min(2, "First name is required"),
@@ -19,17 +19,14 @@ const bookingSchema = z.object({
   preferredTime: z.string().min(1, "Please select a preferred time"),
   isNewPatient: z.string().min(1, "Please select"),
   notes: z.string().optional(),
+  botcheck: z.string().optional(), // spam honeypot — must stay empty
 });
 
 type BookingFormData = z.infer<typeof bookingSchema>;
 
-const services = [
-  "All-on-4 Dental Implants",
-  "All-on-6 Dental Implants",
-  "Free Consultation",
-  "General Checkup",
-  "Other",
-];
+// Built from the canonical service list so the dropdown always matches what we offer.
+// The submitted value is the service title, so the practice email stays readable.
+const services = [...SERVICES.map((s) => s.title), "Not sure yet"];
 
 const timeSlots = [
   "9:00 AM",
@@ -49,14 +46,28 @@ const timeSlots = [
 
 export default function BookForm() {
   const [submitted, setSubmitted] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm<BookingFormData>({
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
   });
 
   const onSubmit = async (data: BookingFormData) => {
-    await submitForm(data as Record<string, string>, "Appointment Request");
-    setSubmitted(true);
+    setSubmitError(null);
+    const result = await submitForm(data as Record<string, string>, "Appointment Request");
+    if (result.success) {
+      setSubmitted(true);
+    } else {
+      // Keep everything the patient typed so they can retry or call instead.
+      setSubmitError(result.message);
+    }
   };
+
+  // Links each field to its error message for screen readers.
+  const fieldA11y = (name: keyof BookingFormData) => ({
+    id: `book-${name}`,
+    "aria-invalid": errors[name] ? true : undefined,
+    "aria-describedby": errors[name] ? `book-${name}-error` : undefined,
+  });
 
   const inputClass = "w-full px-5 py-3.5 rounded-xl border border-cream-dark bg-white text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors text-sm";
   const selectClass = "w-full px-5 py-3.5 rounded-xl border border-cream-dark bg-white text-dark focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors text-sm appearance-none cursor-pointer";
@@ -111,86 +122,104 @@ export default function BookForm() {
                   {/* Name */}
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-navy text-sm font-medium mb-2">First Name *</label>
-                      <input {...register("firstName")} placeholder="First name" className={inputClass} />
-                      {errors.firstName && <p className="text-red-500 text-[11px] mt-1">{errors.firstName.message}</p>}
+                      <label htmlFor="book-firstName" className="block text-navy text-sm font-medium mb-2">First Name *</label>
+                      <input {...register("firstName")} {...fieldA11y("firstName")} type="text" autoComplete="given-name" placeholder="First name" className={inputClass} />
+                      {errors.firstName && <p id="book-firstName-error" className="text-red-500 text-[11px] mt-1">{errors.firstName.message}</p>}
                     </div>
                     <div>
-                      <label className="block text-navy text-sm font-medium mb-2">Last Name *</label>
-                      <input {...register("lastName")} placeholder="Last name" className={inputClass} />
-                      {errors.lastName && <p className="text-red-500 text-[11px] mt-1">{errors.lastName.message}</p>}
+                      <label htmlFor="book-lastName" className="block text-navy text-sm font-medium mb-2">Last Name *</label>
+                      <input {...register("lastName")} {...fieldA11y("lastName")} type="text" autoComplete="family-name" placeholder="Last name" className={inputClass} />
+                      {errors.lastName && <p id="book-lastName-error" className="text-red-500 text-[11px] mt-1">{errors.lastName.message}</p>}
                     </div>
                   </div>
 
                   {/* Contact */}
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-navy text-sm font-medium mb-2">Email *</label>
-                      <input {...register("email")} type="email" placeholder="your@email.com" className={inputClass} />
-                      {errors.email && <p className="text-red-500 text-[11px] mt-1">{errors.email.message}</p>}
+                      <label htmlFor="book-email" className="block text-navy text-sm font-medium mb-2">Email *</label>
+                      <input {...register("email")} {...fieldA11y("email")} type="email" autoComplete="email" placeholder="your@email.com" className={inputClass} />
+                      {errors.email && <p id="book-email-error" className="text-red-500 text-[11px] mt-1">{errors.email.message}</p>}
                     </div>
                     <div>
-                      <label className="block text-navy text-sm font-medium mb-2">Phone *</label>
-                      <input {...register("phone")} type="tel" placeholder="(555) 123-4567" className={inputClass} />
-                      {errors.phone && <p className="text-red-500 text-[11px] mt-1">{errors.phone.message}</p>}
+                      <label htmlFor="book-phone" className="block text-navy text-sm font-medium mb-2">Phone *</label>
+                      <input {...register("phone")} {...fieldA11y("phone")} type="tel" autoComplete="tel" placeholder="(555) 123-4567" className={inputClass} />
+                      {errors.phone && <p id="book-phone-error" className="text-red-500 text-[11px] mt-1">{errors.phone.message}</p>}
                     </div>
                   </div>
 
                   {/* Service + New Patient */}
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-navy text-sm font-medium mb-2">Service *</label>
-                      <select {...register("service")} defaultValue="" className={selectClass}>
+                      <label htmlFor="book-service" className="block text-navy text-sm font-medium mb-2">Service *</label>
+                      <select {...register("service")} {...fieldA11y("service")} defaultValue="" className={selectClass}>
                         <option value="" disabled>Select a service</option>
                         {services.map((s) => <option key={s} value={s}>{s}</option>)}
                       </select>
-                      {errors.service && <p className="text-red-500 text-[11px] mt-1">{errors.service.message}</p>}
+                      {errors.service && <p id="book-service-error" className="text-red-500 text-[11px] mt-1">{errors.service.message}</p>}
                     </div>
                     <div>
-                      <label className="block text-navy text-sm font-medium mb-2">New Patient? *</label>
-                      <select {...register("isNewPatient")} defaultValue="" className={selectClass}>
+                      <label htmlFor="book-isNewPatient" className="block text-navy text-sm font-medium mb-2">New Patient? *</label>
+                      <select {...register("isNewPatient")} {...fieldA11y("isNewPatient")} defaultValue="" className={selectClass}>
                         <option value="" disabled>Select</option>
                         <option value="yes">Yes, I&apos;m a new patient</option>
                         <option value="no">No, I&apos;m a returning patient</option>
                       </select>
-                      {errors.isNewPatient && <p className="text-red-500 text-[11px] mt-1">{errors.isNewPatient.message}</p>}
+                      {errors.isNewPatient && <p id="book-isNewPatient-error" className="text-red-500 text-[11px] mt-1">{errors.isNewPatient.message}</p>}
                     </div>
                   </div>
 
                   {/* Date + Time */}
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-navy text-sm font-medium mb-2">Preferred Date *</label>
-                      <input {...register("preferredDate")} type="date" className={inputClass} />
-                      {errors.preferredDate && <p className="text-red-500 text-[11px] mt-1">{errors.preferredDate.message}</p>}
+                      <label htmlFor="book-preferredDate" className="block text-navy text-sm font-medium mb-2">Preferred Date *</label>
+                      <input {...register("preferredDate")} {...fieldA11y("preferredDate")} type="date" className={inputClass} />
+                      {errors.preferredDate && <p id="book-preferredDate-error" className="text-red-500 text-[11px] mt-1">{errors.preferredDate.message}</p>}
                     </div>
                     <div>
-                      <label className="block text-navy text-sm font-medium mb-2">Preferred Time *</label>
-                      <select {...register("preferredTime")} defaultValue="" className={selectClass}>
+                      <label htmlFor="book-preferredTime" className="block text-navy text-sm font-medium mb-2">Preferred Time *</label>
+                      <select {...register("preferredTime")} {...fieldA11y("preferredTime")} defaultValue="" className={selectClass}>
                         <option value="" disabled>Select a time</option>
                         {timeSlots.map((t) => <option key={t} value={t}>{t}</option>)}
                       </select>
-                      {errors.preferredTime && <p className="text-red-500 text-[11px] mt-1">{errors.preferredTime.message}</p>}
+                      {errors.preferredTime && <p id="book-preferredTime-error" className="text-red-500 text-[11px] mt-1">{errors.preferredTime.message}</p>}
                     </div>
                   </div>
 
                   {/* Notes */}
                   <div>
-                    <label className="block text-navy text-sm font-medium mb-2">Additional Notes</label>
+                    <label htmlFor="book-notes" className="block text-navy text-sm font-medium mb-2">Additional Notes</label>
                     <textarea
                       {...register("notes")}
+                      id="book-notes"
                       rows={3}
                       placeholder="Anything we should know before your visit?"
                       className={`${inputClass} resize-none`}
                     />
                   </div>
 
+                  {/* Spam honeypot — hidden from people; bots that fill it are ignored */}
+                  <input
+                    {...register("botcheck")}
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="hidden"
+                  />
+
+                  {submitError && (
+                    <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-5 py-3.5 text-sm text-red-700">
+                      {submitError}
+                    </p>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer"
+                    disabled={isSubmitting}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     <Check size={18} />
-                    Request Appointment
+                    {isSubmitting ? "Sending…" : "Request Appointment"}
                   </button>
                 </form>
               </>

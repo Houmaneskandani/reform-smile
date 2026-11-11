@@ -22,7 +22,7 @@ export default function BlogHero() {
           </h1>
           <p className="text-white/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
             Expert articles, patient education, and the latest in dental implant
-            technology from Dr. Pournejad.
+            technology from the Reform Smile team.
           </p>
         </motion.div>
       </div>

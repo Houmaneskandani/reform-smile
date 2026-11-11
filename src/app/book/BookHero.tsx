@@ -21,7 +21,7 @@ export default function BookHero() {
             Schedule Your <span className="text-gold italic">Visit</span>
           </h1>
           <p className="text-white/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Request an appointment with Dr. Pournejad. We&apos;ll confirm your
+            Request an appointment with our team. We&apos;ll confirm your
             preferred date and time within 24 hours.
           </p>
         </motion.div>

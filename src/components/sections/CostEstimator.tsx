@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Calculator, ArrowRight, ArrowLeft, DollarSign, Calendar } from "lucide-react";
+import { Calculator, ArrowLeft, DollarSign, Calendar } from "lucide-react";
 import { trackEvent } from "@/lib/tracking";
 
 type EstimatorStep = {
@@ -156,7 +156,7 @@ function calculateCost(answers: Record<string, string>): CostResult {
       "Full cost breakdown",
       "Financing plan options",
     ],
-    note: "The best way to get an accurate estimate is through a free consultation. Dr. Pournejad will examine your situation and present all options with clear pricing.",
+    note: "The best way to get an accurate estimate is through a free consultation, where our doctor will examine your situation and walk you through every option with clear pricing.",
   };
 }
 
@@ -173,7 +173,7 @@ export default function CostEstimator() {
         setCurrentStep((prev) => prev + 1);
       } else {
         setShowResult(true);
-        trackEvent("cost_estimator_completed", { procedure: value });
+        trackEvent("cost_estimator_completed", { procedure: answers.procedure, timeline: value });
       }
     }, 250);
   };
@@ -186,6 +186,8 @@ export default function CostEstimator() {
   };
 
   const result = showResult ? calculateCost(answers) : null;
+  // Fixed-price procedures return the same low and high value — show one price, not "$9,000 — $9,000".
+  const isSinglePrice = result !== null && result.lowRange === result.highRange;
   const progress = showResult ? 100 : (currentStep / steps.length) * 100;
 
   return (
@@ -211,7 +213,7 @@ export default function CostEstimator() {
                 <span className="text-gold italic">Cost Estimate</span>
               </h2>
               <p className="text-gray text-lg leading-relaxed mb-10 max-w-lg mx-auto">
-                Answer 4 quick questions and get an instant cost range for your
+                Answer 4 quick questions and get an instant cost estimate for your
                 treatment. No commitment, no contact info required.
               </p>
               <button
@@ -248,11 +250,17 @@ export default function CostEstimator() {
               {/* Cost range card */}
               <div className="bg-white rounded-2xl p-8 md:p-10 shadow-md border border-cream-dark mb-8">
                 <div className="text-center mb-8">
-                  <p className="text-gray text-sm mb-2">Estimated range</p>
+                  <p className="text-gray text-sm mb-2">
+                    {isSinglePrice ? "Estimated cost" : "Estimated range"}
+                  </p>
                   <p className="font-heading text-4xl md:text-5xl text-navy">
                     ${result.lowRange}
-                    <span className="text-gray mx-3 text-2xl">—</span>
-                    ${result.highRange}
+                    {!isSinglePrice && (
+                      <>
+                        <span className="text-gray mx-3 text-2xl">—</span>
+                        ${result.highRange}
+                      </>
+                    )}
                   </p>
                   <p className="text-gold text-sm mt-3 font-semibold">
                     Financing from ${result.monthlyFinancing}/month

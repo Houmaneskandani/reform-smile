@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import Header from "@/components/layout/Header";
 import FooterWrapper from "@/components/layout/FooterWrapper";
@@ -9,6 +9,7 @@ import CookieConsent from "@/components/CookieConsent";
 import SmoothScroll from "@/components/SmoothScroll";
 import IntroSequence from "@/components/IntroSequence";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { SITE_CONFIG } from "@/lib/constants";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -24,7 +25,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ava-green.vercel.app"),
+  metadataBase: new URL(SITE_CONFIG.url),
   title: {
     default: "Reform Smile & Dental Implant Center",
     template: "%s | Reform Smile & Dental Implant Center",
@@ -40,7 +41,8 @@ export const metadata: Metadata = {
     "teeth in a day",
     "dental implant center",
     "Reform Smile",
-    "Reform Smile",
+    "snap-on dentures",
+    "dental veneers",
     "missing teeth",
     "dental surgeon",
   ],
@@ -48,7 +50,6 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
-  themeColor: "#1B3A5C",
   appleWebApp: {
     statusBarStyle: "black-translucent",
   },
@@ -75,6 +76,10 @@ export const metadata: Metadata = {
       "Specializing in All-on-X dental implants and full arch restorations.",
     images: ["/og-image.jpg"],
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#1B3A5C",
 };
 
 export default function RootLayout({

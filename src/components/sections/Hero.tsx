@@ -3,21 +3,24 @@
 import { motion } from "framer-motion";
 import { Phone } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 function useGyroShine() {
   const [position, setPosition] = useState(50);
-  const granted = useRef(false);
+  // Until the device reports its tilt, the CSS shine animation is used instead
   const [fallback, setFallback] = useState(true);
 
   useEffect(() => {
+    // No tilt-driven effect for visitors who ask for reduced motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     const handleOrientation = (e: DeviceOrientationEvent) => {
       if (e.gamma === null) return;
-      granted.current = true;
       setFallback(false);
-      // Offset for natural phone holding angle
+      // Offset for natural phone holding angle; whole numbers so tiny sensor jitter
+      // doesn't re-render the hero on every event
       const normalized = Math.max(0, Math.min(100, ((e.gamma + 25) / 50) * 100));
-      setPosition(normalized);
+      setPosition(Math.round(normalized));
     };
 
     const requestPermission = async () => {
@@ -33,7 +36,6 @@ function useGyroShine() {
         } catch { /* denied */ }
       } else {
         window.addEventListener("deviceorientation", handleOrientation);
-        setTimeout(() => { if (!granted.current) setFallback(true); }, 1000);
       }
     };
 
@@ -58,8 +60,8 @@ export default function Hero() {
   const { position, fallback } = useGyroShine();
   return (
     <section className="relative min-h-[85vh] md:min-h-screen flex items-end md:items-center overflow-hidden -mt-24">
-      {/* Video Background */}
-      <div className="absolute inset-0">
+      {/* Video Background — navy behind it so the white headline stays readable while it loads */}
+      <div className="absolute inset-0 bg-navy-dark" aria-hidden="true">
         <video
           autoPlay
           muted
@@ -110,7 +112,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 25, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.65 }}
-                className={`inline-block italic mr-[0.3em] ${fallback ? "confident-shine" : ""}`}
+                className={`inline-block italic mr-[0.3em] ${fallback ? "confident-shine motion-reduce:animate-none!" : ""}`}
                 style={!fallback ? {
                   backgroundImage: `linear-gradient(105deg, #A8884D ${position - 30}%, #F0D890 ${position}%, #A8884D ${position + 30}%)`,
                   backgroundSize: "200% 100%",
@@ -213,7 +215,7 @@ export default function Hero() {
               </span>
             </motion.div>
 
-            {/* Trust stats */}
+            {/* Trust stats — statistics claims; confirm with the doctor before launch */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

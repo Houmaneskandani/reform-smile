@@ -32,7 +32,6 @@ export default function About() {
                   width={400}
                   height={533}
                   className="w-full h-full object-cover object-top"
-                  priority
                 />
               </div>
               {/* Gold accent */}
@@ -52,7 +51,7 @@ export default function About() {
               Meet Your Doctor
             </p>
             <h2 className="font-heading text-4xl md:text-5xl text-navy mb-8 leading-tight">
-              Meet Your Doctor
+              Expert Care With a Personal Touch
             </h2>
             <p className="text-gray text-[17px] leading-relaxed mb-6">
               Our doctor is passionate about transforming lives through
