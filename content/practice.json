@@ -1,0 +1,30 @@
+{
+  "phone": "(555) 123-4567",
+  "email": "info@reformsmile.com",
+  "address": "123 Main Street, Suite 100",
+  "city": "Los Angeles",
+  "state": "CA",
+  "zip": "90001",
+  "hours": {
+    "weekdays": {
+      "closed": false,
+      "opens": "09:00",
+      "closes": "17:00"
+    },
+    "saturday": {
+      "closed": false,
+      "opens": "09:00",
+      "closes": "14:00"
+    },
+    "sunday": {
+      "closed": true,
+      "opens": "09:00",
+      "closes": "17:00"
+    }
+  },
+  "social": {
+    "instagram": "https://www.instagram.com/reformdentalimplantcenter?igsh=NTc4MTIwNjQ2YQ%3D%3D&utm_source=qr"
+  },
+  "topBarTagline": "Transforming Smiles with All-on-X Dental Implants",
+  "footerBlurb": "Transforming lives through advanced dental implant solutions. The Reform Smile team is dedicated to restoring your confidence with beautiful, permanent smiles."
+}

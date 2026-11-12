@@ -1,0 +1,14 @@
+{
+  "fullArchPerArch": 9000,
+  "singleImplant": 2700,
+  "boneGraftMin": 1500,
+  "boneGraftMax": 3000,
+  "offer": {
+    "enabled": true,
+    "eyebrow": "Limited Time Offer",
+    "headline": "Full Mouth Dental Implants or Veneers",
+    "unitLabel": "Per Arch",
+    "body": "Full arch of implants with zirconia teeth, full arch of veneers, or a combination — all at one price.",
+    "ctaLabel": "Claim This Offer"
+  }
+}

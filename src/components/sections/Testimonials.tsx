@@ -2,29 +2,22 @@
 
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
+import { testimonials } from "@/content";
 
-const testimonials = [
-  {
-    name: "Sarah M.",
-    text: "Reform Smile gave me my life back. I had been hiding my smile for years because of missing teeth. After my All-on-4 procedure, I can't stop smiling. The entire team made me feel comfortable and cared for.",
-    procedure: "All-on-4 Dental Implants",
-    rating: 5,
-  },
-  {
-    name: "James R.",
-    text: "I visited multiple dentists before finding Reform Smile. The team took the time to explain everything and created a plan that worked for me. The results exceeded my expectations — my new teeth look completely natural.",
-    procedure: "Full Arch Restoration",
-    rating: 5,
-  },
-  {
-    name: "Maria L.",
-    text: "I was terrified of dental procedures, but the Reform Smile team was incredibly patient and gentle. The whole process was smoother than I ever imagined, and now I have a brand new smile!",
-    procedure: "Dental Implant Patient",
-    rating: 5,
-  },
-];
+// Reviews are edited in content/testimonials.json (real reviews without the patient's
+// permission on file are already left out by src/content/testimonials.ts). Sample (made-up)
+// reviews are flagged isSample there, and the note below the grid shows while any of them is
+// on the page. While every review shown is a sample, the note covers them all; once real
+// reviews sit next to samples, each sample also gets an asterisk so the note points at it.
+const reviews = testimonials.items.filter((review) => review.showOnHome);
+const showSampleNote = reviews.some((review) => review.isSample);
+const markEachSample = showSampleNote && reviews.some((review) => !review.isSample);
 
 export default function Testimonials() {
+  // No reviews to show (for example the samples were deleted before real ones exist): leave the
+  // whole section out rather than show its heading over an empty grid.
+  if (reviews.length === 0) return null;
+
   return (
     <section className="py-16 md:py-36 bg-white">
       <div className="max-w-7xl mx-auto px-6">
@@ -50,9 +43,9 @@ export default function Testimonials() {
 
         {/* Testimonials grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {testimonials.map((testimonial, index) => (
+          {reviews.map((review, index) => (
             <motion.div
-              key={testimonial.name}
+              key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -66,7 +59,7 @@ export default function Testimonials() {
 
               {/* Stars */}
               <div className="flex gap-1 mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
+                {[...Array(review.rating)].map((_, i) => (
                   <Star
                     key={i}
                     size={18}
@@ -76,21 +69,26 @@ export default function Testimonials() {
               </div>
 
               <p className="text-dark/80 leading-relaxed mb-6 text-sm">
-                &ldquo;{testimonial.text}&rdquo;
+                &ldquo;{review.quote}&rdquo;
               </p>
 
               <div className="border-t border-navy/10 pt-4">
-                <p className="font-semibold text-navy">{testimonial.name}</p>
-                <p className="text-gold text-sm">{testimonial.procedure}</p>
+                <p className="font-semibold text-navy">{review.displayName}</p>
+                <p className="text-gold text-sm">
+                  {review.treatmentLabel}
+                  {markEachSample && review.isSample && " *"}
+                </p>
               </div>
             </motion.div>
           ))}
         </div>
 
         {/* Note about placeholder content */}
-        <p className="text-center text-gray-light text-xs mt-8 italic">
-          * Sample testimonials — will be replaced with real patient reviews
-        </p>
+        {showSampleNote && (
+          <p className="text-center text-gray-light text-xs mt-8 italic">
+            * Sample testimonials — will be replaced with real patient reviews
+          </p>
+        )}
       </div>
     </section>
   );

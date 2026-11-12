@@ -1,46 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { faq } from "@/content";
 
-const faqs = [
-  {
-    question: "How much do dental implants cost?",
-    answer:
-      "The cost varies depending on the type of procedure and your individual needs. During your free consultation, our team will provide a detailed cost breakdown and discuss financing options. We believe everyone deserves a confident smile and work with you to find a plan that fits your budget.",
-  },
-  {
-    question: "Does the procedure hurt?",
-    answer:
-      "Most patients are surprised by how comfortable the procedure is. Our team uses advanced techniques and anesthesia to ensure you feel minimal discomfort during treatment. Many patients describe the experience as easier than a tooth extraction. Post-procedure discomfort is typically mild and manageable with over-the-counter medication.",
-  },
-  {
-    question: "How long do dental implants last?",
-    answer:
-      "With proper care, dental implants can last a lifetime. The titanium implant post fuses permanently with your jawbone through a process called osseointegration. The prosthetic teeth on top typically last 15-25 years before needing replacement, though many patients go even longer.",
-  },
-  {
-    question: "Am I a candidate for dental implants?",
-    answer:
-      "Most adults with missing or failing teeth are candidates for dental implants. Even if you've been told you don't have enough bone, procedures like bone grafting can make implants possible. The best way to find out is through a free consultation with our team, which includes 3D imaging of your jaw.",
-  },
-  {
-    question: "How long does the All-on-X procedure take?",
-    answer:
-      "In many cases, you can receive a full arch of new teeth in a single appointment. The implant placement typically takes 2-4 hours, and you leave the same day with a beautiful provisional set of teeth. Your final permanent prosthetic is placed after the implants have fully integrated, usually 3-6 months later.",
-  },
-  {
-    question: "What is the difference between implants and dentures?",
-    answer:
-      "Dental implants are permanently fixed in your jaw — they don't move, slip, or require adhesives. You eat, speak, and smile with complete confidence. Traditional dentures sit on top of your gums and can shift, cause discomfort, and limit what you can eat. Implants also preserve your jawbone, while traditional dentures can accelerate bone loss over time. If you prefer a removable option, snap-on dentures are a middle ground: they clip securely onto a few implants, so they stay in place far better than traditional dentures.",
-  },
-  {
-    question: "Do you accept insurance?",
-    answer:
-      "We work with most major dental insurance providers and will help you maximize your benefits. We also offer flexible financing options and payment plans to make treatment accessible. During your consultation, our team will review your coverage and provide a clear breakdown of costs.",
-  },
-];
+// The questions and answers are edited in content/faq.json.
+
+// The open answer's bottom padding (pb-6), added to its measured text height.
+const ANSWER_PADDING_PX = 24;
 
 function FAQItem({
   question,
@@ -52,6 +20,25 @@ function FAQItem({
   index: number;
 }) {
   const [open, setOpen] = useState(false);
+  // The answer opens to its measured height, so a long answer is never cut off, whatever its
+  // length and the screen width. The closed state is plain CSS (max-h-0), as prerendered.
+  const answerRef = useRef<HTMLParagraphElement>(null);
+  const [answerHeight, setAnswerHeight] = useState(0);
+
+  // While open, follow the text's height when it reflows (e.g. the phone is rotated).
+  useEffect(() => {
+    const answerText = answerRef.current;
+    if (!open || !answerText) return;
+    const observer = new ResizeObserver(() => setAnswerHeight(answerText.offsetHeight));
+    observer.observe(answerText);
+    return () => observer.disconnect();
+  }, [open]);
+
+  const toggle = () => {
+    // Measured before opening, so the transition runs from 0 to the full height.
+    if (!open) setAnswerHeight(answerRef.current?.offsetHeight ?? 0);
+    setOpen(!open);
+  };
 
   return (
     <motion.div
@@ -62,7 +49,7 @@ function FAQItem({
       className="border-b border-cream-dark"
     >
       <button
-        onClick={() => setOpen(!open)}
+        onClick={toggle}
         className="w-full flex items-center justify-between py-6 text-left cursor-pointer group"
       >
         <span className="font-heading text-lg md:text-xl text-navy pr-8 group-hover:text-gold transition-colors">
@@ -77,10 +64,11 @@ function FAQItem({
       </button>
       <div
         className={`overflow-hidden transition-all duration-400 ease-out ${
-          open ? "max-h-[500px] pb-6" : "max-h-0"
+          open ? "pb-6" : "max-h-0"
         }`}
+        style={open ? { maxHeight: answerHeight + ANSWER_PADDING_PX } : undefined}
       >
-        <p className="text-gray text-[15px] leading-relaxed pr-12">
+        <p ref={answerRef} className="text-gray text-[15px] leading-relaxed pr-12">
           {answer}
         </p>
       </div>
@@ -89,6 +77,9 @@ function FAQItem({
 }
 
 export default function FAQ() {
+  // No questions in content/faq.json: leave the section out rather than show an empty heading.
+  if (faq.items.length === 0) return null;
+
   return (
     <section className="py-16 md:py-36 bg-cream">
       <div className="section-container">
@@ -113,11 +104,11 @@ export default function FAQ() {
           </motion.div>
 
           <div>
-            {faqs.map((faq, i) => (
+            {faq.items.map((item, i) => (
               <FAQItem
                 key={i}
-                question={faq.question}
-                answer={faq.answer}
+                question={item.question}
+                answer={item.answer}
                 index={i}
               />
             ))}

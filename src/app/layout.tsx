@@ -1,16 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
-import Header from "@/components/layout/Header";
-import FooterWrapper from "@/components/layout/FooterWrapper";
-import StructuredData from "@/components/StructuredData";
-import StickyBookNow from "@/components/ui/StickyBookNow";
-import AIChatAssistant from "@/components/AIChatAssistant";
-import CookieConsent from "@/components/CookieConsent";
-import SmoothScroll from "@/components/SmoothScroll";
-import IntroSequence from "@/components/IntroSequence";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { SITE_CONFIG } from "@/lib/constants";
-import "./globals.css";
+
+// Root layout: only fonts, metadata, viewport and <html>/<body>. It deliberately does not
+// import globals.css or render the site chrome (header, footer, trackers, chat, cookie banner):
+// public pages get those from src/app/(site)/layout.tsx and the 404 from src/app/not-found.tsx.
+// The body classes stay here so the public HTML is unchanged; without the CSS they do nothing.
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -89,18 +84,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="min-h-screen flex flex-col font-body">
-        <GoogleAnalytics />
-        <IntroSequence />
-        <SmoothScroll />
-        <StructuredData />
-        <Header />
-        <main className="flex-1">{children}</main>
-        <FooterWrapper />
-        <StickyBookNow />
-        <AIChatAssistant />
-        <CookieConsent />
-      </body>
+      <body className="min-h-screen flex flex-col font-body">{children}</body>
     </html>
   );
 }

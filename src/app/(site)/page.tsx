@@ -12,14 +12,19 @@ import About from "@/components/sections/About";
 import Testimonials from "@/components/sections/Testimonials";
 import FAQ from "@/components/sections/FAQ";
 import CTASection from "@/components/sections/CTASection";
+import { pricing } from "@/content";
+import { isOfferLive } from "@/content/format";
 
 export default function Home() {
+  // Checked when the page is prerendered; LimitedOffer re-checks the date in the browser.
+  const showOffer = isOfferLive(pricing.offer, new Date());
+
   return (
     <>
       <Hero />
       <TrustBar />
       <TrustLogos />
-      <LimitedOffer />
+      {showOffer && <LimitedOffer />}
       <Services />
       <SmileQuiz />
       <StatsCounter />

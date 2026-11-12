@@ -49,20 +49,24 @@ Open [http://localhost:3000](http://localhost:3000) in your browser. You should 
 2. When happy with changes:
 
 ```bash
-npm run build                    # Check for errors
+npm run build                    # Check for errors (also checks the content files)
 git add -A                       # Stage changes
 git commit -m "Description"      # Commit
+git pull --rebase origin main    # Get the latest main first (e.g. saves from the website editor)
 git push origin main             # Push to GitHub → auto-deploys to live site!
 ```
 
-**Auto-deploy is enabled** — every push to `main` automatically updates the live website. No extra steps needed.
+**Auto-deploy is enabled** — every push to `main` automatically updates the live website. No extra steps needed. Don't use `vercel --prod`: it deploys your local folder and could undo newer changes on `main` (see "Git + Deploy Workflow" in `CLAUDE.md`).
 
 ## Project Structure
 
 ```
+content/           → Site text edited in the website editor (phone, hours, prices, services, FAQ, reviews)
 src/
-├── app/           → Pages (each folder = a URL route)
+├── app/(site)/    → Pages (each folder = a URL route; "(site)" isn't part of the URL)
+├── app/keystatic/ → The website editor (/keystatic)
 ├── components/    → Reusable UI pieces
+├── content/       → Code that reads and checks the content/ files
 └── lib/           → Config, helpers, utilities
 
 public/
@@ -75,27 +79,29 @@ public/
 
 | File | What It Does |
 |------|-------------|
-| `src/lib/constants.ts` | Phone, email, address, hours — edit here to update everywhere |
-| `src/app/page.tsx` | Homepage — controls which sections show and in what order |
-| `src/app/layout.tsx` | Global layout — header, footer, fonts, SEO metadata |
+| `content/practice.json` | Phone, email, address, hours, social links — change them in the website editor to update everywhere |
+| `src/lib/constants.ts` | Site name, site address (URL), menu links |
+| `src/app/(site)/page.tsx` | Homepage — controls which sections show and in what order |
+| `src/app/layout.tsx` | Root layout — fonts, SEO metadata |
+| `src/components/layout/SiteChrome.tsx` | Header, footer, chat widget, cookie banner around every public page |
 | `.env.local` | API keys (never committed to git) |
 | `CLAUDE.md` | Full project documentation for AI assistants |
 
 ## Common Tasks
 
-### Update contact info
-Edit `src/lib/constants.ts` — phone, email, address, hours, social links
+### Update contact info, prices, services text, FAQ or reviews
+Use the website editor: run `npm run dev:admin`, open http://127.0.0.1:3000/keystatic, change the text and click Save. That updates the files in `content/`; then deploy as below. (See "Admin panel" in `CLAUDE.md`.)
 
 ### Add a new photo
 1. Put the image in `public/images/cases/`
 2. Reference it as `/images/cases/your-image.jpg` in any component
 
 ### Change text on a page
-Find the page in `src/app/[page-name]/` and edit the `.tsx` files
+If it isn't in the website editor, find the page in `src/app/(site)/[page-name]/` and edit the `.tsx` files
 
 ### Deploy changes
 ```bash
-npm run build && git add -A && git commit -m "your message" && git push origin main
+npm run build && git add -A && git commit -m "your message" && git pull --rebase origin main && git push origin main
 ```
 That's it — Vercel auto-deploys when you push. Live in ~30 seconds.
 

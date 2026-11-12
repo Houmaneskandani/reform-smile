@@ -4,6 +4,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Calculator, ArrowLeft, DollarSign, Calendar } from "lucide-react";
 import { trackEvent } from "@/lib/tracking";
+import { pricing } from "@/content";
+import { formatMoney } from "@/content/format";
+
+// Per-arch and per-implant prices are edited in content/pricing.json. The estimate math,
+// financing terms and the "not sure" range stay in code.
+const FULL_ARCH_PRICE = pricing.fullArchPerArch;
+const SINGLE_IMPLANT_PRICE = pricing.singleImplant;
 
 type EstimatorStep = {
   id: string;
@@ -71,7 +78,7 @@ function calculateCost(answers: Record<string, string>): CostResult {
   const bothMultiplier = jaw === "both" ? 2 : 1;
 
   if (procedure === "full-arch") {
-    const total = 9000 * bothMultiplier;
+    const total = FULL_ARCH_PRICE * bothMultiplier;
     return {
       procedure: "Full Arch Dental Implants",
       lowRange: total.toLocaleString(),
@@ -83,13 +90,13 @@ function calculateCost(answers: Record<string, string>): CostResult {
         "Full arch of zirconia teeth",
         "All follow-up appointments",
       ],
-      note: "$9,000 per arch — includes implants and zirconia teeth. Can also be a mix of implants and veneers.",
+      note: `${formatMoney(FULL_ARCH_PRICE)} per arch — includes implants and zirconia teeth. Can also be a mix of implants and veneers.`,
     };
   }
 
   if (procedure === "single") {
     const count = jaw === "both" ? 4 : jaw === "front" ? 2 : 1;
-    const total = 2700 * count;
+    const total = SINGLE_IMPLANT_PRICE * count;
     return {
       procedure: count > 1 ? `Single Implants (${count} teeth)` : "Single Dental Implant",
       lowRange: total.toLocaleString(),
@@ -108,7 +115,7 @@ function calculateCost(answers: Record<string, string>): CostResult {
 
   if (procedure === "multiple") {
     const count = jaw === "both" ? 4 : jaw === "front" ? 3 : 2;
-    const total = 2700 * count;
+    const total = SINGLE_IMPLANT_PRICE * count;
     return {
       procedure: `Multiple Implants (${count} teeth)`,
       lowRange: total.toLocaleString(),
@@ -121,12 +128,12 @@ function calculateCost(answers: Record<string, string>): CostResult {
         "Porcelain crowns",
         "Follow-up care",
       ],
-      note: "$2,700 per single implant. Exact count determined during consultation.",
+      note: `${formatMoney(SINGLE_IMPLANT_PRICE)} per single implant. Exact count determined during consultation.`,
     };
   }
 
   if (procedure === "veneers") {
-    const total = 9000 * bothMultiplier;
+    const total = FULL_ARCH_PRICE * bothMultiplier;
     return {
       procedure: "Full Arch Veneers",
       lowRange: total.toLocaleString(),

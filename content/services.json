@@ -1,0 +1,95 @@
+{
+  "items": [
+    {
+      "id": "full-arch",
+      "title": "Full Arch Dental Implants",
+      "description": "Complete smile restoration using the All-on-X technique. 4-6 strategically placed implants support an entire arch of permanent, beautiful teeth.",
+      "tagline": "Our Signature Treatment — Complete Smile Restoration",
+      "body": [
+        "Full arch dental implants are the gold standard for replacing a complete set of teeth. Using the All-on-X technique, our team places 4-6 strategically positioned implants to support an entire arch of beautiful, permanent teeth.",
+        "This approach delivers stunning, natural-looking results — often in a single visit. No more loose dentures, no more adhesives. Just a confident, permanent smile you can eat, laugh, and live with."
+      ],
+      "benefits": [
+        "Full arch of permanent teeth in one visit",
+        "No denture adhesives — ever",
+        "Eat, smile, and laugh with total confidence",
+        "Minimal bone grafting required",
+        "Natural look and feel",
+        "Long-lasting, durable results"
+      ],
+      "needsClinicalReview": false
+    },
+    {
+      "id": "single-implants",
+      "title": "Single Dental Implants",
+      "description": "Replace individual missing teeth with a titanium implant post and custom crown — looks and feels exactly like your natural tooth.",
+      "tagline": "Replace Individual Missing Teeth",
+      "body": [
+        "A single dental implant is the ideal solution for replacing one missing tooth without affecting neighboring teeth. A titanium implant post is placed directly into the jawbone, acting as an artificial root, then topped with a custom-crafted crown.",
+        "The result is indistinguishable from your natural teeth — in look, feel, and function. Single implants also preserve bone structure and prevent the shifting of surrounding teeth."
+      ],
+      "benefits": [
+        "Replaces one tooth without affecting others",
+        "Looks and feels like a natural tooth",
+        "Preserves jawbone structure",
+        "Prevents neighboring teeth from shifting",
+        "Easy to care for — brush and floss normally"
+      ],
+      "needsClinicalReview": false
+    },
+    {
+      "id": "veneers",
+      "title": "Dental Veneers",
+      "description": "Ultra-thin porcelain shells that transform the appearance of your teeth. Fix chips, stains, gaps, and uneven teeth for a flawless smile.",
+      "tagline": "Transform Your Smile's Appearance",
+      "body": [
+        "Dental veneers are ultra-thin, custom-made shells that cover the front surface of your teeth to improve their appearance. They're an excellent solution for teeth that are discolored, chipped, worn, misaligned, or unevenly spaced.",
+        "Our team uses premium porcelain veneers designed to match the natural translucency and color of real teeth. The result is a flawless, natural-looking smile that can last for years with proper care."
+      ],
+      "benefits": [
+        "Dramatically improve smile aesthetics",
+        "Fix chips, stains, and uneven teeth",
+        "Ultra-thin — minimal tooth preparation",
+        "Stain-resistant porcelain material",
+        "Natural-looking, long-lasting results"
+      ],
+      "needsClinicalReview": false
+    },
+    {
+      "id": "snap-on-dentures",
+      "title": "Snap-On Dentures",
+      "description": "Removable implant-supported dentures that snap securely into place for improved stability, comfort, and confidence over traditional dentures.",
+      "tagline": "Secure, Removable Implant Dentures",
+      "body": [
+        "Snap-on dentures — also called implant-retained overdentures — are removable dentures that attach to a small number of dental implants. Fittings inside the denture snap onto attachments on the implants, such as locator attachments, holding your teeth securely in place while you eat, speak, and smile.",
+        "Because they're anchored to implants, snap-on dentures are typically more stable than traditional dentures that rest on the gums alone, and you can unsnap them each day for easy cleaning. They often require fewer implants than a fixed full arch, which can lower the overall cost, and they may be an option when jawbone is limited. During your consultation, our team will help you decide which approach is right for you."
+      ],
+      "benefits": [
+        "More stable than a traditional denture",
+        "Snaps securely onto dental implants",
+        "Removable for easy daily cleaning",
+        "Often requires fewer implants than a fixed full arch",
+        "May be an option when jawbone is limited"
+      ],
+      "needsClinicalReview": true
+    },
+    {
+      "id": "consultation",
+      "title": "Free Consultation",
+      "description": "A comprehensive evaluation with 3D imaging and a personalized treatment plan — at no cost to you.",
+      "tagline": "Your Journey Starts Here",
+      "body": [
+        "Every great smile transformation begins with a conversation. During your free consultation, our team will perform a comprehensive examination, take 3D CT scans of your jaw, and discuss your goals and concerns.",
+        "You'll receive a personalized treatment plan with clear options, a full cost breakdown, and information about financing. There's absolutely no obligation — just expert guidance to help you make the best decision for your smile."
+      ],
+      "benefits": [
+        "Comprehensive dental examination",
+        "Advanced 3D CT imaging",
+        "Personalized treatment plan",
+        "Clear cost breakdown and financing options",
+        "No obligation whatsoever"
+      ],
+      "needsClinicalReview": false
+    }
+  ]
+}

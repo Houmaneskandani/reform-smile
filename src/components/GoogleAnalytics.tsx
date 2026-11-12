@@ -38,6 +38,12 @@ export default function GoogleAnalytics() {
   // Only "accepted" on the client: the server and the hydration render see undefined.
   if (consent !== "accepted") return null;
 
+  // Never on the website editor's own subdomain (ADMIN_HOST in next.config.ts, which must start
+  // with "admin."): the editor's sign-in token is in that origin's storage. Its redirects send
+  // every other page to the main site, but Next.js never redirects paths that start with
+  // /_next, so a URL like admin.<domain>/_nextfoo still shows the site's 404 page there.
+  if (window.location.hostname.startsWith("admin.")) return null;
+
   const loadMetaPixel = FB_PIXEL_ID !== "" && !hasGlobalPrivacyControl();
 
   return (

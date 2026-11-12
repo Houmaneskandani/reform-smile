@@ -9,6 +9,7 @@ import { submitForm } from "@/lib/submitForm";
 import Image from "next/image";
 import { Phone, Check, Star, Shield, Clock, ArrowRight } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
+import { testimonials } from "@/content";
 import { CookieSettingsButton } from "@/components/CookieConsent";
 
 const consultationSchema = z.object({
@@ -22,6 +23,13 @@ const consultationSchema = z.object({
 });
 
 type ConsultationFormData = z.infer<typeof consultationSchema>;
+
+// Reviews for the social proof strip, edited in content/testimonials.json (the short quote
+// and label are used when set; real reviews without permission on file are already left out).
+// Sample reviews get an asterisk and the note below them. With no reviews, the strip shows
+// only the cookie settings link.
+const reviews = testimonials.items.filter((review) => review.showOnConsultation);
+const showSampleNote = reviews.some((review) => review.isSample);
 
 const concerns = [
   "Missing teeth",
@@ -311,41 +319,29 @@ export default function ConsultationPage() {
       {/* Social proof strip */}
       <section className="bg-cream py-14">
         <div className="section-container">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-4xl mx-auto">
-            {[
-              {
-                quote: "The Reform Smile team gave me my life back. I can't stop smiling.",
-                name: "Sarah M.",
-                procedure: "All-on-4 Patient",
-              },
-              {
-                quote: "The best decision I ever made. My only regret is not doing it sooner.",
-                name: "James R.",
-                procedure: "Full Arch Patient",
-              },
-              {
-                quote: "The whole team made me feel comfortable from day one. Incredible results.",
-                name: "Maria L.",
-                procedure: "Dental Implant Patient",
-              },
-            ].map((t) => (
-              <div key={t.name} className="text-center">
-                <div className="flex justify-center gap-0.5 mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={14} className="text-gold fill-gold" />
-                  ))}
+          {reviews.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-4xl mx-auto">
+              {reviews.map((t, index) => (
+                <div key={index} className="text-center">
+                  <div className="flex justify-center gap-0.5 mb-3">
+                    {[...Array(t.rating)].map((_, i) => (
+                      <Star key={i} size={14} className="text-gold fill-gold" />
+                    ))}
+                  </div>
+                  <p className="text-dark/70 text-sm italic mb-3">
+                    &ldquo;{t.shortQuote || t.quote}&rdquo;
+                  </p>
+                  <p className="text-navy font-semibold text-sm">{t.displayName}</p>
+                  <p className="text-gold text-xs">{t.shortTreatmentLabel || t.treatmentLabel}{t.isSample && " *"}</p>
                 </div>
-                <p className="text-dark/70 text-sm italic mb-3">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <p className="text-navy font-semibold text-sm">{t.name}</p>
-                <p className="text-gold text-xs">{t.procedure} *</p>
-              </div>
-            ))}
-          </div>
-          <p className="text-center text-gray-light text-[10px] mt-8 italic">
-            * Sample testimonials — will be replaced with real patient reviews
-          </p>
+              ))}
+            </div>
+          )}
+          {showSampleNote && (
+            <p className="text-center text-gray-light text-[10px] mt-8 italic">
+              * Sample testimonials — will be replaced with real patient reviews
+            </p>
+          )}
           {/* This page has no site footer, so it needs its own way to reopen the cookie choice */}
           <div className="text-center mt-6">
             <CookieSettingsButton className="text-gray-light hover:text-navy text-xs underline underline-offset-2 transition-colors cursor-pointer" />

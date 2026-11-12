@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send, Bot, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SITE_CONFIG } from "@/lib/constants";
+import { pricing } from "@/content";
+import { formatMoney, isOfferLive } from "@/content/format";
 import { trackEvent } from "@/lib/tracking";
 import { useStickyBookNowVisible } from "@/components/ui/StickyBookNow";
 
@@ -18,10 +20,15 @@ const MAX_MESSAGE_CHARS = 2000;
 
 const CONNECTION_ERROR_REPLY = `Sorry, I'm having trouble connecting. Please call us at ${SITE_CONFIG.phone} for immediate help!`;
 
+// Prices come from content/pricing.json; "limited time offer" only while the offer is live.
+const SINGLE_IMPLANT_PRICE = formatMoney(pricing.singleImplant);
+const FULL_ARCH_PRICE = formatMoney(pricing.fullArchPerArch);
+const OFFER_NOTE = isOfferLive(pricing.offer, new Date()) ? " (limited time offer!)" : "";
+
 // Demo answers — used when the live AI assistant isn't configured or can't be reached.
 const MOCK_RESPONSES = {
   default: `Great question! For the most accurate answer, I'd recommend a **free consultation** with our team. You can book online or call us at ${SITE_CONFIG.phone}.`,
-  cost: `Great question about cost! Here are our current prices:\n\n• **Single implant:** $2,700 per implant\n• **Full arch (implants or veneers):** $9,000 per arch (limited time offer!)\n\nThe $9,000 per arch can include implants with zirconia teeth, veneers, or a combination. We also offer financing options. Would you like to book a **free consultation** for an exact treatment plan?`,
+  cost: `Great question about cost! Here are our current prices:\n\n• **Single implant:** ${SINGLE_IMPLANT_PRICE} per implant\n• **Full arch (implants or veneers):** ${FULL_ARCH_PRICE} per arch${OFFER_NOTE}\n\nThe ${FULL_ARCH_PRICE} per arch can include implants with zirconia teeth, veneers, or a combination. We also offer financing options. Would you like to book a **free consultation** for an exact treatment plan?`,
   pain: "Most patients are pleasantly surprised by how comfortable the procedure is! Our team uses advanced techniques and anesthesia to minimize discomfort, and many patients compare it to a simple tooth extraction. Would you like to learn more during a free consultation?",
   dentures:
     "Our **Snap-On Dentures** are removable, implant-supported dentures that snap securely into place, giving you more stability, comfort, and confidence than traditional dentures. Would you like to book a **free consultation** to see if they're a good fit for you?",

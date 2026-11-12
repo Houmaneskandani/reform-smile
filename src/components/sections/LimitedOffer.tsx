@@ -1,10 +1,26 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
 import { Clock, ArrowRight } from "lucide-react";
+import { pricing } from "@/content";
+import { formatMoney, isOfferLive } from "@/content/format";
 
-// Offer wording and price come from the practice — don't change them without the doctor's confirmation.
+// The offer wording, price, on/off switch and end date are edited in content/pricing.json.
+// Prices and offers come from the practice — don't change them without the doctor's confirmation.
+const { offer } = pricing;
+
+// The homepage is prerendered, and page.tsx leaves this section out when the offer was
+// already off on the build date. After the page loads, the visitor's date is checked too,
+// so an offer that ended since the last build disappears without a rebuild.
+const noSubscription = () => () => {};
+const isLiveToday = () => isOfferLive(offer, new Date());
+const wasLiveAtBuild = () => true;
+
 export default function LimitedOffer() {
+  const live = useSyncExternalStore(noSubscription, isLiveToday, wasLiveAtBuild);
+  if (!live) return null;
+
   return (
     <section className="py-10 md:py-14 bg-gold relative overflow-hidden">
       {/* Subtle shine effect */}
@@ -23,27 +39,27 @@ export default function LimitedOffer() {
           <div className="flex items-center justify-center gap-2 mb-3">
             <Clock size={18} className="text-white/80" />
             <span className="text-white/80 text-xs md:text-sm font-semibold uppercase tracking-widest">
-              Limited Time Offer
+              {offer.eyebrow}
             </span>
           </div>
 
           <h2 className="font-heading text-2xl md:text-4xl text-white mb-3 leading-tight">
-            Full Mouth Dental Implants or Veneers
+            {offer.headline}
           </h2>
 
           <p className="text-white text-3xl md:text-5xl font-heading font-bold mb-4">
-            $9,000 <span className="text-white/70 text-lg md:text-2xl font-normal">Per Arch</span>
+            {`${formatMoney(pricing.fullArchPerArch)} `}<span className="text-white/70 text-lg md:text-2xl font-normal">{offer.unitLabel}</span>
           </p>
 
           <p className="text-white/70 text-sm md:text-base mb-6 max-w-lg mx-auto">
-            Full arch of implants with zirconia teeth, full arch of veneers, or a combination — all at one price.
+            {offer.body}
           </p>
 
           <a
             href="/consultation"
             className="inline-flex items-center gap-2 bg-white text-navy hover:bg-white/90 font-bold px-8 py-3.5 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl text-sm md:text-base"
           >
-            Claim This Offer
+            {offer.ctaLabel}
             <ArrowRight size={18} aria-hidden="true" />
           </a>
         </motion.div>

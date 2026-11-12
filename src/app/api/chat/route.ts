@@ -1,5 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { SERVICES, SITE_CONFIG } from "@/lib/constants";
+import { pricing } from "@/content";
+import { formatMoney, formatPriceRange, isOfferLive } from "@/content/format";
 
 // The AI chat assistant's server side. The Anthropic key is read here, on the server only —
 // it never reaches the browser. Without a key the widget falls back to its demo answers.
@@ -18,7 +20,18 @@ const RATE_LIMIT_MAX_TRACKED_IPS = 10_000;
 
 const SERVICE_LINES = SERVICES.map((service) => `  - ${service.title}: ${service.description}`).join("\n");
 
-const SYSTEM_PROMPT = `You are the AI assistant for ${SITE_CONFIG.name}.
+// Prices come from content/pricing.json (edited in the website editor).
+const SINGLE_IMPLANT_PRICE = formatMoney(pricing.singleImplant);
+const FULL_ARCH_PRICE = formatMoney(pricing.fullArchPerArch);
+const BONE_GRAFT_RANGE = formatPriceRange(pricing.boneGraftMin, pricing.boneGraftMax);
+const BONE_GRAFT_LINE = BONE_GRAFT_RANGE
+  ? `- Bone grafting: ${BONE_GRAFT_RANGE} (if needed)`
+  : "- Bone grafting (if needed): the cost varies and is discussed during the free consultation";
+
+// Built per request so "limited time offer" disappears as soon as the offer ends.
+function systemPrompt(now: Date): string {
+  const offerNote = isOfferLive(pricing.offer, now) ? " (limited time offer)" : "";
+  return `You are the AI assistant for ${SITE_CONFIG.name}.
 
 YOUR ONLY PURPOSE: Help potential patients with questions about dental implants, our services, procedures, costs, booking, and oral health related to implant dentistry.
 
@@ -48,10 +61,10 @@ ${SERVICE_LINES}
 - Hours: Monday–Friday ${SITE_CONFIG.hours.weekdays}, Saturday ${SITE_CONFIG.hours.saturday}, Sunday ${SITE_CONFIG.hours.sunday}
 
 COST RANGES (general estimates only):
-- Single implant: $2,700 per implant
-- Full arch implants or veneers: $9,000 per arch (limited time offer)
+- Single implant: ${SINGLE_IMPLANT_PRICE} per implant
+- Full arch implants or veneers: ${FULL_ARCH_PRICE} per arch${offerNote}
 - Can be implants, veneers, or a mix
-- Bone grafting: $1,500–$3,000 (if needed)
+${BONE_GRAFT_LINE}
 - Always note: "Exact pricing is determined during your free consultation"
 
 RESPONSE STYLE:
@@ -60,6 +73,7 @@ RESPONSE STYLE:
 - Write plain text. You may wrap a key phrase in **double asterisks** to bold it; use no other formatting — no headings, bullet lists, tables, links, or URLs.
 - Always end with a next step (book consultation, call us, visit a page)
 - Use the patient's concern to recommend the right service`;
+}
 
 // Friendly replies the widget shows as-is. They never name the doctor.
 const REFUSAL_REPLY = `That's something our team would be happy to talk through with you personally. The best next step is to **book a free consultation** or call us at ${SITE_CONFIG.phone}.`;
@@ -236,7 +250,7 @@ export async function POST(request: Request) {
       betas: ["server-side-fallback-2026-07-01"],
       fallbacks: "default",
       output_config: { effort: "low" },
-      system: SYSTEM_PROMPT,
+      system: systemPrompt(new Date()),
       messages,
     });
 

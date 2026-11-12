@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Phone, Mail, MapPin, Clock, Camera, MessageCircle, Video } from "lucide-react";
 import { SITE_CONFIG, NAV_LINKS } from "@/lib/constants";
+import { practice } from "@/content";
+import { telHref } from "@/content/format";
 import { CookieSettingsButton } from "@/components/CookieConsent";
 
 // Only profiles with a real address are shown — placeholders ("#") would be dead links.
@@ -26,10 +28,9 @@ export default function Footer() {
               height={160}
               className="h-24 md:h-28 w-auto mb-4"
             />
+            {/* Edited in content/practice.json */}
             <p className="text-white/70 text-sm leading-relaxed mt-4">
-              Transforming lives through advanced dental implant solutions.
-              The Reform Smile team is dedicated to restoring your confidence
-              with beautiful, permanent smiles.
+              {practice.footerBlurb}
             </p>
           </div>
 
@@ -65,7 +66,7 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <Phone size={18} className="text-gold mt-0.5 flex-shrink-0" />
                 <a
-                  href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
+                  href={telHref(SITE_CONFIG.phone)}
                   className="text-white/70 hover:text-gold transition-colors text-sm"
                 >
                   {SITE_CONFIG.phone}

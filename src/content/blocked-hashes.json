@@ -1,0 +1,6 @@
+{
+  "description": "SHA-256 hashes (hex) of lowercased words that must never appear in site content. Only the hashes are stored, so the words themselves are never written in this repository.",
+  "sha256": [
+    "84025cac4c12482c204d1b31db1d43910fb43fe92a8d9ea3999b180bb98e6514"
+  ]
+}

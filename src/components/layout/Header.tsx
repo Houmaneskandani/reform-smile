@@ -7,9 +7,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { Phone, Menu, X } from "lucide-react";
 import { SITE_CONFIG, NAV_LINKS } from "@/lib/constants";
+import { practice } from "@/content";
+import { telHref } from "@/content/format";
 import Button from "@/components/ui/Button";
 
-const PHONE_HREF = `tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`;
+const PHONE_HREF = telHref(SITE_CONFIG.phone);
 
 // On the homepage the header turns from transparent to solid white past this point.
 const SCROLL_THRESHOLD = 50;
@@ -59,9 +61,8 @@ export default function Header() {
       {/* Top bar */}
       <div className="bg-navy text-white text-sm py-2.5 hidden md:block relative z-50">
         <div className="section-container flex justify-between items-center gap-6">
-          <p className="text-white/80 truncate">
-            Transforming Smiles with All-on-X Dental Implants
-          </p>
+          {/* Edited in content/practice.json */}
+          <p className="text-white/80 truncate">{practice.topBarTagline}</p>
           <a
             href={PHONE_HREF}
             className="flex items-center gap-2 whitespace-nowrap hover:text-gold transition-colors"
