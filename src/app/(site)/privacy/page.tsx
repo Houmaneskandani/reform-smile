@@ -56,7 +56,9 @@ export default function PrivacyPage() {
             <p>
               When you send the contact, appointment or free consultation form, we receive what
               you type into it: your name, email address, phone number, the service or concern
-              you select, your preferred date and time, and any message you add.
+              you select, your preferred date and time, and any message you add. If you send
+              private feedback from our review page, we receive your rating, your message and
+              any name or contact details you choose to add.
             </p>
             <p>
               When you use the chat assistant, we receive the messages you type. The assistant

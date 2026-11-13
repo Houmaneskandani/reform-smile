@@ -136,6 +136,8 @@ src/
 │   │   ├── blog/               # Blog articles placeholder (SEO)
 │   │   ├── contact/            # Contact page (info + validated form + map placeholder)
 │   │   ├── book/               # Appointment booking (full form with date/time picker)
+│   │   ├── review/             # "Rate your visit" page for patients (link or QR code). A 404 until the
+│   │   │                       #   Google review link is set; see "Review page"
 │   │   ├── privacy/            # Privacy policy (DRAFT: needs the practice's review, see "Privacy policy")
 │   │   └── consultation/       # Marketing landing page — has its own minimal layout (no header/footer)
 │   ├── keystatic/              # Website editor UI at /keystatic. Outside (site): no site CSS, chrome or trackers.
@@ -233,6 +235,12 @@ Hero → trust bar → credential badges → limited offer (when on) → service
 ### Privacy policy
 `/privacy` (`src/app/(site)/privacy/page.tsx`) is a **draft** written from what the site actually does. Dr. Ava (ideally with her attorney) should review it. Update it whenever the site collects something new: a form field, a tracker, the Marketing Ava lead forward, text-message consent. It is not the practice's HIPAA Notice of Privacy Practices.
 
+### Review page (`/review`)
+Patients are sent here (link or QR code) to rate their visit. It is not in the menu or the sitemap and is `noindex`.
+- **Never turn it into a filter.** Every rating, 1 to 5 stars, shows the same two choices in the same order and style: "Post a review on Google" and "Tell us privately". Sending only 5-star patients to Google and keeping the rest on the website is review gating: Google's review policy forbids it (reviews removed, profile penalized) and the FTC treats it as deceptive. Dr. Ava asked for the gated version on 2026-11-13; this is the compliant version of that request. The rating only changes one line of text and is included in the private message.
+- **It is a 404 in production until the Google review link is set**: editor → Practice info → "Google review link" (`googleReviewUrl` in `content/practice.json`; it comes from the Google Business Profile's "Ask for reviews"). Without the link the page could only collect private feedback.
+- Private feedback goes through `submitForm` ("Private Feedback") to the practice inbox, so it needs `NEXT_PUBLIC_WEB3FORMS_KEY` like the other forms. It is free text: the form tells patients not to include medical details. Later it can go to Marketing Ava instead.
+
 ### Canonical tags
 Every page sets `alternates: { canonical: "/its-path" }` in its `metadata` (the site is also reachable at ava-green.vercel.app, and Google needs to know which address is the official one). A new page must set its own; it can't be set once in the layout.
 
@@ -259,7 +267,7 @@ A form-based editor at `/keystatic` for the site text that changes most, so she 
 ### What she can edit
 | Editor page | File | What's on it |
 |-------------|------|--------------|
-| Practice info | `content/practice.json` | Phone, email, street address, city, state, ZIP, opening hours (half-hour pickers or "Closed all day"), Instagram/Facebook/YouTube links (empty hides the icon), top bar tagline, footer text |
+| Practice info | `content/practice.json` | Phone, email, street address, city, state, ZIP, opening hours (half-hour pickers or "Closed all day"), Instagram/Facebook/YouTube links (empty hides the icon), Google review link (empty keeps `/review` hidden), top bar tagline, footer text |
 | Prices & offer | `content/pricing.json` | Full arch price per arch, single implant price, optional bone graft range, the homepage limited-time offer (show/hide, its texts, optional last day) |
 | Services | `content/services.json` | Text of the 5 fixed services (name, summary, Services-page subheading, paragraphs, benefits, a "needs clinical review" reminder) and their order. Free Consultation stays last |
 | FAQ | `content/faq.json` | Questions and answers; drag to reorder |
@@ -363,6 +371,7 @@ Sites Dr. Ava used as inspiration:
 | 2026-11-13 | Removed the logo splash (IntroSequence) and the stats counter section | The splash hid the page for about 1.7 s on every first visit; the stats were shown three times |
 | 2026-11-13 | `text-gold-ink` for gold text, navy text on gold fills | Brand gold on white and white on gold were 2.4:1, unreadable for many people and flagged by Lighthouse |
 | 2026-11-13 | New bronze logo everywhere, generated from `brand/` by `scripts/make-logo-assets.mjs` | Dr. Ava's new logo carries the new name; one script keeps the header, footer, icons and social image in step |
+| 2026-11-13 | `/review` shows the Google button for every rating (no gating) | Dr. Ava wanted only 5-star patients sent to Google; that breaks Google's review policy and FTC rules, so every rating gets the same choices |
 
 ## Production Launch Checklist
 

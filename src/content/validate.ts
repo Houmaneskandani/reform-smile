@@ -94,6 +94,7 @@ const FIELD_LABELS: Record<FileName, Record<string, string>> = {
     instagram: "Instagram",
     facebook: "Facebook",
     youtube: "YouTube",
+    googleReviewUrl: "Google review link",
     topBarTagline: "Top bar tagline",
     footerBlurb: "Footer text",
   },

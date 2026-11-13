@@ -78,6 +78,8 @@ export const practiceSchema = z.strictObject({
     facebook: optionalHttpsUrl,
     youtube: optionalHttpsUrl,
   }),
+  // The practice's Google review link. Empty = the /review page is a 404.
+  googleReviewUrl: optionalHttpsUrl,
   topBarTagline: copy(LIMITS.practice.topBarTagline),
   footerBlurb: copy(LIMITS.practice.footerBlurb),
 });

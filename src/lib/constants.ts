@@ -30,6 +30,9 @@ export const SITE_CONFIG = {
     facebook: socialHref(practice.social.facebook),
     youtube: socialHref(practice.social.youtube),
   },
+  // Where "Post a review on Google" goes. Empty until the practice has a Google Business
+  // Profile; the /review page is a 404 while it is empty.
+  googleReviewUrl: practice.googleReviewUrl || "",
   // Public keys loaded from environment variables (.env.local / Vercel project settings).
   // These are safe to expose in the browser. Secret keys (Anthropic, Twilio) must NEVER
   // use the NEXT_PUBLIC_ prefix — they are read only on the server (see src/app/api/).

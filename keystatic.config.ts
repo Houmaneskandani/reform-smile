@@ -279,6 +279,17 @@ export default config({
           },
           { label: "Social media links", description: "The icons in the footer." }
         ),
+        googleReviewUrl: fields.text({
+          label: "Google review link",
+          description:
+            "The link that opens your Google review box. In your Google Business Profile choose \"Ask for reviews\" and copy the link (it starts with https://). The review page at /review stays hidden until this is filled in.",
+          validation: {
+            pattern: {
+              regex: allOf(/^(https:\/\/\S+)?$/, NO_NAME),
+              message: `${HTTPS_URL_MESSAGE}. It can't include the doctor's name.`,
+            },
+          },
+        }),
         topBarTagline: copy(
           "Top bar tagline",
           LIMITS.practice.topBarTagline,
