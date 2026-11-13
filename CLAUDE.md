@@ -140,6 +140,8 @@ src/
 │   │   │                       #   Google review link is set; see "Review page"
 │   │   ├── privacy/            # Privacy policy (DRAFT: needs the practice's review, see "Privacy policy")
 │   │   └── consultation/       # Marketing landing page — has its own minimal layout (no header/footer)
+│   ├── admin/                  # Admin dashboard at /admin (visitor statistics). Clerk login + ADMIN_EMAILS;
+│   │                           #   404 live until Clerk is set up; local preview under dev:admin. See "Admin dashboard"
 │   ├── keystatic/              # Website editor UI at /keystatic. Outside (site): no site CSS, chrome or trackers.
 │   │                           #   404 in production until Keystatic Cloud is set up; locally only under dev:admin
 │   │                           #   (local-mode.ts is that switch)
@@ -185,7 +187,9 @@ src/
 └── lib/
     ├── constants.ts            # SITE_CONFIG (name, url, public keys + practice info read from content/) and
     │                           #   SERVICES (the ONE canonical list, read from content/services.json), NAV_LINKS
-    ├── analytics/              # Visit statistics: client.ts (browser sender), db.ts (server, Neon table)
+    ├── analytics/              # Visit statistics: client.ts (browser sender), db.ts (server, Neon table),
+    │                           #   queries.ts (the dashboard's read queries)
+    ├── admin/                  # access.ts (who may open /admin), format.ts (dashboard wording and numbers)
     ├── server/request-guards.ts # Same-site check, client IP, rate limiter (shared by the API routes)
     ├── submitForm.ts           # Web3Forms submit — never fakes success in production; honeypot spam check
     └── tracking.ts             # Conversion events (only after cookie consent)
@@ -250,8 +254,17 @@ The site records its own visit statistics. Nothing goes to Google or Meta, and t
 - **What is never recorded:** IP address, user agent, cookies, names, contact details, anything typed into a form, the `?query` of a page address. Each visit has a random id in sessionStorage, gone when the tab closes. Not collected with Global Privacy Control / Do Not Track, from automated browsers, outside production, or on any host but the real domain. Rows are deleted after about 13 months. The privacy policy describes all of this; update it if you record anything new.
 - **Storage:** one table, `site_events`, in **the website's own Neon Postgres database** (never Marketing Ava's, which holds patient data). It is created automatically on first use. `site` holds the domain, so a row maps to a practice. Until `DATABASE_URL` exists (Vercel → Storage → Neon → connect to `ava`, then redeploy), `/api/track` silently stores nothing.
 - **Do not** link a visit to a patient or lead (no session id on form submissions) without Houman's OK and a HIPAA/BAA decision. If leads later go to Marketing Ava, the agreed lighter option is sending only first-touch utm_* and referrer source with the lead.
-- **Dashboard:** not built yet. Houman is deciding whether it lives on the website (`/admin`, Clerk login) or in Marketing Ava (read-only Postgres role with SELECT on `site_events` only).
+- **Dashboard:** `/admin` on the website (see "Admin dashboard").
 - **Testing locally:** run Postgres in Docker, then `DATABASE_URL=… ANALYTICS_TEST_HOSTS=127.0.0.1:3402 npm start -- -p 3402` after `npm run build`.
+
+### Admin dashboard (`/admin`)
+A private dashboard of the visitor statistics, in the site's navy/gold/cream (`src/app/admin/`, components in `src/components/admin/`, queries in `src/lib/analytics/queries.ts`). It sits outside `(site)`, so no site chrome, trackers or chat load there.
+- **Pages:** Overview (visits, page views, time per visit, requests sent, calls tapped, share of visits that contacted us, each against the previous period; visits per day; the funnel from visit to request; top pages with time and read-to-75% rate; sources and utm campaigns; most-clicked buttons; quiz/estimator/chat use; devices and cities; latest visits) and Visitor journeys (each visit step by step, filter "Contacted us"). Ranges: 7, 30 and 90 days, in Pacific time.
+- **A visit is not a person:** visit ids live per browser tab, so the dashboard says "visits", never "visitors" or "users".
+- **Who gets in** (`src/lib/admin/access.ts`): on the live site, a Clerk sign-in (`/admin/sign-in`) AND a verified email listed in `ADMIN_EMAILS` (server-only, comma-separated; empty = nobody). Signing in alone shows "No access". `src/proxy.ts` runs Clerk only on `/admin`, so the public site never loads Clerk. Until both Clerk keys exist, `/admin` and `/admin/sign-in` are 404s.
+- **Local preview:** under `npm run dev:admin` only (127.0.0.1, like the editor), `/admin` opens without a login, with a "Local preview" badge. Point it at a test database with `DATABASE_URL=… npm run dev:admin`.
+- **Not set up yet on the live site:** Clerk (Vercel Marketplace → Clerk, connected to `ava`), `ADMIN_EMAILS` in Vercel Production, then in Clerk's dashboard turn off public sign-ups so only invited people can create an account. A Clerk *production* instance needs DNS records at Squarespace (Clerk lists them).
+- **Name rule:** the dashboard's code is in the browser JavaScript the post-build scan checks, so never write the doctor's name in it.
 
 ### Canonical tags
 Every page sets `alternates: { canonical: "/its-path" }` in its `metadata` (the site is also reachable at ava-green.vercel.app, and Google needs to know which address is the official one). A new page must set its own; it can't be set once in the layout.
@@ -384,6 +397,8 @@ Sites Dr. Ava used as inspiration:
 | 2026-11-13 | `text-gold-ink` for gold text, navy text on gold fills | Brand gold on white and white on gold were 2.4:1, unreadable for many people and flagged by Lighthouse |
 | 2026-11-13 | New bronze logo everywhere, generated from `brand/` by `scripts/make-logo-assets.mjs` | Dr. Ava's new logo carries the new name; one script keeps the header, footer, icons and social image in step |
 | 2026-11-13 | `/review` shows the Google button for every rating (no gating) | Dr. Ava wanted only 5-star patients sent to Google; that breaks Google's review policy and FTC rules, so every rating gets the same choices |
+| 2026-11-13 | First-party visitor statistics in the website's own Neon database | Houman wanted to see what visitors do. Anonymous, cookieless and kept in the practice's own database: nothing goes to Google or Meta, and nothing links a visit to a patient |
+| 2026-11-13 | Admin dashboard at `/admin` with Clerk login + `ADMIN_EMAILS` | Houman chose the website over Marketing Ava for the dashboard and Clerk for the login. Clerk runs only on `/admin` |
 
 ## Production Launch Checklist
 

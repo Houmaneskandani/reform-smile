@@ -32,10 +32,16 @@ function describeTarget(element: HTMLElement): string {
   return "button";
 }
 
+/** "ABOUT US" → "About Us": menu links are styled in capitals, and innerText returns them so. */
+function unshout(text: string): string {
+  if (text.length < 4 || /[a-z]/.test(text) || !/[A-Z]{2}/.test(text)) return text;
+  return text.toLowerCase().replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
+}
+
 /** The visible words of the button or link (site text, never anything a visitor typed). */
 function describeLabel(element: HTMLElement): string | undefined {
   const text = (element.getAttribute("aria-label") || element.innerText || "").replace(/\s+/g, " ").trim();
-  return text ? text.slice(0, 80) : undefined;
+  return text ? unshout(text).slice(0, 80) : undefined;
 }
 
 export default function VisitorTracker() {

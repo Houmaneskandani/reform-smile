@@ -92,6 +92,16 @@ function ensureSchema(): Promise<void> {
   return schemaReady;
 }
 
+/** Runs a read query for the admin dashboard (the table is created first if it doesn't exist yet). */
+export async function runQuery<Row extends Record<string, unknown>>(
+  sql: string,
+  params: unknown[]
+): Promise<Row[]> {
+  await ensureSchema();
+  const result = await getPool().query<Row>(sql, params);
+  return result.rows;
+}
+
 export async function insertEvent(event: SiteEvent): Promise<void> {
   await ensureSchema();
   await getPool().query(

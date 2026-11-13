@@ -97,6 +97,9 @@ const nextConfig: NextConfig = {
       { source: "/(.*)", headers: securityHeaders },
       { source: "/keystatic", headers: editorHeaders },
       { source: "/keystatic/:path*", headers: editorHeaders },
+      // The admin dashboard: never indexed, never cached (it shows live statistics).
+      { source: "/admin", headers: editorHeaders },
+      { source: "/admin/:path*", headers: editorHeaders },
     ];
   },
   async redirects() {
