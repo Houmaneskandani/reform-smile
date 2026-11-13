@@ -28,7 +28,7 @@ const tech = [
 
 export default function Technology() {
   return (
-    <section className="py-28 md:py-36 bg-white">
+    <section className="py-28 md:py-24 bg-white">
       <div className="section-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -37,7 +37,7 @@ export default function Technology() {
           transition={{ duration: 0.5 }}
           className="text-center max-w-2xl mx-auto mb-20"
         >
-          <p className="text-gold font-semibold tracking-widest uppercase text-sm mb-4">
+          <p className="text-gold-ink font-semibold tracking-widest uppercase text-sm mb-4">
             Our Technology
           </p>
           <h2 className="font-heading text-4xl md:text-5xl text-navy mb-6 leading-tight">
@@ -60,7 +60,7 @@ export default function Technology() {
               className="bg-cream rounded-2xl p-10"
             >
               <div className="w-14 h-14 rounded-xl bg-gold/10 flex items-center justify-center mb-6">
-                <item.icon size={28} className="text-gold" strokeWidth={1.5} />
+                <item.icon size={28} className="text-gold-ink" strokeWidth={1.5} />
               </div>
               <h3 className="font-heading text-xl text-navy mb-3">{item.title}</h3>
               <p className="text-gray text-[15px] leading-relaxed">{item.description}</p>

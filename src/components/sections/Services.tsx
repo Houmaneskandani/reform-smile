@@ -72,7 +72,7 @@ function MobileServiceCarousel() {
                 <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-gold/10 blur-3xl pointer-events-none" />
                 <div className="relative">
                   <div className="w-12 h-12 rounded-xl bg-gold/15 flex items-center justify-center mb-5">
-                    <Icon size={24} className="text-gold" strokeWidth={1.5} />
+                    <Icon size={24} className="text-gold-ink" strokeWidth={1.5} />
                   </div>
                   <h3 className="font-heading text-xl text-white mb-3">
                     {service.title}
@@ -86,9 +86,9 @@ function MobileServiceCarousel() {
                     </Button>
                     <Link
                       href={serviceHref(service.id)}
-                      className="inline-flex items-center gap-1.5 text-gold text-sm font-semibold"
+                      className="inline-flex items-center gap-1.5 text-gold-ink text-sm font-semibold"
                     >
-                      Learn More
+                      Learn More<span className="sr-only"> about {service.title}</span>
                       <ChevronIcon />
                     </Link>
                   </div>
@@ -112,7 +112,7 @@ function MobileServiceCarousel() {
               <p className="text-gray text-[14px] leading-relaxed mb-4">
                 {service.description}
               </p>
-              <span className="inline-flex items-center gap-1.5 text-gold text-sm font-semibold">
+              <span className="inline-flex items-center gap-1.5 text-gold-ink text-sm font-semibold">
                 Learn More
                 <ChevronIcon />
               </span>
@@ -138,7 +138,7 @@ function MobileServiceCarousel() {
 
 export default function Services() {
   return (
-    <section className="py-16 md:py-36 bg-white">
+    <section className="py-16 md:py-24 bg-white">
       <div className="section-container">
         {/* Section header */}
         <motion.div
@@ -148,7 +148,7 @@ export default function Services() {
           transition={{ duration: 0.5 }}
           className="text-center max-w-2xl mx-auto mb-12 md:mb-20"
         >
-          <p className="text-gold font-semibold tracking-widest uppercase text-sm mb-4">
+          <p className="text-gold-ink font-semibold tracking-widest uppercase text-sm mb-4">
             Our Services
           </p>
           <h2 className="font-heading text-4xl md:text-5xl text-navy mb-6 leading-tight">
@@ -183,9 +183,9 @@ export default function Services() {
                     <div className="relative h-full flex flex-col justify-center gap-8 xl:flex-row xl:items-center xl:justify-between xl:gap-10">
                       <div className="max-w-md">
                         <div className="w-14 h-14 rounded-xl bg-gold/15 flex items-center justify-center mb-7">
-                          <Icon size={26} className="text-gold" strokeWidth={1.5} />
+                          <Icon size={26} className="text-gold-ink" strokeWidth={1.5} />
                         </div>
-                        <p className="text-gold font-semibold tracking-widest uppercase text-xs mb-3">
+                        <p className="text-gold-ink font-semibold tracking-widest uppercase text-xs mb-3">
                           Start Here
                         </p>
                         <h3 className="font-heading text-2xl text-white mb-4 leading-snug">
@@ -201,9 +201,9 @@ export default function Services() {
                         </Button>
                         <Link
                           href={serviceHref(service.id)}
-                          className="inline-flex items-center gap-1.5 text-gold text-sm font-semibold hover:text-gold-light transition-colors duration-300"
+                          className="inline-flex items-center gap-1.5 text-gold-ink text-sm font-semibold hover:text-gold-light transition-colors duration-300"
                         >
-                          Learn More
+                          Learn More<span className="sr-only"> about {service.title}</span>
                           <ChevronIcon />
                         </Link>
                       </div>
@@ -228,11 +228,11 @@ export default function Services() {
                   <div className="absolute inset-0 bg-gradient-to-br from-gold/0 to-gold/0 group-hover:from-gold/[0.02] group-hover:to-gold/[0.06] transition-all duration-500" />
                   <div className="relative">
                     <div className="w-14 h-14 rounded-xl bg-cream flex items-center justify-center mb-7 group-hover:bg-gold/10 transition-colors duration-300">
-                      <Icon size={26} className="text-navy group-hover:text-gold transition-colors duration-300" strokeWidth={1.5} />
+                      <Icon size={26} className="text-navy group-hover:text-gold-ink transition-colors duration-300" strokeWidth={1.5} />
                     </div>
                     <h3 className="font-heading text-xl text-navy mb-4 leading-snug">{service.title}</h3>
                     <p className="text-gray text-[15px] leading-relaxed mb-4">{service.description}</p>
-                    <span className="inline-flex items-center gap-1.5 text-gold text-sm font-semibold opacity-0 translate-x-[-8px] group-hover:opacity-100 group-hover:translate-x-0 group-focus-visible:opacity-100 group-focus-visible:translate-x-0 transition-all duration-300">
+                    <span className="inline-flex items-center gap-1.5 text-gold-ink text-sm font-semibold opacity-0 translate-x-[-8px] group-hover:opacity-100 group-hover:translate-x-0 group-focus-visible:opacity-100 group-focus-visible:translate-x-0 transition-all duration-300">
                       Learn More
                       <ChevronIcon />
                     </span>

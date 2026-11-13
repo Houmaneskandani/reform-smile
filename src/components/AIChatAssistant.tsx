@@ -7,7 +7,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 import { pricing } from "@/content";
 import { formatMoney, isOfferLive } from "@/content/format";
 import { trackEvent } from "@/lib/tracking";
-import { useStickyBookNowVisible } from "@/components/ui/StickyBookNow";
+import { OPEN_CHAT_EVENT } from "@/components/ui/StickyBookNow";
 
 type Message = {
   role: "assistant" | "user";
@@ -148,8 +148,6 @@ function formatMessage(text: string): string {
 }
 
 export default function AIChatAssistant() {
-  // On phones, sit above the sticky "Book" bar only while that bar is showing
-  const stickyBarVisible = useStickyBookNowVisible();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -166,6 +164,17 @@ export default function AIChatAssistant() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // On phones the chat opens from the button in the sticky "Book" bar (StickyBookNow), so
+  // the floating bubble doesn't sit on top of headings and cards.
+  useEffect(() => {
+    const openFromBar = () => {
+      setOpen(true);
+      trackEvent("chat_opened");
+    };
+    window.addEventListener(OPEN_CHAT_EVENT, openFromBar);
+    return () => window.removeEventListener(OPEN_CHAT_EVENT, openFromBar);
+  }, []);
 
   useEffect(() => {
     // Only auto-focus on desktop — prevents keyboard pop on mobile
@@ -194,7 +203,7 @@ export default function AIChatAssistant() {
 
   return (
     <>
-      {/* Chat bubble button */}
+      {/* Chat bubble button — tablet and desktop only (phones use the sticky bar's button) */}
       <AnimatePresence>
         {!open && (
           <motion.button
@@ -203,7 +212,7 @@ export default function AIChatAssistant() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             onClick={() => { setOpen(true); trackEvent("chat_opened"); }}
-            className={`fixed ${stickyBarVisible ? "bottom-20" : "bottom-4"} md:bottom-6 right-4 md:right-6 z-40 w-14 h-14 rounded-full bg-gold hover:bg-gold-dark text-white shadow-xl hover:shadow-2xl flex items-center justify-center cursor-pointer transition-[bottom,background-color] duration-300`}
+            className="hidden md:flex fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-gold hover:bg-gold-dark text-navy-dark shadow-xl hover:shadow-2xl items-center justify-center cursor-pointer transition-colors duration-300"
             aria-label="Open chat"
           >
             <MessageCircle size={24} />
@@ -227,16 +236,16 @@ export default function AIChatAssistant() {
             <div className="bg-navy px-5 py-4 flex items-center justify-between flex-shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-full bg-gold/20 flex items-center justify-center">
-                  <Bot size={18} className="text-gold" />
+                  <Bot size={18} className="text-gold-ink" />
                 </div>
                 <div>
                   <p className="text-white font-semibold text-sm">Reform Dental AI</p>
-                  <p className="text-white/50 text-[11px]">Ask me anything</p>
+                  <p className="text-white/75 text-[11px]">Ask me anything</p>
                 </div>
               </div>
               <button
                 onClick={() => setOpen(false)}
-                className="text-white/50 hover:text-white transition-colors cursor-pointer"
+                className="text-white/75 hover:text-white transition-colors cursor-pointer"
                 aria-label="Close chat"
               >
                 <X size={20} />
@@ -263,7 +272,7 @@ export default function AIChatAssistant() {
                     {msg.role === "user" ? (
                       <User size={14} className="text-white" />
                     ) : (
-                      <Bot size={14} className="text-gold" />
+                      <Bot size={14} className="text-gold-ink" />
                     )}
                   </div>
                   <div
@@ -281,7 +290,7 @@ export default function AIChatAssistant() {
               {typing && (
                 <div className="flex gap-2.5">
                   <div className="w-7 h-7 rounded-full bg-gold/15 flex items-center justify-center flex-shrink-0">
-                    <Bot size={14} className="text-gold" />
+                    <Bot size={14} className="text-gold-ink" />
                   </div>
                   <div className="bg-gray-lighter px-4 py-3 rounded-2xl rounded-tl-md">
                     <span className="sr-only">The assistant is typing</span>
@@ -319,7 +328,7 @@ export default function AIChatAssistant() {
                 <button
                   type="submit"
                   disabled={!input.trim() || typing}
-                  className="w-10 h-10 rounded-full bg-gold hover:bg-gold-dark text-white flex items-center justify-center cursor-pointer transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-10 h-10 rounded-full bg-gold hover:bg-gold-dark text-navy-dark flex items-center justify-center cursor-pointer transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                   aria-label="Send message"
                 >
                   <Send size={16} />

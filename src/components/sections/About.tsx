@@ -13,7 +13,7 @@ const credentials = [
 
 export default function About() {
   return (
-    <section className="py-16 md:py-36 bg-cream">
+    <section className="py-16 md:py-24 bg-cream">
       <div className="section-container">
         <div className="grid lg:grid-cols-5 gap-16 lg:gap-20 items-center">
           {/* Image — takes 2 columns */}
@@ -47,7 +47,7 @@ export default function About() {
             transition={{ duration: 0.6 }}
             className="lg:col-span-3"
           >
-            <p className="text-gold font-semibold tracking-widest uppercase text-sm mb-4">
+            <p className="text-gold-ink font-semibold tracking-widest uppercase text-sm mb-4">
               Meet Your Doctor
             </p>
             <h2 className="font-heading text-4xl md:text-5xl text-navy mb-8 leading-tight">
@@ -71,7 +71,7 @@ export default function About() {
               {credentials.map((cred) => (
                 <div key={cred.label} className="flex items-center gap-4">
                   <div className="w-11 h-11 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0">
-                    <cred.icon size={20} className="text-gold" strokeWidth={1.5} />
+                    <cred.icon size={20} className="text-gold-ink" strokeWidth={1.5} />
                   </div>
                   <span className="text-navy font-medium text-[15px]">{cred.label}</span>
                 </div>

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function Mission() {
   return (
-    <section className="py-28 md:py-36 bg-cream">
+    <section className="py-28 md:py-24 bg-cream">
       <div className="section-container">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div
@@ -13,7 +13,7 @@ export default function Mission() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <p className="text-gold font-semibold tracking-widest uppercase text-sm mb-4">
+            <p className="text-gold-ink font-semibold tracking-widest uppercase text-sm mb-4">
               Our Mission
             </p>
             <h2 className="font-heading text-4xl md:text-5xl text-navy mb-10 leading-tight">

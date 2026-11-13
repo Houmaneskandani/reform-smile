@@ -8,12 +8,16 @@
   --color-gold: #C4A265;
   --color-gold-light: #D4B882;
   --color-gold-dark: #A8884D;
+  /* Gold for TEXT and icons. It follows the surface it sits on (see "Gold text" below):
+     use text-gold-ink for gold text, and keep bg-gold / border-gold for fills and lines. */
+  --color-gold-ink: var(--gold-text);
   --color-cream: #F5F0EB;
   --color-cream-dark: #E8E0D6;
   --color-white: #FFFFFF;
   --color-dark: #1A1A2E;
-  --color-gray: #6B7280;
-  --color-gray-light: #9CA3AF;
+  /* Both grays are dark enough to read as small text on white and on cream (WCAG AA, 4.5:1). */
+  --color-gray: #5B6472;
+  --color-gray-light: #626A78;
   --color-gray-lighter: #F3F4F6;
 
   /* Fonts — mapped from Next.js font variables */
@@ -23,6 +27,24 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Gold text. The brand gold (#C4A265) is too pale to read on white or cream (2.4:1), so on
+   light surfaces gold text uses a deeper gold (5.2:1 or better). Inside dark sections it stays
+   the bright brand gold (4.8:1 on navy). A section that is dark without a bg-navy class (a
+   video or a gradient behind the text) says so with the "on-dark" class. */
+:root,
+.bg-white,
+.bg-cream,
+.bg-cream-dark,
+.bg-gray-lighter {
+  --gold-text: #7A6029;
+}
+.bg-navy,
+.bg-navy-dark,
+.bg-navy-light,
+.on-dark {
+  --gold-text: var(--color-gold);
 }
 
 body {
@@ -99,4 +121,17 @@ h1, h2, h3, h4, h5, h6 {
   25% { transform: translateY(-20px) rotate(5deg); }
   50% { transform: translateY(-8px) rotate(-3deg); }
   75% { transform: translateY(-25px) rotate(4deg); }
+}
+
+/* Homepage headline entrance. Pure CSS so the text is in the first paint and never waits for
+   JavaScript; skipped for visitors who ask for reduced motion. */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+.hero-rise { animation: hero-rise 0.6s ease-out both; }
+.hero-rise-2 { animation-delay: 0.15s; }
+.hero-rise-3 { animation-delay: 0.3s; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise { animation: none; }
 }

@@ -7,7 +7,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 
 export default function CTASection() {
   return (
-    <section className="relative py-16 md:py-36 overflow-hidden">
+    <section className="on-dark relative py-16 md:py-24 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-navy-dark via-navy to-navy-light" />
       <div className="absolute inset-0 pointer-events-none">
@@ -23,12 +23,12 @@ export default function CTASection() {
           transition={{ duration: 0.5 }}
           className="max-w-3xl mx-auto"
         >
-          <p className="text-gold font-semibold tracking-widest uppercase text-sm mb-4">
+          <p className="text-gold-ink font-semibold tracking-widest uppercase text-sm mb-4">
             Take the First Step
           </p>
           <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white mb-8 leading-tight">
             Ready to Transform{" "}
-            <span className="text-gold italic">Your Smile?</span>
+            <span className="text-gold-ink italic">Your Smile?</span>
           </h2>
           <p className="text-white/70 text-lg md:text-xl leading-relaxed mb-12 max-w-2xl mx-auto">
             Schedule your free consultation today. Get a comprehensive
@@ -51,26 +51,19 @@ export default function CTASection() {
           </div>
 
           {/* Trust badges */}
-          <div className="flex flex-wrap justify-center gap-6 text-white/50 text-sm mb-8">
+          <div className="flex flex-wrap justify-center gap-6 text-white/80 text-sm">
             <span className="flex items-center gap-2">
-              <Check size={16} className="text-gold" />
+              <Check size={16} className="text-gold-ink" />
               No-obligation consultation
             </span>
             <span className="flex items-center gap-2">
-              <Check size={16} className="text-gold" />
+              <Check size={16} className="text-gold-ink" />
               Financing available
             </span>
             <span className="flex items-center gap-2">
-              <Check size={16} className="text-gold" />
+              <Check size={16} className="text-gold-ink" />
               Insurance accepted
             </span>
-          </div>
-          <div className="flex justify-center gap-6">
-            <span className="text-white/20 text-[11px] tracking-wider">HIPAA Compliant</span>
-            <span className="text-white/10">|</span>
-            <span className="text-white/20 text-[11px] tracking-wider">5-Star Rated</span>
-            <span className="text-white/10">|</span>
-            <span className="text-white/20 text-[11px] tracking-wider">ADA Member</span>
           </div>
         </motion.div>
       </div>

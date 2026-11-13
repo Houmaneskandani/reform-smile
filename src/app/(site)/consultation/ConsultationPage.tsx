@@ -83,7 +83,7 @@ export default function ConsultationPage() {
           </a>
           <a
             href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
-            className="flex items-center gap-2 text-white/80 hover:text-gold transition-colors text-sm font-semibold"
+            className="flex items-center gap-2 text-white/80 hover:text-gold-ink transition-colors text-sm font-semibold"
           >
             <Phone size={16} />
             <span className="hidden sm:inline">{SITE_CONFIG.phone}</span>
@@ -118,7 +118,7 @@ export default function ConsultationPage() {
 
                 <h1 className="font-heading text-4xl md:text-5xl text-white leading-tight mb-6">
                   Schedule Your{" "}
-                  <span className="text-gold italic">Free</span> Consultation
+                  <span className="text-gold-ink italic">Free</span> Consultation
                 </h1>
                 <p className="text-white/70 text-lg leading-relaxed mb-10">
                   Take the first step toward your new smile. Meet our team
@@ -136,7 +136,7 @@ export default function ConsultationPage() {
                     "No obligation whatsoever",
                   ].map((item) => (
                     <div key={item} className="flex items-center gap-3">
-                      <Check size={18} className="text-gold flex-shrink-0" />
+                      <Check size={18} className="text-gold-ink flex-shrink-0" />
                       <span className="text-white/80 text-[15px]">{item}</span>
                     </div>
                   ))}
@@ -145,15 +145,15 @@ export default function ConsultationPage() {
                 {/* Trust badges */}
                 <div className="flex flex-wrap gap-6 items-center">
                   <div className="flex items-center gap-2">
-                    <Shield size={18} className="text-gold" />
+                    <Shield size={18} className="text-gold-ink" />
                     <span className="text-white/60 text-sm">Board Certified</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Star size={18} className="text-gold" />
+                    <Star size={18} className="text-gold-ink" />
                     <span className="text-white/60 text-sm">5.0 Rating</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock size={18} className="text-gold" />
+                    <Clock size={18} className="text-gold-ink" />
                     <span className="text-white/60 text-sm">Same-Day Results</span>
                   </div>
                 </div>
@@ -170,7 +170,7 @@ export default function ConsultationPage() {
                 {submitted ? (
                   <div className="text-center py-12">
                     <div className="w-20 h-20 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-6">
-                      <Check size={36} className="text-gold" />
+                      <Check size={36} className="text-gold-ink" />
                     </div>
                     <h3 className="font-heading text-2xl text-navy mb-3">
                       Thank You!
@@ -182,7 +182,7 @@ export default function ConsultationPage() {
                     </p>
                     <a
                       href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
-                      className="inline-flex items-center gap-2 text-gold font-semibold hover:text-gold-dark transition-colors"
+                      className="inline-flex items-center gap-2 text-gold-ink font-semibold hover:text-gold-dark transition-colors"
                     >
                       <Phone size={16} />
                       Or call us now: {SITE_CONFIG.phone}
@@ -297,7 +297,7 @@ export default function ConsultationPage() {
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full bg-gold hover:bg-gold-dark text-white font-semibold py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer text-base flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                        className="w-full bg-gold hover:bg-gold-dark text-navy-dark font-semibold py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer text-base flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                       >
                         {isSubmitting ? "Sending…" : "Request My Free Consultation"}
                         <ArrowRight size={18} />
@@ -305,7 +305,11 @@ export default function ConsultationPage() {
 
                       <p className="text-gray-light text-[11px] text-center">
                         By submitting, you agree to be contacted about your dental care.
-                        We respect your privacy and will never share your information.
+                        See our{" "}
+                        <a href="/privacy" className="underline hover:text-navy">
+                          Privacy Policy
+                        </a>
+                        .
                       </p>
                     </form>
                   </>
@@ -325,14 +329,14 @@ export default function ConsultationPage() {
                 <div key={index} className="text-center">
                   <div className="flex justify-center gap-0.5 mb-3">
                     {[...Array(t.rating)].map((_, i) => (
-                      <Star key={i} size={14} className="text-gold fill-gold" />
+                      <Star key={i} size={14} className="text-gold-ink fill-gold" />
                     ))}
                   </div>
                   <p className="text-dark/70 text-sm italic mb-3">
                     &ldquo;{t.shortQuote || t.quote}&rdquo;
                   </p>
                   <p className="text-navy font-semibold text-sm">{t.displayName}</p>
-                  <p className="text-gold text-xs">{t.shortTreatmentLabel || t.treatmentLabel}{t.isSample && " *"}</p>
+                  <p className="text-gold-ink text-xs">{t.shortTreatmentLabel || t.treatmentLabel}{t.isSample && " *"}</p>
                 </div>
               ))}
             </div>

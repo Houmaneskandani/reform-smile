@@ -37,7 +37,7 @@ const services = SERVICES.map((service) => ({
 
 export default function ServicesList() {
   return (
-    <section className="py-28 md:py-36 bg-white">
+    <section className="py-28 md:py-24 bg-white">
       <div className="section-container">
         <div className="space-y-24">
           {/* Each service is an anchor target (/services#<id>); scroll-mt keeps the
@@ -86,7 +86,7 @@ export default function ServicesList() {
                       <div className="relative w-full h-full flex items-center justify-center p-8">
                         <div className="text-center max-w-sm">
                           <div className="w-20 h-20 rounded-xl bg-gold/10 mx-auto mb-6 flex items-center justify-center">
-                            <service.icon size={36} className="text-gold" strokeWidth={1.5} aria-hidden="true" />
+                            <service.icon size={36} className="text-gold-ink" strokeWidth={1.5} aria-hidden="true" />
                           </div>
                           <p className="font-heading italic text-navy/80 text-lg md:text-xl leading-relaxed">
                             {service.description}
@@ -99,7 +99,7 @@ export default function ServicesList() {
 
                 {/* Content */}
                 <div className={`${index % 2 === 1 ? "lg:order-1" : ""}`}>
-                  <p className="text-gold font-semibold text-sm mb-3">{service.tagline}</p>
+                  <p className="text-gold-ink font-semibold text-sm mb-3">{service.tagline}</p>
                   <h2 className="font-heading text-3xl md:text-4xl text-navy mb-6 leading-tight">
                     {service.title}
                   </h2>
@@ -113,7 +113,7 @@ export default function ServicesList() {
                   <ul className="space-y-3 mb-10">
                     {service.benefits.map((benefit) => (
                       <li key={benefit} className="flex items-start gap-3">
-                        <svg className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-5 h-5 text-gold-ink flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                         <span className="text-dark text-[15px]">{benefit}</span>

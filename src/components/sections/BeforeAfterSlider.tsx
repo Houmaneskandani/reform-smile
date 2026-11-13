@@ -56,7 +56,7 @@ function CompareSlider({
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${afterSrc})` }}
       />
-      <span className="absolute top-4 right-4 z-20 bg-gold text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+      <span className="absolute top-4 right-4 z-20 bg-gold text-navy-dark text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
         After
       </span>
 
@@ -95,7 +95,7 @@ function CompareSlider({
 
 export default function BeforeAfterSlider() {
   return (
-    <section className="py-16 md:py-36 bg-white">
+    <section className="py-16 md:py-24 bg-white">
       <div className="section-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -104,7 +104,7 @@ export default function BeforeAfterSlider() {
           transition={{ duration: 0.5 }}
           className="text-center max-w-2xl mx-auto mb-12 md:mb-20"
         >
-          <p className="text-gold font-semibold tracking-widest uppercase text-sm mb-4">
+          <p className="text-gold-ink font-semibold tracking-widest uppercase text-sm mb-4">
             Our Work
           </p>
           <h2 className="font-heading text-4xl md:text-5xl text-navy mb-6 leading-tight">
@@ -123,8 +123,8 @@ export default function BeforeAfterSlider() {
           className="max-w-4xl mx-auto"
         >
           <CompareSlider
-            beforeSrc="/images/cases/veneers-before.jpg"
-            afterSrc="/images/cases/veneers-after.jpg"
+            beforeSrc="/images/cases/veneers-before.webp"
+            afterSrc="/images/cases/veneers-after.webp"
           />
           <p className="text-center mt-6 text-navy font-heading text-xl">Dental Veneers</p>
           <p className="text-center text-gray text-sm mt-1">Same patient — before and after porcelain veneers</p>

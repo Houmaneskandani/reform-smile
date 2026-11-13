@@ -36,13 +36,13 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-gold font-heading text-lg mb-6">Quick Links</h3>
+            <h3 className="text-gold-ink font-heading text-lg mb-6">Quick Links</h3>
             <ul className="space-y-3">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-white/70 hover:text-gold transition-colors text-sm"
+                    className="text-white/70 hover:text-gold-ink transition-colors text-sm"
                   >
                     {link.label}
                   </Link>
@@ -51,7 +51,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/book"
-                  className="text-white/70 hover:text-gold transition-colors text-sm"
+                  className="text-white/70 hover:text-gold-ink transition-colors text-sm"
                 >
                   Book Appointment
                 </Link>
@@ -61,28 +61,28 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-gold font-heading text-lg mb-6">Contact Us</h3>
+            <h3 className="text-gold-ink font-heading text-lg mb-6">Contact Us</h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <Phone size={18} className="text-gold mt-0.5 flex-shrink-0" />
+                <Phone size={18} className="text-gold-ink mt-0.5 flex-shrink-0" />
                 <a
                   href={telHref(SITE_CONFIG.phone)}
-                  className="text-white/70 hover:text-gold transition-colors text-sm"
+                  className="text-white/70 hover:text-gold-ink transition-colors text-sm"
                 >
                   {SITE_CONFIG.phone}
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <Mail size={18} className="text-gold mt-0.5 flex-shrink-0" />
+                <Mail size={18} className="text-gold-ink mt-0.5 flex-shrink-0" />
                 <a
                   href={`mailto:${SITE_CONFIG.email}`}
-                  className="text-white/70 hover:text-gold transition-colors text-sm"
+                  className="text-white/70 hover:text-gold-ink transition-colors text-sm"
                 >
                   {SITE_CONFIG.email}
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <MapPin size={18} className="text-gold mt-0.5 flex-shrink-0" />
+                <MapPin size={18} className="text-gold-ink mt-0.5 flex-shrink-0" />
                 <span className="text-white/70 text-sm">
                   {SITE_CONFIG.address}
                   <br />
@@ -94,24 +94,24 @@ export default function Footer() {
 
           {/* Hours */}
           <div>
-            <h3 className="text-gold font-heading text-lg mb-6">Office Hours</h3>
+            <h3 className="text-gold-ink font-heading text-lg mb-6">Office Hours</h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <Clock size={18} className="text-gold mt-0.5 flex-shrink-0" />
+                <Clock size={18} className="text-gold-ink mt-0.5 flex-shrink-0" />
                 <div className="text-sm">
                   <p className="text-white/90 font-medium">Mon - Fri</p>
                   <p className="text-white/70">{SITE_CONFIG.hours.weekdays}</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <Clock size={18} className="text-gold mt-0.5 flex-shrink-0" />
+                <Clock size={18} className="text-gold-ink mt-0.5 flex-shrink-0" />
                 <div className="text-sm">
                   <p className="text-white/90 font-medium">Saturday</p>
                   <p className="text-white/70">{SITE_CONFIG.hours.saturday}</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <Clock size={18} className="text-gold mt-0.5 flex-shrink-0" />
+                <Clock size={18} className="text-gold-ink mt-0.5 flex-shrink-0" />
                 <div className="text-sm">
                   <p className="text-white/90 font-medium">Sunday</p>
                   <p className="text-white/70">{SITE_CONFIG.hours.sunday}</p>
@@ -145,16 +145,16 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="section-container py-6 flex flex-col md:flex-row justify-between items-center gap-4">
           {/* The year can differ between the prerendered page and the visitor's clock */}
-          <p className="text-white/50 text-sm" suppressHydrationWarning>
+          <p className="text-white/60 text-sm" suppressHydrationWarning>
             &copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights
             reserved.
           </p>
           <div className="flex items-center gap-6">
             {/* Lets visitors change or withdraw their cookie choice at any time */}
-            <CookieSettingsButton className="text-white/50 hover:text-gold transition-colors text-sm cursor-pointer" />
-            <p className="text-white/30 text-sm">
-              Engineered with care
-            </p>
+            <Link href="/privacy" className="text-white/60 hover:text-gold-ink transition-colors text-sm">
+              Privacy Policy
+            </Link>
+            <CookieSettingsButton className="text-white/60 hover:text-gold-ink transition-colors text-sm cursor-pointer" />
           </div>
         </div>
       </div>

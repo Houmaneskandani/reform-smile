@@ -13,7 +13,7 @@ const cases = [
 
 export default function GalleryGrid() {
   return (
-    <section className="py-28 md:py-36 bg-white">
+    <section className="py-28 md:py-24 bg-white">
       <div className="section-container">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {cases.map((item, index) => (
@@ -39,7 +39,7 @@ export default function GalleryGrid() {
                   <div className="w-full h-full flex items-center justify-center">
                     <span className="text-gold-dark/20 text-sm">After</span>
                   </div>
-                  <span className="absolute top-3 left-3 bg-gold text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                  <span className="absolute top-3 left-3 bg-gold text-navy-dark text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                     After
                   </span>
                 </div>
@@ -52,7 +52,7 @@ export default function GalleryGrid() {
                     <h3 className="font-heading text-lg text-navy mb-1">{item.title}</h3>
                     <p className="text-gray text-sm">{item.description}</p>
                   </div>
-                  <span className="text-gold text-sm font-semibold whitespace-nowrap">{item.procedure}</span>
+                  <span className="text-gold-ink text-sm font-semibold whitespace-nowrap">{item.procedure}</span>
                 </div>
               </div>
             </motion.div>

@@ -74,7 +74,7 @@ function TiltCard({ children, index }: { children: React.ReactNode; index: numbe
 
 export default function Process() {
   return (
-    <section className="py-16 md:py-36 bg-navy relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-navy relative overflow-hidden">
       {/* Background accents */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-gold/5 blur-3xl" />
@@ -90,11 +90,11 @@ export default function Process() {
           transition={{ duration: 0.5 }}
           className="text-center max-w-2xl mx-auto mb-16 md:mb-20"
         >
-          <p className="text-gold font-semibold tracking-widest uppercase text-sm mb-4">
+          <p className="text-gold-ink font-semibold tracking-widest uppercase text-sm mb-4">
             How It Works
           </p>
           <h2 className="font-heading text-4xl md:text-5xl text-white mb-6 leading-tight">
-            Your Journey to a <span className="text-gold">New Smile</span>
+            Your Journey to a <span className="text-gold-ink">New Smile</span>
           </h2>
           <p className="text-white/60 text-lg leading-relaxed">
             From your first consultation to your brand new smile — here&apos;s
@@ -116,7 +116,7 @@ export default function Process() {
                 </div>
 
                 {/* Number */}
-                <span className="text-gold/10 text-6xl font-heading font-bold block mb-4">
+                <span aria-hidden="true" className="text-gold/10 text-6xl font-heading font-bold block mb-4">
                   {step.number}
                 </span>
 
@@ -127,17 +127,17 @@ export default function Process() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, delay: 0.5 + index * 0.2 }}
                   >
-                    <step.icon size={28} className="text-gold" strokeWidth={1.5} />
+                    <step.icon size={28} className="text-gold-ink" strokeWidth={1.5} />
                   </motion.div>
 
                   {/* Glow behind icon on hover */}
                   <div className="absolute inset-0 rounded-xl bg-gold/0 group-hover:bg-gold/5 blur-xl transition-all duration-500" />
                 </div>
 
-                <h3 className="font-heading text-xl text-white mb-3 group-hover:text-gold transition-colors duration-300">
+                <h3 className="font-heading text-xl text-white mb-3 group-hover:text-gold-ink transition-colors duration-300">
                   {step.title}
                 </h3>
-                <p className="text-white/40 group-hover:text-white/60 text-[14px] leading-relaxed max-w-[240px] mx-auto transition-colors duration-300">
+                <p className="text-white/75 group-hover:text-white/90 text-[14px] leading-relaxed max-w-[240px] mx-auto transition-colors duration-300">
                   {step.description}
                 </p>
 

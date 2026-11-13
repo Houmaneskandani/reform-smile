@@ -198,7 +198,7 @@ export default function CostEstimator() {
   const progress = showResult ? 100 : (currentStep / steps.length) * 100;
 
   return (
-    <section className="py-16 md:py-36 bg-cream">
+    <section className="py-16 md:py-24 bg-cream">
       <div className="section-container">
         <AnimatePresence mode="wait">
           {!started ? (
@@ -210,14 +210,14 @@ export default function CostEstimator() {
               className="max-w-2xl mx-auto text-center"
             >
               <div className="w-16 h-16 rounded-2xl bg-gold/10 flex items-center justify-center mx-auto mb-8">
-                <Calculator size={28} className="text-gold" />
+                <Calculator size={28} className="text-gold-ink" />
               </div>
-              <p className="text-gold font-semibold tracking-widest uppercase text-sm mb-4">
+              <p className="text-gold-ink font-semibold tracking-widest uppercase text-sm mb-4">
                 Cost Estimator
               </p>
               <h2 className="font-heading text-4xl md:text-5xl text-navy mb-6 leading-tight">
                 Get Your Personalized{" "}
-                <span className="text-gold italic">Cost Estimate</span>
+                <span className="text-gold-ink italic">Cost Estimate</span>
               </h2>
               <p className="text-gray text-lg leading-relaxed mb-10 max-w-lg mx-auto">
                 Answer 4 quick questions and get an instant cost estimate for your
@@ -244,9 +244,9 @@ export default function CostEstimator() {
               {/* Result header */}
               <div className="text-center mb-10">
                 <div className="w-16 h-16 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-6">
-                  <DollarSign size={28} className="text-gold" />
+                  <DollarSign size={28} className="text-gold-ink" />
                 </div>
-                <p className="text-gold text-sm font-semibold tracking-widest uppercase mb-3">
+                <p className="text-gold-ink text-sm font-semibold tracking-widest uppercase mb-3">
                   Your Estimated Cost
                 </p>
                 <h3 className="font-heading text-2xl md:text-3xl text-navy mb-2">
@@ -269,7 +269,7 @@ export default function CostEstimator() {
                       </>
                     )}
                   </p>
-                  <p className="text-gold text-sm mt-3 font-semibold">
+                  <p className="text-gold-ink text-sm mt-3 font-semibold">
                     Financing from ${result.monthlyFinancing}/month
                   </p>
                 </div>
@@ -279,7 +279,7 @@ export default function CostEstimator() {
                   <ul className="space-y-2">
                     {result.includes.map((item) => (
                       <li key={item} className="flex items-start gap-2.5">
-                        <svg className="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-4 h-4 text-gold-ink flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                         <span className="text-gray text-sm">{item}</span>
@@ -297,7 +297,7 @@ export default function CostEstimator() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="/consultation"
-                  className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-white font-bold px-9 py-4 rounded-full transition-all duration-300 shadow-lg cursor-pointer text-lg"
+                  className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-navy-dark font-bold px-9 py-4 rounded-full transition-all duration-300 shadow-lg cursor-pointer text-lg"
                 >
                   <Calendar size={20} />
                   Get Exact Pricing — Free Consult

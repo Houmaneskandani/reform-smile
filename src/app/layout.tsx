@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s | Reform Dental & Implant Center",
   },
   description:
-    "Reform Dental & Implant Center specializes in All-on-X dental implants and full arch restorations. Transform your smile with permanent, natural-looking results. Schedule your free consultation today.",
+    "Full arch (All-on-X) dental implants, single implants, snap-on dentures and veneers at Reform Dental & Implant Center. Book a free consultation.",
   keywords: [
     "dental implants",
     "All-on-4",

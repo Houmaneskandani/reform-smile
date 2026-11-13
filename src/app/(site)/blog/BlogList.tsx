@@ -50,7 +50,7 @@ const posts = [
 
 export default function BlogList() {
   return (
-    <section className="py-28 md:py-36 bg-white">
+    <section className="py-28 md:py-24 bg-white">
       <div className="section-container">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {posts.map((post, index) => (
@@ -67,7 +67,7 @@ export default function BlogList() {
                 <div className="w-full h-full flex items-center justify-center">
                   <span className="text-navy/20 text-sm">Article Image</span>
                 </div>
-                <span className="absolute top-4 left-4 bg-gold text-white text-[11px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                <span className="absolute top-4 left-4 bg-gold text-navy-dark text-[11px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
                   {post.category}
                 </span>
               </div>
@@ -78,13 +78,13 @@ export default function BlogList() {
                   <Calendar size={12} />
                   <span>{post.date}</span>
                 </div>
-                <h2 className="font-heading text-xl text-navy mb-3 leading-snug group-hover:text-gold transition-colors">
+                <h2 className="font-heading text-xl text-navy mb-3 leading-snug group-hover:text-gold-ink transition-colors">
                   {post.title}
                 </h2>
                 <p className="text-gray text-sm leading-relaxed mb-5">
                   {post.excerpt}
                 </p>
-                <span className="inline-flex items-center gap-1.5 text-gold text-sm font-semibold group-hover:gap-3 transition-all">
+                <span className="inline-flex items-center gap-1.5 text-gold-ink text-sm font-semibold group-hover:gap-3 transition-all">
                   Read More <ArrowRight size={14} />
                 </span>
               </div>

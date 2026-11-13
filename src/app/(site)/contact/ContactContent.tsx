@@ -51,7 +51,7 @@ export default function ContactContent() {
   });
 
   return (
-    <section className="py-28 md:py-36 bg-white">
+    <section className="py-28 md:py-24 bg-white">
       <div className="section-container">
         <div className="grid lg:grid-cols-5 gap-16 lg:gap-24">
           {/* Contact Info */}
@@ -74,11 +74,11 @@ export default function ContactContent() {
             <div className="space-y-8">
               <div className="flex gap-5">
                 <div className="w-12 h-12 rounded-xl bg-cream flex items-center justify-center flex-shrink-0">
-                  <Phone size={22} className="text-gold" strokeWidth={1.5} />
+                  <Phone size={22} className="text-gold-ink" strokeWidth={1.5} />
                 </div>
                 <div>
                   <h3 className="font-semibold text-navy mb-1">Phone</h3>
-                  <a href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`} className="text-gray hover:text-gold transition-colors">
+                  <a href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`} className="text-gray hover:text-gold-ink transition-colors">
                     {SITE_CONFIG.phone}
                   </a>
                 </div>
@@ -86,11 +86,11 @@ export default function ContactContent() {
 
               <div className="flex gap-5">
                 <div className="w-12 h-12 rounded-xl bg-cream flex items-center justify-center flex-shrink-0">
-                  <Mail size={22} className="text-gold" strokeWidth={1.5} />
+                  <Mail size={22} className="text-gold-ink" strokeWidth={1.5} />
                 </div>
                 <div>
                   <h3 className="font-semibold text-navy mb-1">Email</h3>
-                  <a href={`mailto:${SITE_CONFIG.email}`} className="text-gray hover:text-gold transition-colors">
+                  <a href={`mailto:${SITE_CONFIG.email}`} className="text-gray hover:text-gold-ink transition-colors">
                     {SITE_CONFIG.email}
                   </a>
                 </div>
@@ -98,7 +98,7 @@ export default function ContactContent() {
 
               <div className="flex gap-5">
                 <div className="w-12 h-12 rounded-xl bg-cream flex items-center justify-center flex-shrink-0">
-                  <MapPin size={22} className="text-gold" strokeWidth={1.5} />
+                  <MapPin size={22} className="text-gold-ink" strokeWidth={1.5} />
                 </div>
                 <div>
                   <h3 className="font-semibold text-navy mb-1">Location</h3>
@@ -111,7 +111,7 @@ export default function ContactContent() {
 
               <div className="flex gap-5">
                 <div className="w-12 h-12 rounded-xl bg-cream flex items-center justify-center flex-shrink-0">
-                  <Clock size={22} className="text-gold" strokeWidth={1.5} />
+                  <Clock size={22} className="text-gold-ink" strokeWidth={1.5} />
                 </div>
                 <div>
                   <h3 className="font-semibold text-navy mb-1">Office Hours</h3>
@@ -158,7 +158,7 @@ export default function ContactContent() {
               {submitted ? (
                 <div className="text-center py-16">
                   <div className="w-20 h-20 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-6">
-                    <Send size={32} className="text-gold" />
+                    <Send size={32} className="text-gold-ink" />
                   </div>
                   <h3 className="font-heading text-2xl text-navy mb-3">Message Sent!</h3>
                   <p className="text-gray">Thank you for reaching out. We&apos;ll be in touch shortly.</p>
@@ -249,7 +249,7 @@ export default function ContactContent() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-navy-dark font-semibold px-10 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     <Send size={18} />
                     {isSubmitting ? "Sending…" : "Send Message"}

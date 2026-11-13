@@ -52,12 +52,12 @@ function FAQItem({
         onClick={toggle}
         className="w-full flex items-center justify-between py-6 text-left cursor-pointer group"
       >
-        <span className="font-heading text-lg md:text-xl text-navy pr-8 group-hover:text-gold transition-colors">
+        <span className="font-heading text-lg md:text-xl text-navy pr-8 group-hover:text-gold-ink transition-colors">
           {question}
         </span>
         <ChevronDown
           size={20}
-          className={`text-gold flex-shrink-0 transition-transform duration-300 ${
+          className={`text-gold-ink flex-shrink-0 transition-transform duration-300 ${
             open ? "rotate-180" : ""
           }`}
         />
@@ -81,7 +81,7 @@ export default function FAQ() {
   if (faq.items.length === 0) return null;
 
   return (
-    <section className="py-16 md:py-36 bg-cream">
+    <section className="py-16 md:py-24 bg-cream">
       <div className="section-container">
         <div className="max-w-3xl mx-auto">
           <motion.div
@@ -91,7 +91,7 @@ export default function FAQ() {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
           >
-            <p className="text-gold font-semibold tracking-widest uppercase text-sm mb-4">
+            <p className="text-gold-ink font-semibold tracking-widest uppercase text-sm mb-4">
               Common Questions
             </p>
             <h2 className="font-heading text-4xl md:text-5xl text-navy mb-6 leading-tight">
@@ -137,7 +137,7 @@ export default function FAQ() {
               </a>
               <a
                 href="/consultation"
-                className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-white font-semibold px-7 py-3 rounded-full transition-colors text-sm"
+                className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-navy-dark font-semibold px-7 py-3 rounded-full transition-colors text-sm"
               >
                 Book Free Consultation
               </a>

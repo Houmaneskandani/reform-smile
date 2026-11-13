@@ -2,8 +2,11 @@
 
 import { useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
-import { Calendar, Phone } from "lucide-react";
+import { Calendar, MessageCircle, Phone } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
+
+// Fired on window by the bar's chat button; AIChatAssistant listens and opens the chat.
+export const OPEN_CHAT_EVENT = "reform:open-chat";
 
 // The bar slides in once the visitor has scrolled past the hero
 const SHOW_AFTER_SCROLL_PX = 600;
@@ -49,10 +52,12 @@ export default function StickyBookNow() {
       <div className="bg-navy/95 backdrop-blur-md border-t border-gold/20 px-4 py-3 flex gap-3">
         <a
           href="/consultation"
-          className="flex-1 flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-white font-semibold py-3.5 rounded-full transition-colors text-sm whitespace-nowrap"
+          className="flex-1 min-w-0 flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-navy-dark font-semibold py-3.5 rounded-full transition-colors text-sm whitespace-nowrap"
         >
           <Calendar size={16} aria-hidden="true" />
-          Book Free Consultation
+          {/* The full label doesn't fit next to two round buttons on the narrowest phones */}
+          <span className="min-[350px]:hidden">Free Consultation</span>
+          <span className="hidden min-[350px]:inline">Book Free Consultation</span>
         </a>
         <a
           href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
@@ -61,6 +66,14 @@ export default function StickyBookNow() {
         >
           <Phone size={18} aria-hidden="true" />
         </a>
+        <button
+          type="button"
+          onClick={() => window.dispatchEvent(new Event(OPEN_CHAT_EVENT))}
+          className="flex items-center justify-center w-14 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors cursor-pointer"
+          aria-label="Open chat"
+        >
+          <MessageCircle size={18} aria-hidden="true" />
+        </button>
       </div>
     </div>
   );

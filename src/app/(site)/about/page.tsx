@@ -7,6 +7,7 @@ import CTASection from "@/components/sections/CTASection";
 
 export const metadata: Metadata = {
   title: "About Dr. Ava",
+  alternates: { canonical: "/about" },
   description:
     "Meet Dr. Ava, a skilled dental implant specialist dedicated to transforming smiles with All-on-X dental implants at Reform Dental & Implant Center.",
 };

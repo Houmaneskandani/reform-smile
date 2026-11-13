@@ -52,7 +52,7 @@ export default function TrustBar() {
               className="flex flex-col items-center text-center"
             >
               <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-gold/10 flex items-center justify-center mb-3 md:mb-5">
-                <item.icon size={22} className="text-gold md:w-7 md:h-7" strokeWidth={1.5} />
+                <item.icon size={22} className="text-gold-ink md:w-7 md:h-7" strokeWidth={1.5} />
               </div>
               <h3 className="font-semibold text-navy text-base mb-2">
                 {item.title}

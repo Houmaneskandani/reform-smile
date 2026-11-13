@@ -242,7 +242,7 @@ export default function SmileQuiz() {
 
   return (
     <section
-      className="py-16 md:py-36 relative overflow-hidden transition-colors duration-700"
+      className="on-dark py-16 md:py-24 relative overflow-hidden transition-colors duration-700"
       style={{ background: "#1B3A5C" }}
     >
       {/* Background glow — grows with quiz progress */}
@@ -275,27 +275,27 @@ export default function SmileQuiz() {
               className="max-w-2xl mx-auto text-center"
             >
               <div className="w-16 h-16 rounded-2xl bg-gold/10 flex items-center justify-center mx-auto mb-8">
-                <Sparkles size={28} className="text-gold" />
+                <Sparkles size={28} className="text-gold-ink" />
               </div>
-              <p className="text-gold font-semibold tracking-widest uppercase text-sm mb-4">
+              <p className="text-gold-ink font-semibold tracking-widest uppercase text-sm mb-4">
                 Treatment Finder
               </p>
               <h2 className="font-heading text-4xl md:text-5xl text-white mb-6 leading-tight">
                 Find Your Perfect{" "}
-                <span className="text-gold italic">Smile Solution</span>
+                <span className="text-gold-ink italic">Smile Solution</span>
               </h2>
-              <p className="text-white/50 text-lg leading-relaxed mb-10 max-w-lg mx-auto">
+              <p className="text-white/75 text-lg leading-relaxed mb-10 max-w-lg mx-auto">
                 Answer 5 quick questions and we&apos;ll recommend the best
                 treatment option for your unique situation.
               </p>
               <button
                 onClick={() => { setStarted(true); trackEvent("quiz_started"); }}
-                className="inline-flex items-center gap-3 bg-gold hover:bg-gold-dark text-white font-bold px-10 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] cursor-pointer text-lg"
+                className="inline-flex items-center gap-3 bg-gold hover:bg-gold-dark text-navy-dark font-bold px-10 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] cursor-pointer text-lg"
               >
                 Take the Quiz
                 <ArrowRight size={20} />
               </button>
-              <p className="text-white/20 text-xs mt-6">
+              <p className="text-white/65 text-xs mt-6">
                 Takes less than 60 seconds
               </p>
             </motion.div>
@@ -316,9 +316,9 @@ export default function SmileQuiz() {
 
               <div className="text-center mb-10">
                 <div className="w-16 h-16 rounded-full bg-gold/20 flex items-center justify-center mx-auto mb-6">
-                  <Sparkles size={28} className="text-gold" />
+                  <Sparkles size={28} className="text-gold-ink" />
                 </div>
-                <p className="text-gold text-sm font-semibold tracking-widest uppercase mb-3">
+                <p className="text-gold-ink text-sm font-semibold tracking-widest uppercase mb-3">
                   {result.label}
                 </p>
                 <h3 className="font-heading text-3xl md:text-4xl text-white mb-2">
@@ -334,7 +334,7 @@ export default function SmileQuiz() {
               <ul className={`space-y-3 ${result.alternative ? "mb-8" : "mb-12"}`}>
                 {result.benefits.map((b) => (
                   <li key={b} className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <svg className="w-5 h-5 text-gold-ink flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                     <span className="text-white/70 text-[15px]">{b}</span>
@@ -343,7 +343,7 @@ export default function SmileQuiz() {
               </ul>
 
               {result.alternative && (
-                <p className="text-white/40 text-sm text-center mb-12">
+                <p className="text-white/75 text-sm text-center mb-12">
                   {result.alternative}
                 </p>
               )}
@@ -351,7 +351,7 @@ export default function SmileQuiz() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="/consultation"
-                  className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-white font-bold px-9 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer text-lg"
+                  className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-navy-dark font-bold px-9 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer text-lg"
                 >
                   <Calendar size={20} />
                   Book My Free Consult
@@ -386,14 +386,14 @@ export default function SmileQuiz() {
               <div className="flex items-center justify-between mb-10">
                 <button
                   onClick={goBack}
-                  className={`inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors cursor-pointer text-sm ${
+                  className={`inline-flex items-center gap-2 text-white/75 hover:text-white transition-colors cursor-pointer text-sm ${
                     currentStep === 0 ? "invisible" : ""
                   }`}
                 >
                   <ArrowLeft size={16} />
                   Back
                 </button>
-                <span className="text-white/20 text-xs tracking-widest">
+                <span className="text-white/65 text-xs tracking-widest">
                   {currentStep + 1} / {questions.length}
                 </span>
               </div>
@@ -409,7 +409,7 @@ export default function SmileQuiz() {
                   <h3 className="font-heading text-2xl md:text-3xl text-white mb-2 text-center">
                     {questions[currentStep].question}
                   </h3>
-                  <p className="text-white/30 text-sm text-center mb-10">
+                  <p className="text-white/75 text-sm text-center mb-10">
                     {questions[currentStep].subtitle}
                   </p>
 

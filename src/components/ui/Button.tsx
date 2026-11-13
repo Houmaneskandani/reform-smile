@@ -19,7 +19,7 @@ const variants = {
     "bg-white text-navy border-2 border-navy hover:bg-navy hover:text-white",
   outline:
     "bg-transparent text-white border-2 border-white hover:bg-white hover:text-navy",
-  gold: "bg-gold text-white hover:bg-gold-dark shadow-lg hover:shadow-xl",
+  gold: "bg-gold text-navy-dark hover:bg-gold-dark shadow-lg hover:shadow-xl",
 };
 
 const sizes = {

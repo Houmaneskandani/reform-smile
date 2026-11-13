@@ -135,6 +135,7 @@ src/
 │   │   ├── blog/               # Blog articles placeholder (SEO)
 │   │   ├── contact/            # Contact page (info + validated form + map placeholder)
 │   │   ├── book/               # Appointment booking (full form with date/time picker)
+│   │   ├── privacy/            # Privacy policy (DRAFT: needs the practice's review, see "Privacy policy")
 │   │   └── consultation/       # Marketing landing page — has its own minimal layout (no header/footer)
 │   ├── keystatic/              # Website editor UI at /keystatic. Outside (site): no site CSS, chrome or trackers.
 │   │                           #   404 in production until Keystatic Cloud is set up; locally only under dev:admin
@@ -155,7 +156,7 @@ src/
 │   └── validate.ts             # Server-only build check (zod + cross-file rules). Fails the build on bad content
 ├── components/
 │   ├── layout/
-│   │   ├── SiteChrome.tsx      # Everything around a public page: trackers, intro, smooth scroll, structured data,
+│   │   ├── SiteChrome.tsx      # Everything around a public page: trackers, smooth scroll, structured data,
 │   │   │                       #   header, footer, sticky Book Now bar, chat widget, cookie banner
 │   │   ├── Header.tsx          # Sticky header — transparent on homepage, solid on other pages
 │   │   ├── Footer.tsx          # Full footer with contact, hours, links
@@ -166,7 +167,6 @@ src/
 │   │   ├── TrustBar.tsx        # 4 trust indicators
 │   │   ├── TrustLogos.tsx      # Credential badges (icons, no trademarks) — claims need Dr. Ava's confirmation
 │   │   ├── Services.tsx        # Service cards built from SERVICES (4 treatments + highlighted consultation)
-│   │   ├── StatsCounter.tsx    # Animated number counters (500+, 5.0, 98%, 1 Day)
 │   │   ├── BeforeAfterSlider.tsx # Drag-to-compare before/after with real patient photos
 │   │   ├── Process.tsx         # 4-step "How It Works"
 │   │   ├── About.tsx           # Dr. Ava section
@@ -219,6 +219,21 @@ The `/consultation` page has its own minimal layout (no header/footer). Using Ne
 - **Consultation (`/consultation`):** Header hidden entirely — page has its own minimal top bar
 - **Website editor (`/keystatic`):** no site header, footer or CSS at all — it sits outside the `(site)` route group
 - Uses `usePathname()` to detect which page
+
+### Gold text and contrast (accessibility)
+The brand gold (#C4A265) is too pale for text on white or cream (2.4:1; the standard is 4.5:1), and white text on a gold fill fails the same way. So:
+- **Gold text and icons use `text-gold-ink`, never `text-gold`.** It is a deeper gold (#7A6029) on light surfaces and the bright brand gold inside dark sections. The switch is the `--gold-text` variable in `src/app/globals.css`: `bg-navy*` sets the bright gold, `bg-white` / `bg-cream*` set the deep one. A section that is dark without a `bg-navy` class (video or gradient behind the text) needs the `on-dark` class (Hero, CTASection, SmileQuiz, the transparent header).
+- **Gold fills (`bg-gold` buttons, badges, the offer band) use `text-navy-dark`**, not white.
+- On navy, white text needs at least `text-white/65` at small sizes.
+
+### Homepage layout
+Hero → trust bar → credential badges → limited offer (when on) → services → process → doctor → before/after → cost estimator → reviews → FAQ → final call to action. The treatment quiz (`SmileQuiz`) closes the Services page instead. The hero's first frame (`public/images/video/hero-poster.jpg`) is a preloaded image under the video, and the headline animates with CSS (`.hero-rise`), so the first screen never waits for JavaScript. The headline must stay plain text with real spaces: animated per-word spans once made Google read it as one word. On phones the chat opens from the sticky bottom bar (`StickyBookNow` fires `OPEN_CHAT_EVENT`); the floating chat bubble is tablet and desktop only.
+
+### Privacy policy
+`/privacy` (`src/app/(site)/privacy/page.tsx`) is a **draft** written from what the site actually does. Dr. Ava (ideally with her attorney) should review it. Update it whenever the site collects something new: a form field, a tracker, the Marketing Ava lead forward, text-message consent. It is not the practice's HIPAA Notice of Privacy Practices.
+
+### Canonical tags
+Every page sets `alternates: { canonical: "/its-path" }` in its `metadata` (the site is also reachable at ava-green.vercel.app, and Google needs to know which address is the official one). A new page must set its own; it can't be set once in the layout.
 
 ### Logo variants
 Three logo files exist because the original PNG has a white background:
@@ -347,6 +362,8 @@ Sites Dr. Ava used as inspiration:
 | 2026-11-11 | Deploy only by pushing to `main` (no more `vercel --prod`) | Her editor saves are commits on `main`; a CLI deploy from a local folder that hasn't pulled them would roll them back |
 | 2026-11-11 | Surname stored only as a SHA-256 hash | The build and the post-build scan can block it without the word ever being written in the repo |
 | 2026-11-12 | Practice renamed to "Reform Dental & Implant Center" (short form "Reform Dental") | Her new name. The logo, og-image.jpg and app icons still show the old name in the artwork and need new files from her designer |
+| 2026-11-13 | Removed the logo splash (IntroSequence) and the stats counter section | The splash hid the page for about 1.7 s on every first visit; the stats were shown three times |
+| 2026-11-13 | `text-gold-ink` for gold text, navy text on gold fills | Brand gold on white and white on gold were 2.4:1, unreadable for many people and flagged by Lighthouse |
 
 ## Production Launch Checklist
 

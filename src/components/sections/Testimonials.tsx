@@ -19,7 +19,7 @@ export default function Testimonials() {
   if (reviews.length === 0) return null;
 
   return (
-    <section className="py-16 md:py-36 bg-white">
+    <section className="py-16 md:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6">
         {/* Section header */}
         <motion.div
@@ -29,7 +29,7 @@ export default function Testimonials() {
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <p className="text-gold font-semibold tracking-widest uppercase text-sm mb-3">
+          <p className="text-gold-ink font-semibold tracking-widest uppercase text-sm mb-3">
             Patient Stories
           </p>
           <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-navy mb-6">
@@ -63,7 +63,7 @@ export default function Testimonials() {
                   <Star
                     key={i}
                     size={18}
-                    className="text-gold fill-gold"
+                    className="text-gold-ink fill-gold"
                   />
                 ))}
               </div>
@@ -74,7 +74,7 @@ export default function Testimonials() {
 
               <div className="border-t border-navy/10 pt-4">
                 <p className="font-semibold text-navy">{review.displayName}</p>
-                <p className="text-gold text-sm">
+                <p className="text-gold-ink text-sm">
                   {review.treatmentLabel}
                   {markEachSample && review.isSample && " *"}
                 </p>

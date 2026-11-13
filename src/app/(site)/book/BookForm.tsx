@@ -73,7 +73,7 @@ export default function BookForm() {
   const selectClass = "w-full px-5 py-3.5 rounded-xl border border-cream-dark bg-white text-dark focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors text-sm appearance-none cursor-pointer";
 
   return (
-    <section className="py-28 md:py-36 bg-white">
+    <section className="py-28 md:py-24 bg-white">
       <div className="section-container max-w-3xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -85,7 +85,7 @@ export default function BookForm() {
             {submitted ? (
               <div className="text-center py-16">
                 <div className="w-20 h-20 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-6">
-                  <Calendar size={36} className="text-gold" />
+                  <Calendar size={36} className="text-gold-ink" />
                 </div>
                 <h3 className="font-heading text-3xl text-navy mb-4">
                   Appointment Requested!
@@ -96,7 +96,7 @@ export default function BookForm() {
                 </p>
                 <a
                   href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
-                  className="inline-flex items-center gap-2 text-gold font-semibold hover:text-gold-dark transition-colors"
+                  className="inline-flex items-center gap-2 text-gold-ink font-semibold hover:text-gold-dark transition-colors"
                 >
                   <Phone size={16} />
                   Need it sooner? Call {SITE_CONFIG.phone}
@@ -106,7 +106,7 @@ export default function BookForm() {
               <>
                 <div className="flex items-center gap-4 mb-8">
                   <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center">
-                    <Calendar size={24} className="text-gold" />
+                    <Calendar size={24} className="text-gold-ink" />
                   </div>
                   <div>
                     <h2 className="font-heading text-2xl text-navy">
@@ -216,7 +216,7 @@ export default function BookForm() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-navy-dark font-semibold px-10 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     <Check size={18} />
                     {isSubmitting ? "Sending…" : "Request Appointment"}

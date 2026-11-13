@@ -65,7 +65,7 @@ export default function Header() {
           <p className="text-white/80 truncate">{practice.topBarTagline}</p>
           <a
             href={PHONE_HREF}
-            className="flex items-center gap-2 whitespace-nowrap hover:text-gold transition-colors"
+            className="flex items-center gap-2 whitespace-nowrap hover:text-gold-ink transition-colors"
           >
             <Phone size={14} aria-hidden="true" />
             <span>{SITE_CONFIG.phone}</span>
@@ -76,7 +76,7 @@ export default function Header() {
       {/* Main header */}
       <header
         className={`sticky top-0 z-40 transition-all duration-500 ${
-          isTransparent ? "bg-transparent" : "bg-white shadow-lg"
+          isTransparent ? "on-dark bg-transparent" : "bg-white shadow-lg"
         }`}
       >
         <div className="section-container flex items-center justify-between gap-6 h-20 md:h-24">
@@ -93,6 +93,7 @@ export default function Header() {
               alt=""
               width={340}
               height={320}
+              sizes="96px"
               priority
               className={`w-auto h-14 md:h-20 absolute top-1/2 -translate-y-1/2 left-0 transition-opacity duration-500 ${
                 isTransparent ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -104,6 +105,7 @@ export default function Header() {
               alt="Reform Dental & Implant Center"
               width={340}
               height={320}
+              sizes="96px"
               priority
               className={`w-auto h-14 md:h-20 transition-opacity duration-500 ${
                 isTransparent ? "opacity-0" : "opacity-100"
@@ -122,10 +124,10 @@ export default function Header() {
                   aria-current={active ? "page" : undefined}
                   className={`whitespace-nowrap font-medium transition-colors text-[13px] tracking-wider xl:tracking-widest uppercase ${
                     active
-                      ? "text-gold"
+                      ? "text-gold-ink"
                       : isTransparent
-                        ? "text-white/90 hover:text-gold"
-                        : "text-dark hover:text-gold"
+                        ? "text-white/90 hover:text-gold-ink"
+                        : "text-dark hover:text-gold-ink"
                   }`}
                 >
                   {link.label}
@@ -143,8 +145,8 @@ export default function Header() {
               aria-label={`Call us at ${SITE_CONFIG.phone}`}
               className={`hidden md:flex lg:max-[1100px]:hidden items-center justify-center gap-2 whitespace-nowrap font-semibold transition-colors w-10 h-10 rounded-full border xl:w-auto xl:h-auto xl:rounded-none xl:border-0 ${
                 isTransparent
-                  ? "text-white/90 hover:text-gold border-white/30"
-                  : "text-navy hover:text-gold border-navy/15"
+                  ? "text-white/90 hover:text-gold-ink border-white/30"
+                  : "text-navy hover:text-gold-ink border-navy/15"
               }`}
             >
               <Phone size={16} aria-hidden="true" />
@@ -216,9 +218,9 @@ export default function Header() {
                         href={link.href}
                         onClick={closeMobileMenu}
                         aria-current={active ? "page" : undefined}
-                        className={`block py-3.5 font-medium hover:text-gold transition-colors text-sm tracking-widest uppercase ${
+                        className={`block py-3.5 font-medium hover:text-gold-ink transition-colors text-sm tracking-widest uppercase ${
                           i < NAV_LINKS.length - 1 ? "border-b border-gray-lighter" : ""
-                        } ${active ? "text-gold" : "text-dark"}`}
+                        } ${active ? "text-gold-ink" : "text-dark"}`}
                       >
                         {link.label}
                       </Link>

@@ -15,7 +15,7 @@ const credentials = [
 
 export default function DoctorBio() {
   return (
-    <section className="py-28 md:py-36 bg-white">
+    <section className="py-28 md:py-24 bg-white">
       <div className="section-container">
         <div className="grid lg:grid-cols-5 gap-16 lg:gap-24 items-start">
           {/* Photo */}
@@ -88,7 +88,7 @@ export default function DoctorBio() {
                   className="flex gap-4"
                 >
                   <div className="w-11 h-11 rounded-xl bg-cream flex items-center justify-center flex-shrink-0">
-                    <cred.icon size={20} className="text-gold" strokeWidth={1.5} />
+                    <cred.icon size={20} className="text-gold-ink" strokeWidth={1.5} />
                   </div>
                   <div>
                     <h3 className="font-semibold text-navy text-[15px] mb-1">{cred.title}</h3>

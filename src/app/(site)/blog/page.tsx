@@ -4,6 +4,7 @@ import BlogList from "./BlogList";
 
 export const metadata: Metadata = {
   title: "Blog",
+  alternates: { canonical: "/blog" },
   description:
     "Expert dental implant articles, patient education, and oral health tips from Reform Dental & Implant Center.",
 };

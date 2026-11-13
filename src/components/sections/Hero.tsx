@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Phone } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
 import { useEffect, useState } from "react";
+import { preload } from "react-dom";
 
 function useGyroShine() {
   const [position, setPosition] = useState(50);
@@ -58,17 +59,30 @@ function useGyroShine() {
 
 export default function Hero() {
   const { position, fallback } = useGyroShine();
+  // Ask the browser for the hero's still image straight away, ahead of scripts and fonts.
+  preload("/images/video/hero-poster.jpg", { as: "image", fetchPriority: "high" });
   return (
-    <section className="relative min-h-[85vh] md:min-h-screen flex items-end md:items-center overflow-hidden -mt-24">
+    <section className="on-dark relative min-h-[85vh] md:min-h-screen flex items-end md:items-center overflow-hidden -mt-24">
       {/* Video Background — navy behind it so the white headline stays readable while it loads */}
       <div className="absolute inset-0 bg-navy-dark" aria-hidden="true">
+        {/* The video's first frame as a plain image: it is the largest thing on the first
+            screen, so it loads first (preloaded above) and the video fades in over it.
+            A plain <img>, not next/image: the file is already sized and compressed. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/video/hero-poster.jpg"
+          alt=""
+          fetchPriority="high"
+          decoding="sync"
+          className="absolute inset-0 w-full h-full object-cover object-[85%_10%] md:object-[85%_center] lg:object-center"
+        />
         <video
           autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
-          className="w-full h-full object-cover object-[85%_10%] md:object-[85%_center] lg:object-center"
+          preload="none"
+          className="absolute inset-0 w-full h-full object-cover object-[85%_10%] md:object-[85%_center] lg:object-center"
         >
           <source src="/images/video/hero-video.mp4" type="video/mp4" />
         </video>
@@ -90,29 +104,20 @@ export default function Hero() {
               transition={{ duration: 0.6 }}
               className="hidden md:block"
             >
-              <span className="inline-block bg-gold/20 text-gold px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide mb-8">
+              <span className="inline-block bg-navy-dark/70 border border-gold/40 text-gold-ink px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide mb-8">
                 Now Accepting New Patients
               </span>
             </motion.div>
 
             <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl text-white leading-[1.1] mb-5 md:mb-8">
-              {["Get", "Back", "Your"].map((word, i) => (
-                <motion.span
-                  key={word}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 + i * 0.12 }}
-                  className="inline-block mr-[0.3em]"
-                >
-                  {word}
-                </motion.span>
-              ))}
+              {/* Plain text with real spaces, so Google and screen readers read the words
+                  separately. The entrance is a CSS animation (globals.css), so the headline
+                  shows without waiting for JavaScript. */}
+              <span className="hero-rise inline-block">Get Back Your</span>{" "}
               <br className="hidden md:block" />
-              <motion.span
-                initial={{ opacity: 0, y: 25, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.65 }}
-                className={`inline-block italic mr-[0.3em] ${fallback ? "confident-shine motion-reduce:animate-none!" : ""}`}
+              <span className="hero-rise hero-rise-2 inline-block">
+              <span
+                className={`inline-block italic ${fallback ? "confident-shine motion-reduce:animate-none!" : ""}`}
                 style={!fallback ? {
                   backgroundImage: `linear-gradient(105deg, #A8884D ${position - 30}%, #F0D890 ${position}%, #A8884D ${position + 30}%)`,
                   backgroundSize: "200% 100%",
@@ -122,15 +127,13 @@ export default function Hero() {
                 } : undefined}
               >
                 Confident
-              </motion.span>
-              <motion.span
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.85 }}
-                className="inline-block"
-              >
-                Smile
-              </motion.span>
+              </span>
+              </span>{" "}
+              <span className="hero-rise hero-rise-3 inline-block">Smile</span>
+              {/* What we do, in the words people search for. Part of the h1 on purpose. */}
+              <span className="hero-rise hero-rise-3 block font-body font-medium text-sm md:text-lg text-white/80 tracking-wide mt-4 md:mt-6">
+                Full Arch &amp; All-on-X Dental Implants
+              </span>
             </h1>
 
 
@@ -144,7 +147,7 @@ export default function Hero() {
               <div className="relative group">
                 <a
                   href="/consultation"
-                  className="relative inline-flex items-center justify-center gap-3 bg-gold hover:bg-gold-dark text-white font-bold px-9 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-gold/25 hover:shadow-xl hover:scale-[1.03] overflow-hidden text-lg whitespace-nowrap"
+                  className="relative inline-flex items-center justify-center gap-3 bg-gold hover:bg-gold-dark text-navy-dark font-bold px-9 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-gold/25 hover:shadow-xl hover:scale-[1.03] overflow-hidden text-lg whitespace-nowrap"
                 >
                   {/* Shine sweep */}
                   <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-20deg]" />
@@ -210,7 +213,7 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.6 }}
               className="md:hidden text-center mb-4"
             >
-              <span className="inline-block bg-gold/20 text-gold px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">
+              <span className="inline-block bg-navy-dark/70 border border-gold/40 text-gold-ink px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide">
                 Now Accepting New Patients
               </span>
             </motion.div>
@@ -223,16 +226,16 @@ export default function Hero() {
               className="hidden md:flex justify-center lg:justify-start gap-12 border-t border-white/10 pt-10"
             >
               <div className="text-center lg:text-left">
-                <p className="text-gold text-3xl md:text-4xl font-heading font-bold">500+</p>
-                <p className="text-white/50 text-xs mt-2 uppercase tracking-wider">Successful Implants</p>
+                <p className="text-gold-ink text-3xl md:text-4xl font-heading font-bold">500+</p>
+                <p className="text-white/75 text-xs mt-2 uppercase tracking-wider">Successful Implants</p>
               </div>
               <div className="text-center lg:text-left">
-                <p className="text-gold text-3xl md:text-4xl font-heading font-bold">5.0</p>
-                <p className="text-white/50 text-xs mt-2 uppercase tracking-wider">Patient Rating</p>
+                <p className="text-gold-ink text-3xl md:text-4xl font-heading font-bold">5.0</p>
+                <p className="text-white/75 text-xs mt-2 uppercase tracking-wider">Patient Rating</p>
               </div>
               <div className="text-center lg:text-left">
-                <p className="text-gold text-3xl md:text-4xl font-heading font-bold">1 Day</p>
-                <p className="text-white/50 text-xs mt-2 uppercase tracking-wider">Same-Day Smiles</p>
+                <p className="text-gold-ink text-3xl md:text-4xl font-heading font-bold">1 Day</p>
+                <p className="text-white/75 text-xs mt-2 uppercase tracking-wider">Same-Day Smiles</p>
               </div>
             </motion.div>
           </div>

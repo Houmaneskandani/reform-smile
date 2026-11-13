@@ -38,7 +38,7 @@ export default function TrustLogos() {
               className="flex items-center gap-2.5"
             >
               <div className="w-9 h-9 rounded-lg bg-cream flex items-center justify-center flex-shrink-0">
-                <badge.icon size={18} strokeWidth={1.75} className="text-gold" />
+                <badge.icon size={18} strokeWidth={1.75} className="text-gold-ink" />
               </div>
               <div className="text-left">
                 <p className="text-navy text-xs font-semibold leading-tight">{badge.label}</p>

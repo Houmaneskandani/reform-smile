@@ -14,11 +14,11 @@ export default function BookHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-gold font-semibold tracking-widest uppercase text-sm mb-4">
+          <p className="text-gold-ink font-semibold tracking-widest uppercase text-sm mb-4">
             Book Appointment
           </p>
           <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
-            Schedule Your <span className="text-gold italic">Visit</span>
+            Schedule Your <span className="text-gold-ink italic">Visit</span>
           </h1>
           <p className="text-white/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
             Request an appointment with our team. We&apos;ll confirm your

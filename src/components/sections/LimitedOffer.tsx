@@ -37,21 +37,21 @@ export default function LimitedOffer() {
           className="text-center"
         >
           <div className="flex items-center justify-center gap-2 mb-3">
-            <Clock size={18} className="text-white/80" />
-            <span className="text-white/80 text-xs md:text-sm font-semibold uppercase tracking-widest">
+            <Clock size={18} className="text-navy-dark" />
+            <span className="text-navy-dark text-xs md:text-sm font-semibold uppercase tracking-widest">
               {offer.eyebrow}
             </span>
           </div>
 
-          <h2 className="font-heading text-2xl md:text-4xl text-white mb-3 leading-tight">
+          <h2 className="font-heading text-2xl md:text-4xl text-navy-dark mb-3 leading-tight">
             {offer.headline}
           </h2>
 
-          <p className="text-white text-3xl md:text-5xl font-heading font-bold mb-4">
-            {`${formatMoney(pricing.fullArchPerArch)} `}<span className="text-white/70 text-lg md:text-2xl font-normal">{offer.unitLabel}</span>
+          <p className="text-navy-dark text-3xl md:text-5xl font-heading font-bold mb-4">
+            {`${formatMoney(pricing.fullArchPerArch)} `}<span className="text-navy-dark/80 text-lg md:text-2xl font-normal">{offer.unitLabel}</span>
           </p>
 
-          <p className="text-white/70 text-sm md:text-base mb-6 max-w-lg mx-auto">
+          <p className="text-navy-dark text-sm md:text-base mb-6 max-w-lg mx-auto">
             {offer.body}
           </p>
 

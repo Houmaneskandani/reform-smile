@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ServicesHero from "./ServicesHero";
 import ServicesList from "./ServicesList";
-import CTASection from "@/components/sections/CTASection";
+import SmileQuiz from "@/components/sections/SmileQuiz";
 import { SITE_CONFIG } from "@/lib/constants";
 
 const title = "Our Services";
@@ -44,7 +44,8 @@ export default function ServicesPage() {
     <>
       <ServicesHero />
       <ServicesList />
-      <CTASection />
+      {/* The treatment quiz closes the page: its result leads to the free consultation. */}
+      <SmileQuiz />
     </>
   );
 }
