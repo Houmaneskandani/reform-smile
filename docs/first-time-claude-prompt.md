@@ -4,7 +4,7 @@ Copy and paste this entire prompt into Claude Code when you open the project for
 
 ---
 
-I just cloned the Reform Smile & Dental Implant Center website project. I'm Dr. Ava, the owner of this dental practice. This website was built for me by Houman using Claude AI.
+I just cloned the Reform Dental & Implant Center website project. I'm Dr. Ava, the owner of this dental practice. This website was built for me by Houman using Claude AI.
 
 Please do the following:
 
@@ -26,7 +26,7 @@ Please do the following:
 4. Important context about me and this project:
    - I am Dr. Ava — do NOT use my last name anywhere on the website except the About page
    - On the About page only, refer to me as "Dr. Ava"
-   - My practice: Reform Smile & Dental Implant Center
+   - My practice: Reform Dental & Implant Center
    - Main services: Full Arch Dental Implants, Single Implants, Dental Veneers
    - Current pricing: $9,000 per arch (implants or veneers or mix), $2,700 per single implant
    - The site is deployed on Vercel at https://ava-green.vercel.app

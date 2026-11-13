@@ -30,7 +30,7 @@ export default function DoctorBio() {
               <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-lg">
                 <Image
                   src="/images/dr-ava.png"
-                  alt="Dr. Ava, DDS — Reform Smile & Dental Implant Center"
+                  alt="Dr. Ava, DDS — Reform Dental & Implant Center"
                   width={400}
                   height={533}
                   className="w-full h-full object-cover object-top"
@@ -57,7 +57,7 @@ export default function DoctorBio() {
               <p>
                 Dr. Ava is a dedicated dental professional with a passion
                 for transforming lives through advanced implant dentistry. She
-                founded Reform Smile & Dental Implant Center with a clear mission:
+                founded Reform Dental & Implant Center with a clear mission:
                 to provide every patient with access to world-class dental implant
                 solutions in a caring, comfortable environment.
               </p>

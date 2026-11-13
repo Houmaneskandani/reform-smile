@@ -5,7 +5,7 @@ import BookForm from "./BookForm";
 export const metadata: Metadata = {
   title: "Book an Appointment",
   description:
-    "Schedule your dental implant appointment at Reform Smile & Dental Implant Center.",
+    "Schedule your dental implant appointment at Reform Dental & Implant Center.",
 };
 
 export default function BookPage() {

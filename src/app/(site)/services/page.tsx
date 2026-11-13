@@ -7,7 +7,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 const title = "Our Services";
 const fullTitle = `${title} | ${SITE_CONFIG.name}`;
 const description =
-  "Full arch (All-on-X) and single dental implants, snap-on dentures, and porcelain veneers at Reform Smile. Start with a free consultation.";
+  "Full arch (All-on-X) and single dental implants, snap-on dentures, and porcelain veneers at Reform Dental. Start with a free consultation.";
 
 // openGraph and twitter replace the root layout's objects rather than merging with them,
 // so the shared fields (site name, type, image, card) are repeated here.

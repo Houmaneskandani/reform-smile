@@ -104,7 +104,7 @@ for (const route of prerenderedPages) {
 
 // The headshot's alt text, as written in an HTML attribute or in the page's React data.
 const ALLOWED_HEADSHOT_ALT =
-  /Dr\. Ava, DDS (?:—|&#x2014;|\\u2014) Reform Smile (?:&amp;|&|\\u0026) Dental Implant Center/g;
+  /Dr\. Ava, DDS (?:—|&#x2014;|\\u2014) Reform Dental (?:&amp;|&|\\u0026) Implant Center/g;
 const DOCTOR_NAME = /\bDr\.?\s*Ava\b/gi;
 
 /** Reports every DOCTOR_NAME match in the text, except in the headshot's alt text. */
@@ -238,7 +238,9 @@ for (const file of browserFiles) {
 
 const placeholderPhonePages = new Set(
   htmlFiles
-    .filter((file) => /\(555\)\s?\d{3}-\d{4}|tel:555\d{7}/.test(readFileSync(file, "utf8")))
+    // The practice's number always renders as a tel: link. (The phone fields' example text,
+    // placeholder="(555) 123-4567", is not the practice's number.)
+    .filter((file) => /tel:(?:\+?1)?555\d{7}/.test(readFileSync(file, "utf8")))
     .map((file) => pageRoute(file) ?? show(file))
 );
 if (placeholderPhonePages.size > 0) {

@@ -41,9 +41,9 @@ const MOCK_RESPONSES = {
   doctor: `You can learn all about our doctor's training, credentials, and experience on our **About** page. To meet our team in person, book a **free consultation** or call us at ${SITE_CONFIG.phone}.`,
   visit: `We're located in ${SITE_CONFIG.city}, ${SITE_CONFIG.state}. Our hours:\n\n• **Monday–Friday:** ${SITE_CONFIG.hours.weekdays}\n• **Saturday:** ${SITE_CONFIG.hours.saturday}\n• **Sunday:** ${SITE_CONFIG.hours.sunday}\n\nYou'll find our address and directions on our **Contact** page, or call us at ${SITE_CONFIG.phone}.`,
   hello:
-    "Hi there! 😊 Welcome to Reform Smile. I'm here to help answer any questions about dental implants, veneers, Snap-On Dentures, or any of our services. What would you like to know?",
+    "Hi there! 😊 Welcome to Reform Dental. I'm here to help answer any questions about dental implants, veneers, Snap-On Dentures, or any of our services. What would you like to know?",
   offTopic:
-    "I appreciate the question! However, I'm specifically here to help with dental implant questions and Reform Smile services. 😊 Is there anything about your smile or our procedures I can help with?",
+    "I appreciate the question! However, I'm specifically here to help with dental implant questions and Reform Dental services. 😊 Is there anything about your smile or our procedures I can help with?",
 };
 
 // Keywords match at the start of a word ("implant" also matches "implants"), so short
@@ -155,7 +155,7 @@ export default function AIChatAssistant() {
     {
       role: "assistant",
       content:
-        "Hi! 😊 I'm the Reform Smile assistant. I can help with questions about dental implants, costs, procedures, or booking. What would you like to know?",
+        "Hi! 😊 I'm the Reform Dental assistant. I can help with questions about dental implants, costs, procedures, or booking. What would you like to know?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -230,7 +230,7 @@ export default function AIChatAssistant() {
                   <Bot size={18} className="text-gold" />
                 </div>
                 <div>
-                  <p className="text-white font-semibold text-sm">Reform Smile AI</p>
+                  <p className="text-white font-semibold text-sm">Reform Dental AI</p>
                   <p className="text-white/50 text-[11px]">Ask me anything</p>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-# Reform Smile & Dental Implant Center
+# Reform Dental & Implant Center
 ## Website Content Request — For Dr. Ava Pournejad
 
 *Please fill out each section below. This information will replace placeholder content on your website.*
@@ -7,7 +7,7 @@
 
 ## 1. PRACTICE INFORMATION
 
-**Practice Name:** Reform Smile & Dental Implant Center *(confirm or update)*
+**Practice Name:** Reform Dental & Implant Center *(confirm or update)*
 
 **Phone Number:** _______________________________________________
 
@@ -34,7 +34,7 @@
 
 **Full Name & Title:** Dr. Ava Pournejad, DDS *(confirm or update)*
 
-**Professional Bio** *(2-3 paragraphs about your background, education, passion for dentistry, and why you started Reform Smile):*
+**Professional Bio** *(2-3 paragraphs about your background, education, passion for dentistry, and why you started Reform Dental):*
 
 _______________________________________________
 _______________________________________________
@@ -227,4 +227,4 @@ _______________________________________________
 
 *Please return this completed form to Houman. All placeholder content on the website will be updated with your real information.*
 
-*— Prepared by Houman Eskandani for Reform Smile & Dental Implant Center*
+*— Prepared by Houman Eskandani for Reform Dental & Implant Center*

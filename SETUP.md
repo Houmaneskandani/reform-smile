@@ -1,6 +1,6 @@
-# Reform Smile — Developer Setup Guide
+# Reform Dental — Developer Setup Guide
 
-Welcome! This guide will get you up and running with the Reform Smile website on your computer.
+Welcome! This guide will get you up and running with the Reform Dental website on your computer.
 
 ## Prerequisites
 

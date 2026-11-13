@@ -75,7 +75,7 @@ export default function ConsultationPage() {
           <a href="/">
             <Image
               src="/logo-white.png"
-              alt="Reform Smile"
+              alt="Reform Dental"
               width={280}
               height={280}
               className="h-20 md:h-24 w-auto"
@@ -110,7 +110,7 @@ export default function ConsultationPage() {
               >
                 <Image
                   src="/logo-white.png"
-                  alt="Reform Smile"
+                  alt="Reform Dental"
                   width={200}
                   height={200}
                   className="h-20 w-auto mb-10"

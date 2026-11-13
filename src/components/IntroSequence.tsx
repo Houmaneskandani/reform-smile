@@ -122,7 +122,7 @@ export default function IntroSequence() {
             transition={{ duration: 0.4, delay: 0.6 }}
             className="text-white/30 text-[10px] tracking-[0.4em] uppercase"
           >
-            Reform Smile
+            Reform Dental
           </motion.p>
         </motion.div>
       </motion.div>

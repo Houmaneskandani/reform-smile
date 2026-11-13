@@ -17,7 +17,7 @@ export default function Mission() {
               Our Mission
             </p>
             <h2 className="font-heading text-4xl md:text-5xl text-navy mb-10 leading-tight">
-              Why Reform Smile Exists
+              Why Reform Dental Exists
             </h2>
           </motion.div>
 
@@ -30,7 +30,7 @@ export default function Mission() {
           >
             <p>
               Too many people live with the pain, embarrassment, and limitations
-              of missing or failing teeth. At Reform Smile, we believe that
+              of missing or failing teeth. At Reform Dental, we believe that
               everyone — regardless of their dental history — deserves a
               confident, beautiful smile.
             </p>

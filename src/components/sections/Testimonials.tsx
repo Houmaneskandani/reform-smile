@@ -37,7 +37,7 @@ export default function Testimonials() {
           </h2>
           <p className="text-gray text-lg leading-relaxed">
             Hear from patients whose lives have been transformed by the
-            Reform Smile team.
+            Reform Dental team.
           </p>
         </motion.div>
 

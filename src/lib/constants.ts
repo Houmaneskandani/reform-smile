@@ -8,8 +8,8 @@ export { SERVICE_IDS, type ServiceId } from "@/content/rules";
 // phone, email, address, hours and social links are edited in content/practice.json through
 // the website editor. Consumers keep reading SITE_CONFIG, so none of them had to change.
 export const SITE_CONFIG = {
-  name: "Reform Smile & Dental Implant Center",
-  shortName: "Reform Smile",
+  name: "Reform Dental & Implant Center",
+  shortName: "Reform Dental",
   // Public site address — used for SEO metadata, sitemap, robots.txt and structured data.
   // TODO: Switch to the custom domain once DNS points at Vercel.
   url: "https://ava-green.vercel.app",

@@ -1,8 +1,8 @@
-# Reform Smile & Dental Implant Center — AI Project Log
+# Reform Dental & Implant Center — AI Project Log
 
 ## Project Overview
 - **Client:** Dr. Ava Pournejad, DDS
-- **Practice:** Reform Smile & Dental Implant Center
+- **Practice:** Reform Dental & Implant Center
 - **Focus:** All-on-X / Full Arch Dental Implants for patients with missing teeth
 - **Built by:** Houman Eskandani (for Dr. Ava)
 - **AI Assistant:** Claude (Anthropic) — used throughout development
@@ -199,7 +199,7 @@ public/
 ## Key Design Decisions & Gotchas
 
 ### Dr. Ava's content rules (follow these in every change)
-- **Name:** the surname "Pournejad" must not appear anywhere. "Dr. Ava" appears **only on the About page** (and as alt text on her headshot). Everywhere else write "our team", "our doctor", or "Reform Smile". The AI chat is told the same.
+- **Name:** the surname "Pournejad" must not appear anywhere. "Dr. Ava" appears **only on the About page** (and as alt text on her headshot). Everywhere else write "our team", "our doctor", or "Reform Dental". The AI chat is told the same.
 - **Services:** `SERVICES` in `src/lib/constants.ts` is still the single list (Full Arch, Single Implants, Veneers, Snap-On Dentures, Free Consultation). Homepage cards, Services page, booking dropdown, smile quiz, Google structured data and the AI chat all read it. The ids stay in code, in `SERVICE_IDS` (`src/content/rules.ts`). The text (name, summary, Services-page subheading, paragraphs, benefits) lives in `content/services.json` and is changed in the website editor; photos stay in `src/app/(site)/services/ServicesList.tsx`. To add a service (developer only): add the id to `SERVICE_IDS`, add its entry to `content/services.json` (Free Consultation stays last), then fill in what TypeScript asks for: `SERVICE_LABELS` in `keystatic.config.ts`, `SERVICE_ICONS` in `src/components/sections/Services.tsx` and `SERVICE_PHOTOS` in `ServicesList.tsx`. Also raise the editor's fixed list length (`length: { min: 5, max: 5 }` in `keystatic.config.ts`) and the "five services" wording there and in `src/content/validate.ts`.
 - **Claims:** prices ($9,000/arch, $2,700/implant), stats (500+, 5.0, 98%) and credentials/badges (Board Certified, ADA, AAID, HIPAA, CareCredit, insurance) must be confirmed by Dr. Ava — don't add or change them on your own. (She can change the prices herself in the website editor.)
 - **How these rules are enforced:** the website editor rejects the first name as a word in every text field before Save (`NO_NAME` in `src/content/rules.ts`). `src/content/validate.ts` checks every value in `content/*.json` again during `next build`, including the surname by SHA-256 hash. `scripts/check-built-html.mjs` then scans the built site: "Dr. Ava" on any page except `/about` (elsewhere only the headshot alt text is allowed) and the surname anywhere in the built pages, browser JavaScript, `src/`, `content/`, `public/manifest.json` and `keystatic.config.ts`. The surname is only ever stored as a hash (`src/content/blocked-hashes.json`): never write it in code, comments, tests or scripts. Code you write by hand isn't checked before Save, so follow the rules there yourself; the post-build scan is the safety net.
@@ -300,7 +300,7 @@ A field lives in four places that must agree: `keystatic.config.ts` (the form), 
 
 ## Content That Needs Replacing
 Placeholder practice info, reviews and service text now live in `content/*.json`. Change them in the website editor (`npm run dev:admin` → http://127.0.0.1:3000/keystatic), or she does it herself once the editor is live in production. `npm run build` warns while the 555 number is still on the site. Key items:
-- **Phone:** Currently `(555) 123-4567` — editor → Practice info (`content/practice.json`)
+- **Phone:** `(951) 268-0839` since 2026-11-12. It is Dr. Ava's Google Voice number, used for now; switch to the practice line when there is one — editor → Practice info (`content/practice.json`)
 - **Email:** Currently `info@reformsmile.com` — editor → Practice info
 - **Address:** Currently placeholder — editor → Practice info
 - **Hours:** Currently placeholder — editor → Practice info → Opening hours
@@ -347,6 +347,7 @@ Sites Dr. Ava used as inspiration:
 | 2026-11-11 | The admin never stores leads or patient data | HIPAA: no BAA covers this setup and the repo is public. Leads stay in email |
 | 2026-11-11 | Deploy only by pushing to `main` (no more `vercel --prod`) | Her editor saves are commits on `main`; a CLI deploy from a local folder that hasn't pulled them would roll them back |
 | 2026-11-11 | Surname stored only as a SHA-256 hash | The build and the post-build scan can block it without the word ever being written in the repo |
+| 2026-11-12 | Practice renamed to "Reform Dental & Implant Center" (short form "Reform Dental") | Her new name. The logo, og-image.jpg and app icons still show the old name in the artwork and need new files from her designer |
 
 ## Production Launch Checklist
 
@@ -355,7 +356,7 @@ Everything below is **already built and coded** — just needs keys/content to a
 ### Step 1: Update Practice Info (5 minutes)
 In the website editor → **Practice info** (`npm run dev:admin`, then http://127.0.0.1:3000/keystatic; or she does it herself once the editor is live in production). It replaces the placeholders in `content/practice.json`:
 ```text
-Phone number      (555) 123-4567                 ← Replace with real phone
+Phone number      (951) 268-0839                 ← Done (her Google Voice, for now)
 Email address     info@reformsmile.com           ← Replace with real email
 Street address    123 Main Street, Suite 100     ← Replace
 City / State / ZIP  Los Angeles / CA / 90001     ← Replace
@@ -399,7 +400,7 @@ Remaining (in Squarespace → Domains → reformdentalimplantcenter.com → DNS 
 ### Step 6: Optional — Blog CMS
 For Dr. Ava to write blog posts without touching code. Planned as phase 2b of the website editor (no new account):
 1. A Keystatic posts collection: one Markdoc file per post in `content/posts/`, rendered on the server into static `/blog/<slug>` pages
-2. Sitemap entries and Article structured data per post; the byline is "Reform Smile team" (name rule)
+2. Sitemap entries and Article structured data per post; the byline is "Reform Dental team" (name rule)
 3. She writes the post and clicks Save; it is live after the 1–3 minute build (there is no live preview). If instant publishing or live preview becomes a must, Sanity (https://sanity.io) is the fallback; the JSON content maps 1:1 to Sanity documents
 
 ### Step 7: Activate Tracking (FREE)

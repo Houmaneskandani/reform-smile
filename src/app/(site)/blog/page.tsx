@@ -5,7 +5,7 @@ import BlogList from "./BlogList";
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Expert dental implant articles, patient education, and oral health tips from Reform Smile & Dental Implant Center.",
+    "Expert dental implant articles, patient education, and oral health tips from Reform Dental & Implant Center.",
 };
 
 export default function BlogPage() {

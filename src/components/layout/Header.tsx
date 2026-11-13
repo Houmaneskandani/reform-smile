@@ -101,7 +101,7 @@ export default function Header() {
             {/* Color logo — visible on all other pages and when scrolled */}
             <Image
               src="/logo-transparent.png"
-              alt="Reform Smile & Dental Implant Center"
+              alt="Reform Dental & Implant Center"
               width={320}
               height={320}
               priority

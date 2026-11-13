@@ -204,7 +204,7 @@ export default config({
   storage: cloudProject ? { kind: "cloud" } : { kind: "local" },
   cloud: cloudProject ? { project: cloudProject } : undefined,
   ui: {
-    brand: { name: "Reform Smile website editor" },
+    brand: { name: "Reform Dental website editor" },
     navigation: {
       Practice: ["practice", "pricing"],
       "Website text": ["services", "faq", "testimonials"],

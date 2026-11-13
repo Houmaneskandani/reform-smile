@@ -5,7 +5,7 @@ import ContactContent from "./ContactContent";
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Get in touch with Reform Smile & Dental Implant Center. Schedule your free consultation today.",
+    "Get in touch with Reform Dental & Implant Center. Schedule your free consultation today.",
 };
 
 export default function ContactPage() {

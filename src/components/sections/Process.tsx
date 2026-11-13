@@ -98,7 +98,7 @@ export default function Process() {
           </h2>
           <p className="text-white/60 text-lg leading-relaxed">
             From your first consultation to your brand new smile — here&apos;s
-            what to expect when you choose Reform Smile.
+            what to expect when you choose Reform Dental.
           </p>
         </motion.div>
 

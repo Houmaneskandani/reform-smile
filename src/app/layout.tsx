@@ -22,11 +22,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_CONFIG.url),
   title: {
-    default: "Reform Smile & Dental Implant Center",
-    template: "%s | Reform Smile & Dental Implant Center",
+    default: "Reform Dental & Implant Center",
+    template: "%s | Reform Dental & Implant Center",
   },
   description:
-    "Reform Smile & Dental Implant Center specializes in All-on-X dental implants and full arch restorations. Transform your smile with permanent, natural-looking results. Schedule your free consultation today.",
+    "Reform Dental & Implant Center specializes in All-on-X dental implants and full arch restorations. Transform your smile with permanent, natural-looking results. Schedule your free consultation today.",
   keywords: [
     "dental implants",
     "All-on-4",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     "full arch dental implants",
     "teeth in a day",
     "dental implant center",
-    "Reform Smile",
+    "Reform Dental",
     "snap-on dentures",
     "dental veneers",
     "missing teeth",
@@ -51,22 +51,22 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "Reform Smile & Dental Implant Center",
-    title: "Reform Smile & Dental Implant Center",
+    siteName: "Reform Dental & Implant Center",
+    title: "Reform Dental & Implant Center",
     description:
-      "Specializing in All-on-X dental implants and full arch restorations. Transform your smile at Reform Smile.",
+      "Specializing in All-on-X dental implants and full arch restorations. Transform your smile at Reform Dental.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Reform Smile & Dental Implant Center",
+        alt: "Reform Dental & Implant Center",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Reform Smile & Dental Implant Center",
+    title: "Reform Dental & Implant Center",
     description:
       "Specializing in All-on-X dental implants and full arch restorations.",
     images: ["/og-image.jpg"],

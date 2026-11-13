@@ -28,7 +28,7 @@ export default function About() {
               <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-lg">
                 <Image
                   src="/images/dr-ava.png"
-                  alt="Dr. Ava, DDS — Reform Smile & Dental Implant Center"
+                  alt="Dr. Ava, DDS — Reform Dental & Implant Center"
                   width={400}
                   height={533}
                   className="w-full h-full object-cover object-top"
@@ -60,7 +60,7 @@ export default function About() {
               with a compassionate, patient-first approach.
             </p>
             <p className="text-gray text-[17px] leading-relaxed mb-10">
-              At Reform Smile & Dental Implant Center, every treatment plan is
+              At Reform Dental & Implant Center, every treatment plan is
               personalized. We believe that everyone deserves a
               confident, beautiful smile — and we&apos;re dedicated to making that
               a reality with the latest technology and techniques.

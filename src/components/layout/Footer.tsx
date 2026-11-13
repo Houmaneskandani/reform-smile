@@ -128,7 +128,7 @@ export default function Footer() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Reform Smile on ${label} (opens in a new tab)`}
+                    aria-label={`Reform Dental on ${label} (opens in a new tab)`}
                     title={label}
                     className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold transition-colors"
                   >
