@@ -78,7 +78,21 @@ export default function PrivacyPage() {
               used to deliver the site and keep it secure.
             </p>
             <p>
-              Analytics and advertising tools (such as Google Analytics, Google Tag Manager,
+              We also keep our own anonymous visit statistics, to see which pages are useful and
+              where our website can be clearer. They record which pages are viewed, which links
+              and buttons are clicked (for example &ldquo;Book Free Consultation&rdquo; or
+              &ldquo;Call&rdquo;), how far a page is scrolled and how long it is open, whether a
+              form was sent (but never what it said), the type of device (phone, tablet or
+              computer), your approximate location (city, region and country, worked out from
+              your network address, which we do not keep), and the website or campaign that
+              sent you to us. Each visit gets a random number that your browser forgets when
+              you close the tab, so visits can&rsquo;t be connected to each other or to you.
+              These statistics use no cookies, are not shared with advertisers, and are deleted
+              after about 13 months. They are not collected if your browser sends a Global
+              Privacy Control or Do Not Track signal.
+            </p>
+            <p>
+              Third-party analytics and advertising tools (such as Google Analytics, Google Tag Manager,
               Microsoft Clarity or the Meta Pixel) load only if you choose &ldquo;Accept&rdquo;
               in the cookie banner. If you decline, they do not load. Your choice is saved in
               your browser, and you can change it at any time with the &ldquo;Cookie
@@ -107,6 +121,7 @@ export default function PrivacyPage() {
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>Vercel, which hosts the website;</li>
+              <li>Neon, which stores our anonymous visit statistics;</li>
               <li>Web3Forms, which delivers form submissions to our office by email;</li>
               <li>Anthropic, which powers the chat assistant&rsquo;s replies;</li>
               <li>the analytics and advertising providers named above, only if you accept cookies.</li>

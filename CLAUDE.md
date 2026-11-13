@@ -144,6 +144,7 @@ src/
 │   │                           #   404 in production until Keystatic Cloud is set up; locally only under dev:admin
 │   │                           #   (local-mode.ts is that switch)
 │   ├── api/chat/route.ts       # Server-side AI chat (Claude). Reads ANTHROPIC_API_KEY on the server only
+│   ├── api/track/route.ts      # Stores the site's own anonymous visit statistics (Neon, DATABASE_URL)
 │   ├── api/keystatic/[...params]/route.ts # Editor's local read/write API: `npm run dev:admin` on this computer only, always 404 in production
 │   ├── sitemap.ts              # /sitemap.xml — built from SITE_CONFIG.url
 │   └── robots.ts               # /robots.txt — built from SITE_CONFIG.url; disallows /api/ and /keystatic
@@ -184,6 +185,8 @@ src/
 └── lib/
     ├── constants.ts            # SITE_CONFIG (name, url, public keys + practice info read from content/) and
     │                           #   SERVICES (the ONE canonical list, read from content/services.json), NAV_LINKS
+    ├── analytics/              # Visit statistics: client.ts (browser sender), db.ts (server, Neon table)
+    ├── server/request-guards.ts # Same-site check, client IP, rate limiter (shared by the API routes)
     ├── submitForm.ts           # Web3Forms submit — never fakes success in production; honeypot spam check
     └── tracking.ts             # Conversion events (only after cookie consent)
 public/
@@ -240,6 +243,15 @@ Patients are sent here (link or QR code) to rate their visit. It is not in the m
 - **Never turn it into a filter.** Every rating, 1 to 5 stars, shows the same two choices in the same order and style: "Post a review on Google" and "Tell us privately". Sending only 5-star patients to Google and keeping the rest on the website is review gating: Google's review policy forbids it (reviews removed, profile penalized) and the FTC treats it as deceptive. Dr. Ava asked for the gated version on 2026-11-13; this is the compliant version of that request. The rating only changes one line of text and is included in the private message.
 - **It is a 404 in production until the Google review link is set**: editor → Practice info → "Google review link" (`googleReviewUrl` in `content/practice.json`; it comes from the Google Business Profile's "Ask for reviews"). Without the link the page could only collect private feedback.
 - Private feedback goes through `submitForm` ("Private Feedback") to the practice inbox, so it needs `NEXT_PUBLIC_WEB3FORMS_KEY` like the other forms. It is free text: the form tells patients not to include medical details. Later it can go to Marketing Ava instead.
+
+### Visitor statistics (first-party, anonymous)
+The site records its own visit statistics. Nothing goes to Google or Meta, and the cookie banner isn't needed for them.
+- **What is recorded** (`src/components/VisitorTracker.tsx` + `trackEvent` in `src/lib/tracking.ts`, sent by `src/lib/analytics/client.ts`): page views, clicks on links and buttons (what was clicked and its visible text), scroll depth (25/50/75/100%), seconds on page, forms sent (form name only), quiz / cost estimator / chat use, device type, the referring site and utm_* tags on the first page of a visit, and Vercel's city/region/country.
+- **What is never recorded:** IP address, user agent, cookies, names, contact details, anything typed into a form, the `?query` of a page address. Each visit has a random id in sessionStorage, gone when the tab closes. Not collected with Global Privacy Control / Do Not Track, from automated browsers, outside production, or on any host but the real domain. Rows are deleted after about 13 months. The privacy policy describes all of this; update it if you record anything new.
+- **Storage:** one table, `site_events`, in **the website's own Neon Postgres database** (never Marketing Ava's, which holds patient data). It is created automatically on first use. `site` holds the domain, so a row maps to a practice. Until `DATABASE_URL` exists (Vercel → Storage → Neon → connect to `ava`, then redeploy), `/api/track` silently stores nothing.
+- **Do not** link a visit to a patient or lead (no session id on form submissions) without Houman's OK and a HIPAA/BAA decision. If leads later go to Marketing Ava, the agreed lighter option is sending only first-touch utm_* and referrer source with the lead.
+- **Dashboard:** not built yet. Houman is deciding whether it lives on the website (`/admin`, Clerk login) or in Marketing Ava (read-only Postgres role with SELECT on `site_events` only).
+- **Testing locally:** run Postgres in Docker, then `DATABASE_URL=… ANALYTICS_TEST_HOSTS=127.0.0.1:3402 npm start -- -p 3402` after `npm run build`.
 
 ### Canonical tags
 Every page sets `alternates: { canonical: "/its-path" }` in its `metadata` (the site is also reachable at ava-green.vercel.app, and Google needs to know which address is the official one). A new page must set its own; it can't be set once in the layout.

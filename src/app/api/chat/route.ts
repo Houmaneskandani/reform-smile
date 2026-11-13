@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { SERVICES, SITE_CONFIG } from "@/lib/constants";
 import { pricing } from "@/content";
 import { formatMoney, formatPriceRange, isOfferLive } from "@/content/format";
+import { createRateLimiter, getClientIp, isSameOrigin } from "@/lib/server/request-guards";
 
 // The AI chat assistant's server side. The Anthropic key is read here, on the server only —
 // it never reaches the browser. Without a key the widget falls back to its demo answers.
@@ -99,67 +100,18 @@ function isJsonRequest(request: Request): boolean {
   return type === "application/json";
 }
 
-function hostOf(url: string): string | null {
-  try {
-    return new URL(url).host;
-  } catch {
-    return null;
-  }
-}
-
-function isSameOrigin(request: Request): boolean {
-  if (request.headers.get("sec-fetch-site") === "cross-site") return false;
-  const origin = request.headers.get("origin");
-  if (!origin) return true;
-
-  const originHost = hostOf(origin); // null for "Origin: null" (sandboxed frames, file://)
-  if (!originHost) return false;
-  // The public site address, plus the host this request was sent to (custom domain,
-  // preview deployments, localhost). A browser can't forge either for another site.
-  const allowedHosts = [
-    hostOf(SITE_CONFIG.url),
-    request.headers.get("host"),
-    request.headers.get("x-forwarded-host")?.split(",")[0]?.trim(),
-  ];
-  return allowedHosts.includes(originHost);
-}
-
 function forbidden(status: 403 | 415) {
   return Response.json({ error: "Request not allowed", fallback: false, reply: FORBIDDEN_REPLY }, { status });
 }
 
 // ---------------------------------------------------------------------------
-// Abuse protection: a simple fixed-window rate limit per client IP.
-// Best-effort only — this map lives in the memory of a single server instance, so each
-// instance (serverless platforms run several and recycle them) keeps its own count.
-// For a strict limit, move this to a shared store (e.g. Upstash Redis) or the host's firewall.
+// Abuse protection: a per-IP rate limit (best-effort; see createRateLimiter).
 // ---------------------------------------------------------------------------
-type RateLimitEntry = { count: number; windowStart: number };
-const rateLimits = new Map<string, RateLimitEntry>();
-
-function getClientIp(request: Request): string {
-  // On Vercel, x-forwarded-for is set by the platform; its first entry is the client.
-  const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  return forwarded || request.headers.get("x-real-ip")?.trim() || "unknown";
-}
-
-function isRateLimited(ip: string, now: number): boolean {
-  const entry = rateLimits.get(ip);
-  if (entry && now - entry.windowStart < RATE_LIMIT_WINDOW_MS) {
-    entry.count += 1;
-    return entry.count > RATE_LIMIT_MAX_REQUESTS;
-  }
-
-  if (rateLimits.size >= RATE_LIMIT_MAX_TRACKED_IPS) {
-    // Keep memory bounded: drop expired windows, and start over if that isn't enough.
-    for (const [key, value] of rateLimits) {
-      if (now - value.windowStart >= RATE_LIMIT_WINDOW_MS) rateLimits.delete(key);
-    }
-    if (rateLimits.size >= RATE_LIMIT_MAX_TRACKED_IPS) rateLimits.clear();
-  }
-  rateLimits.set(ip, { count: 1, windowStart: now });
-  return false;
-}
+const isRateLimited = createRateLimiter({
+  max: RATE_LIMIT_MAX_REQUESTS,
+  windowMs: RATE_LIMIT_WINDOW_MS,
+  maxTracked: RATE_LIMIT_MAX_TRACKED_IPS,
+});
 
 // ---------------------------------------------------------------------------
 // Input validation

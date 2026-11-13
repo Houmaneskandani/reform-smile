@@ -179,8 +179,8 @@ export default function CookieConsent() {
             </span>
             <span className="hidden sm:inline">
               We use cookies for analytics and advertising to understand how you use our site and
-              improve your experience. Nothing loads unless you accept, and you can change your
-              choice anytime in Cookie settings.
+              improve your experience. None of these load unless you accept, and you can change
+              your choice anytime in Cookie settings.
             </span>
           </p>
 

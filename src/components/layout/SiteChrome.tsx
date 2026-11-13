@@ -6,8 +6,10 @@ import AIChatAssistant from "@/components/AIChatAssistant";
 import CookieConsent from "@/components/CookieConsent";
 import SmoothScroll from "@/components/SmoothScroll";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import VisitorTracker from "@/components/VisitorTracker";
 
-// Everything the public site wraps around a page: trackers (after cookie consent),
+// Everything the public site wraps around a page: the site's own anonymous visit statistics,
+// third-party trackers (after cookie consent),
 // smooth scrolling, Google structured data, header, footer, the sticky "Book Now" bar, the chat
 // widget and the cookie banner. Used by src/app/(site)/layout.tsx and the site-wide 404
 // (src/app/not-found.tsx), so both stay identical. Routes outside the (site) group (for example
@@ -20,6 +22,7 @@ export default function SiteChrome({
   return (
     <>
       <GoogleAnalytics />
+      <VisitorTracker />
       <SmoothScroll />
       <StructuredData />
       <Header />

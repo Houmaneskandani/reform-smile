@@ -1,4 +1,5 @@
 import { readConsent } from "@/components/CookieConsent";
+import { sendSiteEvent } from "@/lib/analytics/client";
 
 // Conversion tracking events
 // These fire to Google Analytics, GTM, and Facebook Pixel when configured, and only
@@ -26,8 +27,25 @@ type EventName =
 
 type EventData = Record<string, string | number | boolean>;
 
+/**
+ * The site's own anonymous statistics (no cookies, nothing personal; see
+ * src/lib/analytics/client.ts). They don't depend on the cookie banner, unlike the
+ * third-party tags below. A confirmed form send is recorded with the form's name only.
+ */
+function recordSiteEvent(event: EventName, data?: EventData) {
+  if (event === "phone_clicked") return; // VisitorTracker already records every call link
+  if (event === "form_submitted" || event === "consultation_booked") {
+    sendSiteEvent({ type: "form_sent", target: typeof data?.form === "string" ? data.form : event });
+    return;
+  }
+  // The quiz result and the estimator's procedure say which treatment was looked at.
+  const detail = data?.result ?? data?.procedure;
+  sendSiteEvent({ type: "action", target: event, label: typeof detail === "string" ? detail : undefined });
+}
+
 export function trackEvent(event: EventName, data?: EventData) {
   if (typeof window === "undefined") return;
+  recordSiteEvent(event, data);
 
   // Tracking must never break the page or a form submission — e.g. reading
   // localStorage throws when the browser blocks site storage.
