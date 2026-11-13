@@ -74,10 +74,11 @@ export default function ConsultationPage() {
           {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- cross-layout nav must be a full page load (see CLAUDE.md) */}
           <a href="/">
             <Image
-              src="/logo-white.png"
+              src="/logo-on-dark.png"
               alt="Reform Dental"
-              width={280}
-              height={280}
+              width={900}
+              height={445}
+              sizes="220px"
               className="h-20 md:h-24 w-auto"
             />
           </a>
@@ -109,10 +110,11 @@ export default function ConsultationPage() {
                 transition={{ duration: 0.6 }}
               >
                 <Image
-                  src="/logo-white.png"
+                  src="/logo-on-dark.png"
                   alt="Reform Dental"
-                  width={200}
-                  height={200}
+                  width={900}
+                  height={445}
+                  sizes="180px"
                   className="h-20 w-auto mb-10"
                 />
 

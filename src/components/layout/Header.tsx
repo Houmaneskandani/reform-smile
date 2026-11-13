@@ -86,28 +86,28 @@ export default function Header() {
             onClick={closeMobileMenu}
             className="flex-shrink-0 relative z-50"
           >
-            {/* White logo — only visible on homepage when not scrolled.
+            {/* Logo for dark backgrounds — only visible on homepage when not scrolled.
                 Empty alt: it duplicates the color logo, which names the link once. */}
             <Image
-              src="/logo-header-white.png"
+              src="/logo-on-dark.png"
               alt=""
-              width={340}
-              height={320}
-              sizes="96px"
+              width={900}
+              height={445}
+              sizes="180px"
               priority
-              className={`w-auto h-14 md:h-20 absolute top-1/2 -translate-y-1/2 left-0 transition-opacity duration-500 ${
+              className={`w-auto h-16 md:h-20 absolute top-1/2 -translate-y-1/2 left-0 transition-opacity duration-500 ${
                 isTransparent ? "opacity-100" : "opacity-0 pointer-events-none"
               }`}
             />
             {/* Color logo — visible on all other pages and when scrolled */}
             <Image
-              src="/logo-header.png"
+              src="/logo-on-light.png"
               alt="Reform Dental & Implant Center"
-              width={340}
-              height={320}
-              sizes="96px"
+              width={900}
+              height={445}
+              sizes="180px"
               priority
-              className={`w-auto h-14 md:h-20 transition-opacity duration-500 ${
+              className={`w-auto h-16 md:h-20 transition-opacity duration-500 ${
                 isTransparent ? "opacity-0" : "opacity-100"
               }`}
             />

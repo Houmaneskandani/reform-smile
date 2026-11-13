@@ -22,11 +22,12 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <Image
-              src="/logo-white.png"
+              src="/logo-on-dark.png"
               alt={SITE_CONFIG.name}
-              width={160}
-              height={160}
-              className="h-24 md:h-28 w-auto mb-4"
+              width={900}
+              height={445}
+              sizes="220px"
+              className="h-20 md:h-24 w-auto mb-4"
             />
             {/* Edited in content/practice.json */}
             <p className="text-white/70 text-sm leading-relaxed mt-4">
