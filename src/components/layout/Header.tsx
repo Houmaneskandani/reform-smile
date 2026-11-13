@@ -89,23 +89,23 @@ export default function Header() {
             {/* White logo — only visible on homepage when not scrolled.
                 Empty alt: it duplicates the color logo, which names the link once. */}
             <Image
-              src="/logo-white.png"
+              src="/logo-header-white.png"
               alt=""
-              width={320}
+              width={340}
               height={320}
               priority
-              className={`w-auto h-24 md:h-48 absolute top-1/2 -translate-y-1/2 left-0 transition-opacity duration-500 ${
+              className={`w-auto h-14 md:h-20 absolute top-1/2 -translate-y-1/2 left-0 transition-opacity duration-500 ${
                 isTransparent ? "opacity-100" : "opacity-0 pointer-events-none"
               }`}
             />
             {/* Color logo — visible on all other pages and when scrolled */}
             <Image
-              src="/logo-transparent.png"
+              src="/logo-header.png"
               alt="Reform Dental & Implant Center"
-              width={320}
+              width={340}
               height={320}
               priority
-              className={`w-auto h-24 md:h-48 transition-opacity duration-500 ${
+              className={`w-auto h-14 md:h-20 transition-opacity duration-500 ${
                 isTransparent ? "opacity-0" : "opacity-100"
               }`}
             />
