@@ -11,8 +11,7 @@ export const SITE_CONFIG = {
   name: "Reform Dental & Implant Center",
   shortName: "Reform Dental",
   // Public site address — used for SEO metadata, sitemap, robots.txt and structured data.
-  // TODO: Switch to the custom domain once DNS points at Vercel.
-  url: "https://ava-green.vercel.app",
+  url: "https://reformdentalimplantcenter.com",
   phone: practice.phone,
   email: practice.email,
   address: practice.address,

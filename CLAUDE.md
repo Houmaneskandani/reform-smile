@@ -76,8 +76,8 @@ git checkout main            # Switch back to main
 ## Accounts & Access
 - **GitHub:** https://github.com/Houmaneskandani/reform-smile
 - **Vercel:** Linked to GitHub account (Houmaneskandani)
-- **Live URL (V1):** https://ava-green.vercel.app
-- **Domain:** reformdentalimplantcenter.com — registered at Squarespace (renewed to Nov 2027). Added to the Vercel project `ava` (www redirects to the main domain). DNS still points at Squarespace until the records in "Step 5: Connect Domain" are switched.
+- **Live URL:** https://reformdentalimplantcenter.com (since 2026-11-12; https://ava-green.vercel.app still works too)
+- **Domain:** reformdentalimplantcenter.com — registered at Squarespace (auto-renews Nov 6, 2027; keep auto-renew on). DNS stays at Squarespace (Google nameservers); on 2026-11-12 the "Squarespace Defaults" records were replaced with `A @ 216.198.79.1`, `A @ 64.29.17.1` and `CNAME www 036862443cbcb748.vercel-dns-017.com`. www redirects to the main domain. **Keep the custom records on the `info` subdomain** (`email.info`, two `MX info`, `TXT info`, `smtp._domainkey.info`): they are Mailgun / LeadConnector email-sending records.
 - **Keystatic Cloud (sign-in for the website editor in production):** not set up yet. See "Admin panel (Keystatic website editor) → Turning it on in production".
 
 ### How to authenticate (if needed):
@@ -265,7 +265,7 @@ Until this is done, `/keystatic` and `/api/keystatic/...` return 404 on the live
 1. Create a Keystatic Cloud account at https://keystatic.cloud (sign in with GitHub; keep GitHub 2FA on). Create a team and a project for this site.
 2. Install the Keystatic GitHub App on **this repository only**.
 3. `vercel env add NEXT_PUBLIC_KEYSTATIC_CLOUD_PROJECT production` with the value `team/project` (Production only). Then redeploy: push to `main`, or Vercel → Deployments → Redeploy. `NEXT_PUBLIC_` values are fixed at build time, so a new build is needed. Never `vercel --prod` from a local folder.
-4. Sign in at https://ava-green.vercel.app/keystatic and make one test edit. Check that the bot's commit lands on `main`, that Vercel builds it and that the change is live. Then `git pull --rebase origin main` locally.
+4. Sign in at https://reformdentalimplantcenter.com/keystatic and make one test edit. Check that the bot's commit lands on `main`, that Vercel builds it and that the change is live. Then `git pull --rebase origin main` locally.
 5. Push a deliberately invalid content change (for example the doctor's first name in an FAQ answer). Confirm the build fails and the live site stays unchanged, then revert it.
 6. Turn on Vercel email notifications for failed production deployments. She can't see a failed build: she only sees that her change isn't live, and the editor tells her to contact you if a change isn't live after about 5 minutes. Until the bad content is fixed, none of her later saves go live either.
 7. Invite her by email from Keystatic Cloud and walk her through it (about 20 minutes): create the account with a long unique password, register a passkey on her laptop (and phone if she wants), edit, Save, wait about 3 minutes, check the live site. Her email account needs 2FA, because it is the password-reset path.
@@ -308,7 +308,6 @@ Placeholder practice info, reviews and service text now live in `content/*.json`
 - **Social links:** Facebook/YouTube still empty (icons hidden) — editor → Practice info → Social media links (Instagram is real)
 - **Snap-On Dentures copy** on the Services page is a draft — needs Dr. Ava's clinical review — editor → Services (flagged "Text still needs clinical review")
 - **Trust claims / stats** — still in code; see "Dr. Ava's content rules" above
-- **Site address:** `url` in `src/lib/constants.ts` (TODO comment) — switch once the domain is connected (Step 5)
 
 ## Design References
 Sites Dr. Ava used as inspiration:
@@ -440,7 +439,7 @@ We plan to migrate from Web3Forms to **Twilio** for:
 - [ ] Add real patient testimonials
 - [ ] More before/after photo pairs for slider
 - [ ] Blog in the website editor (phase 2b, Step 6; Sanity is the fallback)
-- [ ] Connect custom domain
+- [x] Connect custom domain (2026-11-12). Still to do: cancel only the Squarespace *website* plan (keep the domain)
 - [ ] Twilio integration for email + SMS notifications (redesign for HIPAA first, see that section)
 - [ ] Vercel Pro before launch: Hobby is for personal, non-commercial use only (https://vercel.com/docs/plans/hobby). Turn on Vercel 2FA too
 
