@@ -40,6 +40,17 @@ export const SITE_CONFIG = {
   gaTrackingId: process.env.NEXT_PUBLIC_GA_TRACKING_ID || "",
 } as const;
 
+// The doctor's photo, shown on the About page and in the homepage "Meet your doctor" section.
+// To change it: put the new file in public/images/ and update src, width and height here.
+// The alt text is the one place outside the About page where her name may appear; the post-build
+// scan (scripts/check-built-html.mjs, ALLOWED_HEADSHOT_ALT) allows exactly this wording.
+export const DOCTOR_PHOTO = {
+  src: "/images/dr-ava-headshot.webp", // her real headshot (2026-11-14); temporary until a photo shoot
+  width: 1000,
+  height: 1000,
+  alt: "Dr. Ava, DDS — Reform Dental & Implant Center",
+} as const;
+
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },

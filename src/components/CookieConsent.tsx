@@ -150,9 +150,9 @@ export default function CookieConsent() {
           aria-modal="false"
           aria-labelledby="cookie-consent-title"
           aria-describedby="cookie-consent-description"
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
+          initial={{ y: 100 }}
+          animate={{ y: 0 }}
+          exit={{ y: 160 }}
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           // Phones: compact card at the bottom of the screen, moved up to sit just above
           // the "Book Free Consultation" bar while that bar is showing.

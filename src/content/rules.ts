@@ -76,6 +76,7 @@ export const LIMITS = {
   },
   pricing: {
     fullArchPerArch: { min: 1_000, max: 100_000 },
+    fullArchVeneersPerArch: { min: 1_000, max: 100_000 },
     singleImplant: { min: 500, max: 20_000 },
     boneGraft: { min: 100, max: 20_000 },
     offer: {
@@ -84,6 +85,7 @@ export const LIMITS = {
       unitLabel: 20,
       body: 240,
       ctaLabel: 30,
+      compareAtPrice: { min: 1_000, max: 500_000 },
     },
   },
   services: {

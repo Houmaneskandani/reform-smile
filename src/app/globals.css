@@ -44,7 +44,8 @@ html {
 .bg-navy-dark,
 .bg-navy-light,
 .on-dark {
-  --gold-text: var(--color-gold);
+  /* Brand gold-light: 5.7:1 on the navy page headers (the brand gold was 4.49:1 there). */
+  --gold-text: var(--color-gold-light);
 }
 
 body {
@@ -108,6 +109,12 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: shineText 4s ease-in-out infinite;
+}
+
+/* Stopped by the hero's pause button (WCAG 2.2.2). Plain CSS, like .confident-shine itself,
+   so it isn't outranked by it. */
+.confident-shine.is-paused {
+  animation-play-state: paused;
 }
 
 @keyframes shineText {

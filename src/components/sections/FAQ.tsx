@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useId } from "react";
 import { ChevronDown } from "lucide-react";
 import { faq } from "@/content";
 
@@ -34,6 +34,10 @@ function FAQItem({
     return () => observer.disconnect();
   }, [open]);
 
+  const id = useId();
+  const buttonId = `${id}-question`;
+  const answerId = `${id}-answer`;
+
   const toggle = () => {
     // Measured before opening, so the transition runs from 0 to the full height.
     if (!open) setAnswerHeight(answerRef.current?.offsetHeight ?? 0);
@@ -49,7 +53,10 @@ function FAQItem({
       className="border-b border-cream-dark"
     >
       <button
+        id={buttonId}
         onClick={toggle}
+        aria-expanded={open}
+        aria-controls={answerId}
         className="w-full flex items-center justify-between py-6 text-left cursor-pointer group"
       >
         <span className="font-heading text-lg md:text-xl text-navy pr-8 group-hover:text-gold-ink transition-colors">
@@ -57,12 +64,19 @@ function FAQItem({
         </span>
         <ChevronDown
           size={20}
+          aria-hidden="true"
           className={`text-gold-ink flex-shrink-0 transition-transform duration-300 ${
             open ? "rotate-180" : ""
           }`}
         />
       </button>
+      {/* Closed answers stay in the page (search engines read them) but are left out for
+          screen readers and the keyboard until opened. */}
       <div
+        id={answerId}
+        role="region"
+        aria-labelledby={buttonId}
+        inert={!open}
         className={`overflow-hidden transition-all duration-400 ease-out ${
           open ? "pb-6" : "max-h-0"
         }`}

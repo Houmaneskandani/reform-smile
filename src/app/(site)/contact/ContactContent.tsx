@@ -176,7 +176,7 @@ export default function ContactContent() {
                         className="w-full px-5 py-3.5 rounded-xl border border-cream-dark bg-white text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors"
                         placeholder="Your name"
                       />
-                      {errors.name && <p id="contact-name-error" className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+                      {errors.name && <p id="contact-name-error" className="text-red-700 text-xs mt-1">{errors.name.message}</p>}
                     </div>
                     <div>
                       <label htmlFor="contact-email" className="block text-navy text-sm font-medium mb-2">Email *</label>
@@ -188,7 +188,7 @@ export default function ContactContent() {
                         className="w-full px-5 py-3.5 rounded-xl border border-cream-dark bg-white text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors"
                         placeholder="your@email.com"
                       />
-                      {errors.email && <p id="contact-email-error" className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+                      {errors.email && <p id="contact-email-error" className="text-red-700 text-xs mt-1">{errors.email.message}</p>}
                     </div>
                   </div>
 
@@ -203,7 +203,7 @@ export default function ContactContent() {
                         className="w-full px-5 py-3.5 rounded-xl border border-cream-dark bg-white text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors"
                         placeholder="(555) 123-4567"
                       />
-                      {errors.phone && <p id="contact-phone-error" className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
+                      {errors.phone && <p id="contact-phone-error" className="text-red-700 text-xs mt-1">{errors.phone.message}</p>}
                     </div>
                     <div>
                       <label htmlFor="contact-subject" className="block text-navy text-sm font-medium mb-2">Subject *</label>
@@ -214,7 +214,7 @@ export default function ContactContent() {
                         className="w-full px-5 py-3.5 rounded-xl border border-cream-dark bg-white text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors"
                         placeholder="How can we help?"
                       />
-                      {errors.subject && <p id="contact-subject-error" className="text-red-500 text-xs mt-1">{errors.subject.message}</p>}
+                      {errors.subject && <p id="contact-subject-error" className="text-red-700 text-xs mt-1">{errors.subject.message}</p>}
                     </div>
                   </div>
 
@@ -227,7 +227,7 @@ export default function ContactContent() {
                       className="w-full px-5 py-3.5 rounded-xl border border-cream-dark bg-white text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors resize-none"
                       placeholder="Tell us about your dental needs..."
                     />
-                    {errors.message && <p id="contact-message-error" className="text-red-500 text-xs mt-1">{errors.message.message}</p>}
+                    {errors.message && <p id="contact-message-error" className="text-red-700 text-xs mt-1">{errors.message.message}</p>}
                   </div>
 
                   {/* Spam honeypot — hidden from people; bots that fill it are ignored */}

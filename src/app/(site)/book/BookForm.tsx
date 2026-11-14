@@ -124,12 +124,12 @@ export default function BookForm() {
                     <div>
                       <label htmlFor="book-firstName" className="block text-navy text-sm font-medium mb-2">First Name *</label>
                       <input {...register("firstName")} {...fieldA11y("firstName")} type="text" autoComplete="given-name" placeholder="First name" className={inputClass} />
-                      {errors.firstName && <p id="book-firstName-error" className="text-red-500 text-[11px] mt-1">{errors.firstName.message}</p>}
+                      {errors.firstName && <p id="book-firstName-error" className="text-red-700 text-[11px] mt-1">{errors.firstName.message}</p>}
                     </div>
                     <div>
                       <label htmlFor="book-lastName" className="block text-navy text-sm font-medium mb-2">Last Name *</label>
                       <input {...register("lastName")} {...fieldA11y("lastName")} type="text" autoComplete="family-name" placeholder="Last name" className={inputClass} />
-                      {errors.lastName && <p id="book-lastName-error" className="text-red-500 text-[11px] mt-1">{errors.lastName.message}</p>}
+                      {errors.lastName && <p id="book-lastName-error" className="text-red-700 text-[11px] mt-1">{errors.lastName.message}</p>}
                     </div>
                   </div>
 
@@ -138,12 +138,12 @@ export default function BookForm() {
                     <div>
                       <label htmlFor="book-email" className="block text-navy text-sm font-medium mb-2">Email *</label>
                       <input {...register("email")} {...fieldA11y("email")} type="email" autoComplete="email" placeholder="your@email.com" className={inputClass} />
-                      {errors.email && <p id="book-email-error" className="text-red-500 text-[11px] mt-1">{errors.email.message}</p>}
+                      {errors.email && <p id="book-email-error" className="text-red-700 text-[11px] mt-1">{errors.email.message}</p>}
                     </div>
                     <div>
                       <label htmlFor="book-phone" className="block text-navy text-sm font-medium mb-2">Phone *</label>
                       <input {...register("phone")} {...fieldA11y("phone")} type="tel" autoComplete="tel" placeholder="(555) 123-4567" className={inputClass} />
-                      {errors.phone && <p id="book-phone-error" className="text-red-500 text-[11px] mt-1">{errors.phone.message}</p>}
+                      {errors.phone && <p id="book-phone-error" className="text-red-700 text-[11px] mt-1">{errors.phone.message}</p>}
                     </div>
                   </div>
 
@@ -155,7 +155,7 @@ export default function BookForm() {
                         <option value="" disabled>Select a service</option>
                         {services.map((s) => <option key={s} value={s}>{s}</option>)}
                       </select>
-                      {errors.service && <p id="book-service-error" className="text-red-500 text-[11px] mt-1">{errors.service.message}</p>}
+                      {errors.service && <p id="book-service-error" className="text-red-700 text-[11px] mt-1">{errors.service.message}</p>}
                     </div>
                     <div>
                       <label htmlFor="book-isNewPatient" className="block text-navy text-sm font-medium mb-2">New Patient? *</label>
@@ -164,7 +164,7 @@ export default function BookForm() {
                         <option value="yes">Yes, I&apos;m a new patient</option>
                         <option value="no">No, I&apos;m a returning patient</option>
                       </select>
-                      {errors.isNewPatient && <p id="book-isNewPatient-error" className="text-red-500 text-[11px] mt-1">{errors.isNewPatient.message}</p>}
+                      {errors.isNewPatient && <p id="book-isNewPatient-error" className="text-red-700 text-[11px] mt-1">{errors.isNewPatient.message}</p>}
                     </div>
                   </div>
 
@@ -173,7 +173,7 @@ export default function BookForm() {
                     <div>
                       <label htmlFor="book-preferredDate" className="block text-navy text-sm font-medium mb-2">Preferred Date *</label>
                       <input {...register("preferredDate")} {...fieldA11y("preferredDate")} type="date" className={inputClass} />
-                      {errors.preferredDate && <p id="book-preferredDate-error" className="text-red-500 text-[11px] mt-1">{errors.preferredDate.message}</p>}
+                      {errors.preferredDate && <p id="book-preferredDate-error" className="text-red-700 text-[11px] mt-1">{errors.preferredDate.message}</p>}
                     </div>
                     <div>
                       <label htmlFor="book-preferredTime" className="block text-navy text-sm font-medium mb-2">Preferred Time *</label>
@@ -181,7 +181,7 @@ export default function BookForm() {
                         <option value="" disabled>Select a time</option>
                         {timeSlots.map((t) => <option key={t} value={t}>{t}</option>)}
                       </select>
-                      {errors.preferredTime && <p id="book-preferredTime-error" className="text-red-500 text-[11px] mt-1">{errors.preferredTime.message}</p>}
+                      {errors.preferredTime && <p id="book-preferredTime-error" className="text-red-700 text-[11px] mt-1">{errors.preferredTime.message}</p>}
                     </div>
                   </div>
 

@@ -211,7 +211,7 @@ public/
 ### Dr. Ava's content rules (follow these in every change)
 - **Name:** the surname "Pournejad" must not appear anywhere. "Dr. Ava" appears **only on the About page** (and as alt text on her headshot). Everywhere else write "our team", "our doctor", or "Reform Dental". The AI chat is told the same.
 - **Services:** `SERVICES` in `src/lib/constants.ts` is still the single list (Full Arch, Single Implants, Veneers, Snap-On Dentures, Free Consultation). Homepage cards, Services page, booking dropdown, smile quiz, Google structured data and the AI chat all read it. The ids stay in code, in `SERVICE_IDS` (`src/content/rules.ts`). The text (name, summary, Services-page subheading, paragraphs, benefits) lives in `content/services.json` and is changed in the website editor; photos stay in `src/app/(site)/services/ServicesList.tsx`. To add a service (developer only): add the id to `SERVICE_IDS`, add its entry to `content/services.json` (Free Consultation stays last), then fill in what TypeScript asks for: `SERVICE_LABELS` in `keystatic.config.ts`, `SERVICE_ICONS` in `src/components/sections/Services.tsx` and `SERVICE_PHOTOS` in `ServicesList.tsx`. Also raise the editor's fixed list length (`length: { min: 5, max: 5 }` in `keystatic.config.ts`) and the "five services" wording there and in `src/content/validate.ts`.
-- **Claims:** prices ($9,000/arch, $2,700/implant), stats (500+, 5.0, 98%) and credentials/badges (Board Certified, ADA, AAID, HIPAA, CareCredit, insurance) must be confirmed by Dr. Ava — don't add or change them on your own. (She can change the prices herself in the website editor.)
+- **Claims:** prices ($11,900/arch full arch implants, $9,000/arch full arch veneers, $2,700/implant, the crossed-out $45,000 "regular price"), stats (500+, 5.0, 98%) and credentials/badges (Board Certified, ADA, AAID, HIPAA, CareCredit, insurance) must be confirmed by Dr. Ava — don't add or change them on your own. (She can change the prices herself in the website editor.)
 - **How these rules are enforced:** the website editor rejects the first name as a word in every text field before Save (`NO_NAME` in `src/content/rules.ts`). `src/content/validate.ts` checks every value in `content/*.json` again during `next build`, including the surname by SHA-256 hash. `scripts/check-built-html.mjs` then scans the built site: "Dr. Ava" on any page except `/about` (elsewhere only the headshot alt text is allowed) and the surname anywhere in the built pages, browser JavaScript, `src/`, `content/`, `public/manifest.json` and `keystatic.config.ts`. The surname is only ever stored as a hash (`src/content/blocked-hashes.json`): never write it in code, comments, tests or scripts. Code you write by hand isn't checked before Save, so follow the rules there yourself; the post-build scan is the safety net.
 
 ### Secrets vs public keys
@@ -235,6 +235,18 @@ The brand gold (#C4A265) is too pale for text on white or cream (2.4:1; the stan
 - **Gold text and icons use `text-gold-ink`, never `text-gold`.** It is a deeper gold (#7A6029) on light surfaces and the bright brand gold inside dark sections. The switch is the `--gold-text` variable in `src/app/globals.css`: `bg-navy*` sets the bright gold, `bg-white` / `bg-cream*` set the deep one. A section that is dark without a `bg-navy` class (video or gradient behind the text) needs the `on-dark` class (Hero, CTASection, SmileQuiz, the transparent header).
 - **Gold fills (`bg-gold` buttons, badges, the offer band) use `text-navy-dark`**, not white.
 - On navy, white text needs at least `text-white/65` at small sizes.
+
+### Accessibility (WCAG 2.1 AA)
+Lighthouse accessibility is 100 on every public page (2026-11-14). Keep these when changing the components:
+- **Skip link:** "Skip to main content" is the first Tab stop (`SiteChrome.tsx`); it jumps to `<main id="main-content">`. The consultation page has its own layout and no skip link.
+- **Moving content can be paused:** the hero has a Pause/Play button for the background video and the gold shine on the headline (`.confident-shine.is-paused`). With reduced motion the video never starts. Don't add autoplaying motion longer than 5 seconds without a pause control. The video has no sound, so it needs no captions.
+- **Keyboard:** the before/after slider is a `role="slider"` (arrows, Page Up/Down, Home/End); the FAQ buttons use `aria-expanded`/`aria-controls` and closed answers are `inert`; the chat is a named dialog, Escape closes it and focus goes back to the button that opened it.
+- **Error text** on forms is `text-red-700` (red-500 fails contrast on white).
+- **Prices:** a crossed-out price is a `<del>` with sr-only "Regular price:" / "Offer price:" so screen readers don't read two bare numbers.
+- Pictures shown as CSS backgrounds or `aria-hidden` need their meaning in text nearby (the slider's `aria-label` describes both photos).
+
+### Doctor photo
+The headshot is `DOCTOR_PHOTO` in `src/lib/constants.ts` (used by the homepage doctor section and the About page). To swap it: put the new file in `public/images/`, change `src` (and `width`/`height`) there. Keep `alt` exactly as it is: the post-build scan allows "Dr. Ava" outside `/about` only in that exact alt text. The current photo (2026-11-14) is temporary until a professional shoot.
 
 ### Homepage layout
 Hero → trust bar → credential badges → limited offer (when on) → services → process → doctor → before/after → cost estimator → reviews → FAQ → final call to action. The treatment quiz (`SmileQuiz`) closes the Services page instead. The hero's first frame (`public/images/video/hero-poster.jpg`) is a preloaded image under the video, and the headline animates with CSS (`.hero-rise`), so the first screen never waits for JavaScript. The headline must stay plain text with real spaces: animated per-word spans once made Google read it as one word. On phones the chat opens from the sticky bottom bar (`StickyBookNow` fires `OPEN_CHAT_EVENT`); the floating chat bubble is tablet and desktop only.
@@ -293,7 +305,7 @@ A form-based editor at `/keystatic` for the site text that changes most, so she 
 | Editor page | File | What's on it |
 |-------------|------|--------------|
 | Practice info | `content/practice.json` | Phone, email, street address, city, state, ZIP, opening hours (half-hour pickers or "Closed all day"), Instagram/Facebook/YouTube links (empty hides the icon), Google review link (empty keeps `/review` hidden), top bar tagline, footer text |
-| Prices & offer | `content/pricing.json` | Full arch price per arch, single implant price, optional bone graft range, the homepage limited-time offer (show/hide, its texts, optional last day) |
+| Prices & offer | `content/pricing.json` | Full arch implants price per arch, full arch veneers price per arch, single implant price, optional bone graft range, the homepage limited-time offer (show/hide, its texts, an optional crossed-out "regular price", optional last day) |
 | Services | `content/services.json` | Text of the 5 fixed services (name, summary, Services-page subheading, paragraphs, benefits, a "needs clinical review" reminder) and their order. Free Consultation stays last |
 | FAQ | `content/faq.json` | Questions and answers; drag to reorder |
 | Patient reviews | `content/testimonials.json` | Name, review, short version, treatment labels, service, stars, source, date, "permission on file", "sample", show on homepage / consultation page |
@@ -399,6 +411,8 @@ Sites Dr. Ava used as inspiration:
 | 2026-11-13 | `/review` shows the Google button for every rating (no gating) | Dr. Ava wanted only 5-star patients sent to Google; that breaks Google's review policy and FTC rules, so every rating gets the same choices |
 | 2026-11-13 | First-party visitor statistics in the website's own Neon database | Houman wanted to see what visitors do. Anonymous, cookieless and kept in the practice's own database: nothing goes to Google or Meta, and nothing links a visit to a patient |
 | 2026-11-13 | Admin dashboard at `/admin` with Clerk login + `ADMIN_EMAILS` | Houman chose the website over Marketing Ava for the dashboard and Clerk for the login. Clerk runs only on `/admin` |
+| 2026-11-14 | Offer: "Full Mouth Dental Implants", $11,900 per arch, $45,000 crossed out; veneers split into their own $9,000 price | Requested through the Marketing Ava session (Houman approved). A crossed-out price must be one actually charged recently (CA B&P §17501, FTC 16 CFR 233.1): the editor field says so, and Dr. Ava must confirm it |
+| 2026-11-14 | Real headshot via `DOCTOR_PHOTO`; WCAG 2.1 AA fixes (skip link, pause button, keyboard slider, dialog/accordion semantics, contrast) | Her real photo replaces the AI one; accessibility lawsuits target dental sites and Lighthouse now scores 100 everywhere |
 
 ## Production Launch Checklist
 

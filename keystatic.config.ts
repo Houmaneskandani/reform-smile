@@ -311,9 +311,14 @@ export default config({
       format: { data: "json" },
       schema: {
         fullArchPerArch: price(
-          "Full arch price (per arch)",
+          "Full arch implants price (per arch)",
           LIMITS.pricing.fullArchPerArch,
-          `In whole dollars, without "$" or commas (for example 9000). Used by the cost estimator (for full arch implants and full arch veneers), the limited-time offer and the chat assistant. ${SAVE_NOTE}`
+          `In whole dollars, without "$" or commas (for example 11900). The price of one arch of implants with zirconia teeth. Used by the limited-time offer, the cost estimator and the chat assistant. ${SAVE_NOTE}`
+        ),
+        fullArchVeneersPerArch: price(
+          "Full arch veneers price (per arch)",
+          LIMITS.pricing.fullArchVeneersPerArch,
+          `In whole dollars, without "$" or commas (for example 9000). Used by the cost estimator and the chat assistant for a full arch of veneers.`
         ),
         singleImplant: price(
           "Single implant price",
@@ -350,6 +355,12 @@ export default config({
               LIMITS.pricing.offer.unitLabel,
               "Shown next to the full arch price, e.g. Per Arch."
             ),
+            compareAtPrice: fields.integer({
+              label: "Crossed-out regular price",
+              description:
+                "Optional. Shown crossed out next to the offer price. Only fill this in if the practice really charged this price, as its regular price, within the last 3 months: in California a crossed-out \"was\" price must be a real recent price (Business & Professions Code §17501, FTC 16 CFR 233.1), and the dental board forbids misleading price ads (§651). Must be higher than the full arch implants price. Leave empty to show only the offer price.",
+              validation: { min: LIMITS.pricing.offer.compareAtPrice.min, max: LIMITS.pricing.offer.compareAtPrice.max },
+            }),
             body: copy(
               "Description",
               LIMITS.pricing.offer.body,
@@ -365,7 +376,7 @@ export default config({
           },
           {
             label: "Limited-time offer (homepage)",
-            description: "The offer box on the homepage. Its price is the full arch price above.",
+            description: "The offer box on the homepage. Its price is the full arch implants price above.",
           }
         ),
       },

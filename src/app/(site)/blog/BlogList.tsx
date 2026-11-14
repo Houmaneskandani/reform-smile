@@ -65,7 +65,7 @@ export default function BlogList() {
               {/* Thumbnail placeholder */}
               <div className="aspect-[16/10] bg-cream relative overflow-hidden">
                 <div className="w-full h-full flex items-center justify-center">
-                  <span className="text-navy/20 text-sm">Article Image</span>
+                  <span className="text-gray text-sm" aria-hidden="true">Article image</span>
                 </div>
                 <span className="absolute top-4 left-4 bg-gold text-navy-dark text-[11px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
                   {post.category}

@@ -23,12 +23,13 @@ const CONNECTION_ERROR_REPLY = `Sorry, I'm having trouble connecting. Please cal
 // Prices come from content/pricing.json; "limited time offer" only while the offer is live.
 const SINGLE_IMPLANT_PRICE = formatMoney(pricing.singleImplant);
 const FULL_ARCH_PRICE = formatMoney(pricing.fullArchPerArch);
+const FULL_ARCH_VENEERS_PRICE = formatMoney(pricing.fullArchVeneersPerArch);
 const OFFER_NOTE = isOfferLive(pricing.offer, new Date()) ? " (limited time offer!)" : "";
 
 // Demo answers — used when the live AI assistant isn't configured or can't be reached.
 const MOCK_RESPONSES = {
   default: `Great question! For the most accurate answer, I'd recommend a **free consultation** with our team. You can book online or call us at ${SITE_CONFIG.phone}.`,
-  cost: `Great question about cost! Here are our current prices:\n\n• **Single implant:** ${SINGLE_IMPLANT_PRICE} per implant\n• **Full arch (implants or veneers):** ${FULL_ARCH_PRICE} per arch${OFFER_NOTE}\n\nThe ${FULL_ARCH_PRICE} per arch can include implants with zirconia teeth, veneers, or a combination. We also offer financing options. Would you like to book a **free consultation** for an exact treatment plan?`,
+  cost: `Great question about cost! Here are our current prices:\n\n• **Single implant:** ${SINGLE_IMPLANT_PRICE} per implant\n• **Full arch implants:** ${FULL_ARCH_PRICE} per arch, with zirconia teeth${OFFER_NOTE}\n• **Full arch veneers:** ${FULL_ARCH_VENEERS_PRICE} per arch\n\nWe also offer financing options. Would you like to book a **free consultation** for a personalized quote?`,
   pain: "Most patients are pleasantly surprised by how comfortable the procedure is! Our team uses advanced techniques and anesthesia to minimize discomfort, and many patients compare it to a simple tooth extraction. Would you like to learn more during a free consultation?",
   dentures:
     "Our **Snap-On Dentures** are removable, implant-supported dentures that snap securely into place, giving you more stability, comfort, and confidence than traditional dentures. Would you like to book a **free consultation** to see if they're a good fit for you?",
@@ -160,6 +161,9 @@ export default function AIChatAssistant() {
   const [typing, setTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  // Where keyboard focus was before the chat opened, so closing the chat puts it back there.
+  const openerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -177,8 +181,30 @@ export default function AIChatAssistant() {
   }, []);
 
   useEffect(() => {
-    // Only auto-focus on desktop — prevents keyboard pop on mobile
-    if (open && window.innerWidth >= 768) inputRef.current?.focus();
+    if (open) {
+      openerRef.current = document.activeElement as HTMLElement | null;
+      // The message box on desktop; on phones the window itself (focusing the box would pop
+      // up the keyboard), so screen readers still start inside the chat.
+      if (window.innerWidth >= 768) inputRef.current?.focus();
+      else dialogRef.current?.focus();
+      const onKey = (event: KeyboardEvent) => {
+        if (event.key === "Escape") setOpen(false);
+      };
+      window.addEventListener("keydown", onKey);
+      return () => window.removeEventListener("keydown", onKey);
+    }
+    // Closed: give focus back to whatever opened the chat. The floating chat button is replaced
+    // while the chat is open, so fall back to the chat button that is on screen now.
+    const opener = openerRef.current;
+    openerRef.current = null;
+    if (!opener) return;
+    const target = opener.isConnected
+      ? opener
+      : [...document.querySelectorAll<HTMLElement>('button[aria-label="Open chat"]')].find(
+          // Visible = has a box (offsetParent is always null for these fixed-position buttons).
+          (button) => button.getClientRects().length > 0
+        );
+    target?.focus();
   }, [open]);
 
   const sendMessage = async () => {
@@ -230,7 +256,12 @@ export default function AIChatAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.9 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 md:inset-auto md:bottom-6 md:right-6 z-50 md:w-[380px] md:h-[500px] bg-white md:rounded-2xl shadow-2xl md:border md:border-gray-lighter flex flex-col overflow-hidden"
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="false"
+            aria-labelledby="chat-title"
+            tabIndex={-1}
+            className="focus:outline-none fixed inset-0 md:inset-auto md:bottom-6 md:right-6 z-50 md:w-[380px] md:h-[500px] bg-white md:rounded-2xl shadow-2xl md:border md:border-gray-lighter flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="bg-navy px-5 py-4 flex items-center justify-between flex-shrink-0">
@@ -239,7 +270,7 @@ export default function AIChatAssistant() {
                   <Bot size={18} className="text-gold-ink" />
                 </div>
                 <div>
-                  <p className="text-white font-semibold text-sm">Reform Dental AI</p>
+                  <p id="chat-title" className="text-white font-semibold text-sm">Reform Dental AI</p>
                   <p className="text-white/75 text-[11px]">Ask me anything</p>
                 </div>
               </div>
@@ -248,7 +279,7 @@ export default function AIChatAssistant() {
                 className="text-white/75 hover:text-white transition-colors cursor-pointer"
                 aria-label="Close chat"
               >
-                <X size={20} />
+                <X size={20} aria-hidden="true" />
               </button>
             </div>
 

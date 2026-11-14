@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Phone } from "lucide-react";
+import { Pause, Phone, Play } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { preload } from "react-dom";
 
 function useGyroShine() {
@@ -57,8 +57,43 @@ function useGyroShine() {
   return { position, fallback };
 }
 
+/**
+ * The background video loops forever, so visitors must be able to stop it (WCAG 2.2.2), and it
+ * doesn't start at all for visitors who ask their device for reduced motion. The same switch
+ * stops the gold shine on "Confident".
+ */
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+function subscribeReducedMotion(onChange: () => void) {
+  const query = window.matchMedia(REDUCED_MOTION);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+}
+const prefersReducedMotion = () => window.matchMedia(REDUCED_MOTION).matches;
+const prefersReducedMotionOnServer = () => false;
+
+function useBackgroundMotion() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const reducedMotion = useSyncExternalStore(subscribeReducedMotion, prefersReducedMotion, prefersReducedMotionOnServer);
+  // null until the visitor presses the button; until then reduced motion decides.
+  const [choice, setChoice] = useState<"paused" | "playing" | null>(null);
+  const paused = choice ? choice === "paused" : reducedMotion;
+
+  // Started from here rather than with autoPlay, so reduced motion never sees it move.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (paused) video.pause();
+    else video.play().catch(() => setChoice("paused"));
+  }, [paused]);
+
+  const toggle = () => setChoice(paused ? "playing" : "paused");
+
+  return { videoRef, paused, toggle };
+}
+
 export default function Hero() {
   const { position, fallback } = useGyroShine();
+  const { videoRef, paused, toggle } = useBackgroundMotion();
   // Ask the browser for the hero's still image straight away, ahead of scripts and fonts.
   preload("/images/video/hero-poster.jpg", { as: "image", fetchPriority: "high" });
   return (
@@ -77,7 +112,7 @@ export default function Hero() {
           className="absolute inset-0 w-full h-full object-cover object-[85%_10%] md:object-[85%_center] lg:object-center"
         />
         <video
-          autoPlay
+          ref={videoRef}
           muted
           loop
           playsInline
@@ -117,7 +152,7 @@ export default function Hero() {
               <br className="hidden md:block" />
               <span className="hero-rise hero-rise-2 inline-block">
               <span
-                className={`inline-block italic ${fallback ? "confident-shine motion-reduce:animate-none!" : ""}`}
+                className={`inline-block italic ${fallback ? "confident-shine motion-reduce:animate-none!" : ""} ${paused ? "is-paused" : ""}`}
                 style={!fallback ? {
                   backgroundImage: `linear-gradient(105deg, #A8884D ${position - 30}%, #F0D890 ${position}%, #A8884D ${position + 30}%)`,
                   backgroundSize: "200% 100%",
@@ -244,6 +279,16 @@ export default function Hero() {
           <div className="hidden lg:block" />
         </div>
       </div>
+      {/* Stops the background video and the shine (WCAG 2.2.2: moving content must be pausable). */}
+      <button
+        type="button"
+        onClick={toggle}
+        aria-pressed={paused}
+        aria-label={paused ? "Play background video" : "Pause background video"}
+        className="absolute bottom-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-navy-dark/60 text-white backdrop-blur-sm transition-colors hover:bg-navy-dark/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white cursor-pointer"
+      >
+        {paused ? <Play size={16} aria-hidden="true" /> : <Pause size={16} aria-hidden="true" />}
+      </button>
     </section>
   );
 }

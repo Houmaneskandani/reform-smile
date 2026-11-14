@@ -15,6 +15,8 @@ export default function GalleryGrid() {
   return (
     <section className="py-28 md:py-24 bg-white">
       <div className="section-container">
+        {/* Keeps the heading order intact (h1 → h2 → h3) for screen readers. */}
+        <h2 className="sr-only">Patient cases</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {cases.map((item, index) => (
             <motion.div
@@ -29,7 +31,6 @@ export default function GalleryGrid() {
               <div className="grid grid-cols-2 gap-px bg-gray-lighter">
                 <div className="relative aspect-[4/3] bg-cream">
                   <div className="w-full h-full flex items-center justify-center">
-                    <span className="text-navy/20 text-sm">Before</span>
                   </div>
                   <span className="absolute top-3 left-3 bg-navy/80 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                     Before
@@ -37,7 +38,6 @@ export default function GalleryGrid() {
                 </div>
                 <div className="relative aspect-[4/3] bg-cream-dark/30">
                   <div className="w-full h-full flex items-center justify-center">
-                    <span className="text-gold-dark/20 text-sm">After</span>
                   </div>
                   <span className="absolute top-3 left-3 bg-gold text-navy-dark text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                     After

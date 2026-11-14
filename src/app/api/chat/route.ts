@@ -24,6 +24,7 @@ const SERVICE_LINES = SERVICES.map((service) => `  - ${service.title}: ${service
 // Prices come from content/pricing.json (edited in the website editor).
 const SINGLE_IMPLANT_PRICE = formatMoney(pricing.singleImplant);
 const FULL_ARCH_PRICE = formatMoney(pricing.fullArchPerArch);
+const FULL_ARCH_VENEERS_PRICE = formatMoney(pricing.fullArchVeneersPerArch);
 const BONE_GRAFT_RANGE = formatPriceRange(pricing.boneGraftMin, pricing.boneGraftMax);
 const BONE_GRAFT_LINE = BONE_GRAFT_RANGE
   ? `- Bone grafting: ${BONE_GRAFT_RANGE} (if needed)`
@@ -63,8 +64,9 @@ ${SERVICE_LINES}
 
 COST RANGES (general estimates only):
 - Single implant: ${SINGLE_IMPLANT_PRICE} per implant
-- Full arch implants or veneers: ${FULL_ARCH_PRICE} per arch${offerNote}
-- Can be implants, veneers, or a mix
+- Full arch implants: ${FULL_ARCH_PRICE} per arch, implants and zirconia teeth${offerNote}
+- Full arch veneers: ${FULL_ARCH_VENEERS_PRICE} per arch
+- Never quote any other "regular" or "original" price and never talk about savings: only the prices above
 ${BONE_GRAFT_LINE}
 - Always note: "Exact pricing is determined during your free consultation"
 

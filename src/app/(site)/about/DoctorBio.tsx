@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { GraduationCap, Award, Users, Heart, BookOpen, Globe } from "lucide-react";
 import Image from "next/image";
+import { DOCTOR_PHOTO } from "@/lib/constants";
 
 const credentials = [
   { icon: GraduationCap, title: "Education", text: "Doctor of Dental Surgery\nUniversity of Southern California\n\nOral Surgery Fellowship\nUniversity of Missouri Kansas City" },
@@ -29,11 +30,12 @@ export default function DoctorBio() {
             <div className="relative w-full max-w-sm">
               <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-lg">
                 <Image
-                  src="/images/dr-ava.png"
-                  alt="Dr. Ava, DDS — Reform Dental & Implant Center"
-                  width={400}
-                  height={533}
-                  className="w-full h-full object-cover object-top"
+                  src={DOCTOR_PHOTO.src}
+                  alt={DOCTOR_PHOTO.alt}
+                  width={DOCTOR_PHOTO.width}
+                  height={DOCTOR_PHOTO.height}
+                  sizes="(min-width: 1024px) 384px, 90vw"
+                  className="w-full h-full object-cover object-[50%_20%]"
                   preload
                 />
               </div>

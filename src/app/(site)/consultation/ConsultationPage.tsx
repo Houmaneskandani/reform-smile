@@ -211,7 +211,7 @@ export default function ConsultationPage() {
                             placeholder="First Name *"
                             className="w-full px-4 py-3.5 rounded-xl border border-gray-lighter bg-gray-lighter/30 text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors text-sm"
                           />
-                          {errors.firstName && <p id="consult-firstName-error" className="text-red-500 text-[11px] mt-1">{errors.firstName.message}</p>}
+                          {errors.firstName && <p id="consult-firstName-error" className="text-red-700 text-[11px] mt-1">{errors.firstName.message}</p>}
                         </div>
                         <div>
                           <label htmlFor="consult-lastName" className="sr-only">Last name (required)</label>
@@ -223,7 +223,7 @@ export default function ConsultationPage() {
                             placeholder="Last Name *"
                             className="w-full px-4 py-3.5 rounded-xl border border-gray-lighter bg-gray-lighter/30 text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors text-sm"
                           />
-                          {errors.lastName && <p id="consult-lastName-error" className="text-red-500 text-[11px] mt-1">{errors.lastName.message}</p>}
+                          {errors.lastName && <p id="consult-lastName-error" className="text-red-700 text-[11px] mt-1">{errors.lastName.message}</p>}
                         </div>
                       </div>
 
@@ -237,7 +237,7 @@ export default function ConsultationPage() {
                           placeholder="Email Address *"
                           className="w-full px-4 py-3.5 rounded-xl border border-gray-lighter bg-gray-lighter/30 text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors text-sm"
                         />
-                        {errors.email && <p id="consult-email-error" className="text-red-500 text-[11px] mt-1">{errors.email.message}</p>}
+                        {errors.email && <p id="consult-email-error" className="text-red-700 text-[11px] mt-1">{errors.email.message}</p>}
                       </div>
 
                       <div>
@@ -250,7 +250,7 @@ export default function ConsultationPage() {
                           placeholder="Phone Number *"
                           className="w-full px-4 py-3.5 rounded-xl border border-gray-lighter bg-gray-lighter/30 text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors text-sm"
                         />
-                        {errors.phone && <p id="consult-phone-error" className="text-red-500 text-[11px] mt-1">{errors.phone.message}</p>}
+                        {errors.phone && <p id="consult-phone-error" className="text-red-700 text-[11px] mt-1">{errors.phone.message}</p>}
                       </div>
 
                       <div>
@@ -266,7 +266,7 @@ export default function ConsultationPage() {
                             <option key={c} value={c}>{c}</option>
                           ))}
                         </select>
-                        {errors.concern && <p id="consult-concern-error" className="text-red-500 text-[11px] mt-1">{errors.concern.message}</p>}
+                        {errors.concern && <p id="consult-concern-error" className="text-red-700 text-[11px] mt-1">{errors.concern.message}</p>}
                       </div>
 
                       <div>

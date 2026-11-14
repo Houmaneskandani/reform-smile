@@ -10,6 +10,7 @@ import { formatMoney } from "@/content/format";
 // Per-arch and per-implant prices are edited in content/pricing.json. The estimate math,
 // financing terms and the "not sure" range stay in code.
 const FULL_ARCH_PRICE = pricing.fullArchPerArch;
+const FULL_ARCH_VENEERS_PRICE = pricing.fullArchVeneersPerArch;
 const SINGLE_IMPLANT_PRICE = pricing.singleImplant;
 
 type EstimatorStep = {
@@ -90,7 +91,7 @@ function calculateCost(answers: Record<string, string>): CostResult {
         "Full arch of zirconia teeth",
         "All follow-up appointments",
       ],
-      note: `${formatMoney(FULL_ARCH_PRICE)} per arch — includes implants and zirconia teeth. Can also be a mix of implants and veneers.`,
+      note: `${formatMoney(FULL_ARCH_PRICE)} per arch — includes implants and zirconia teeth.`,
     };
   }
 
@@ -133,7 +134,7 @@ function calculateCost(answers: Record<string, string>): CostResult {
   }
 
   if (procedure === "veneers") {
-    const total = FULL_ARCH_PRICE * bothMultiplier;
+    const total = FULL_ARCH_VENEERS_PRICE * bothMultiplier;
     return {
       procedure: "Full Arch Veneers",
       lowRange: total.toLocaleString(),
@@ -329,11 +330,11 @@ export default function CostEstimator() {
               <div className="flex items-center justify-between mb-8">
                 <button
                   onClick={() => currentStep > 0 && setCurrentStep((p) => p - 1)}
-                  className={`inline-flex items-center gap-2 text-navy/40 hover:text-navy transition-colors cursor-pointer text-sm ${
+                  className={`inline-flex items-center gap-2 text-navy/75 hover:text-navy transition-colors cursor-pointer text-sm ${
                     currentStep === 0 ? "invisible" : ""
                   }`}
                 >
-                  <ArrowLeft size={16} />
+                  <ArrowLeft size={16} aria-hidden="true" />
                   Back
                 </button>
                 <span className="text-gray-light text-xs tracking-widest">
@@ -360,6 +361,7 @@ export default function CostEstimator() {
                         <button
                           key={option.value}
                           onClick={() => handleAnswer(steps[currentStep].id, option.value)}
+                          aria-pressed={isSelected}
                           className={`w-full text-left px-6 py-4 rounded-xl border transition-all duration-200 cursor-pointer ${
                             isSelected
                               ? "bg-navy/5 border-gold/40 text-navy"

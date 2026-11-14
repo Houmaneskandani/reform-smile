@@ -99,7 +99,8 @@ const FIELD_LABELS: Record<FileName, Record<string, string>> = {
     footerBlurb: "Footer text",
   },
   pricing: {
-    fullArchPerArch: "Full arch price (per arch)",
+    fullArchPerArch: "Full arch implants price (per arch)",
+    fullArchVeneersPerArch: "Full arch veneers price (per arch)",
     singleImplant: "Single implant price",
     boneGraftMin: "Bone graft price: from",
     boneGraftMax: "Bone graft price: up to",
@@ -108,6 +109,7 @@ const FIELD_LABELS: Record<FileName, Record<string, string>> = {
     eyebrow: "Small heading",
     headline: "Headline",
     unitLabel: "Price label",
+    compareAtPrice: "Crossed-out regular price",
     body: "Description",
     ctaLabel: "Button text",
     endsOn: "Last day of the offer",
@@ -218,6 +220,12 @@ function crossChecks(
   const { boneGraftMin, boneGraftMax } = data.pricing;
   if (boneGraftMin != null && boneGraftMax != null && boneGraftMin > boneGraftMax) {
     report("pricing", ["boneGraftMax"], `The bone graft "up to" price (${formatMoney(boneGraftMax)}) is lower than the "from" price (${formatMoney(boneGraftMin)}).`);
+  }
+
+  // Offer: a crossed-out "regular" price must be higher than the price actually charged.
+  const { compareAtPrice } = data.pricing.offer;
+  if (compareAtPrice != null && compareAtPrice <= data.pricing.fullArchPerArch) {
+    report("pricing", ["offer", "compareAtPrice"], `The crossed-out regular price (${formatMoney(compareAtPrice)}) must be higher than the full arch implants price (${formatMoney(data.pricing.fullArchPerArch)}), or left empty.`);
   }
 
   // Hours: on open days, the closing time must be after the opening time.

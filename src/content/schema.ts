@@ -93,6 +93,9 @@ export const offerSchema = z.strictObject({
   eyebrow: copy(LIMITS.pricing.offer.eyebrow),
   headline: copy(LIMITS.pricing.offer.headline),
   unitLabel: copy(LIMITS.pricing.offer.unitLabel),
+  // Optional crossed-out "regular" price next to the offer price. Legal only if the practice
+  // actually charged it recently (see the editor's field description). Empty = not shown.
+  compareAtPrice: wholeDollars(LIMITS.pricing.offer.compareAtPrice).nullish(),
   body: copy(LIMITS.pricing.offer.body),
   ctaLabel: copy(LIMITS.pricing.offer.ctaLabel),
   // Last day of the offer (YYYY-MM-DD). Empty = no end date.
@@ -101,6 +104,7 @@ export const offerSchema = z.strictObject({
 
 export const pricingSchema = z.strictObject({
   fullArchPerArch: wholeDollars(LIMITS.pricing.fullArchPerArch),
+  fullArchVeneersPerArch: wholeDollars(LIMITS.pricing.fullArchVeneersPerArch),
   singleImplant: wholeDollars(LIMITS.pricing.singleImplant),
   // Empty = the chat says the cost varies and is discussed at the consultation.
   boneGraftMin: wholeDollars(LIMITS.pricing.boneGraft).nullish(),
