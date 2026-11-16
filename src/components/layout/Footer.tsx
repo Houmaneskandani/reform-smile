@@ -150,11 +150,14 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights
             reserved.
           </p>
-          <div className="flex items-center gap-6">
-            {/* Lets visitors change or withdraw their cookie choice at any time */}
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             <Link href="/privacy" className="text-white/60 hover:text-gold-ink transition-colors text-sm">
               Privacy Policy
             </Link>
+            <Link href="/accessibility" className="text-white/60 hover:text-gold-ink transition-colors text-sm">
+              Accessibility
+            </Link>
+            {/* Lets visitors change or withdraw their cookie choice at any time */}
             <CookieSettingsButton className="text-white/60 hover:text-gold-ink transition-colors text-sm cursor-pointer" />
           </div>
         </div>

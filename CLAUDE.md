@@ -139,6 +139,7 @@ src/
 │   │   ├── review/             # "Rate your visit" page for patients (link or QR code). A 404 until the
 │   │   │                       #   Google review link is set; see "Review page"
 │   │   ├── privacy/            # Privacy policy (DRAFT: needs the practice's review, see "Privacy policy")
+│   │   ├── accessibility/      # Accessibility statement (linked in the footer; keep it truthful, see "Accessibility")
 │   │   └── consultation/       # Marketing landing page — has its own minimal layout (no header/footer)
 │   ├── admin/                  # Admin dashboard at /admin (visitor statistics). Clerk login + ADMIN_EMAILS;
 │   │                           #   404 live until Clerk is set up; local preview under dev:admin. See "Admin dashboard"
@@ -237,10 +238,11 @@ The brand gold (#C4A265) is too pale for text on white or cream (2.4:1; the stan
 - On navy, white text needs at least `text-white/65` at small sizes.
 
 ### Accessibility (WCAG 2.1 AA)
-Lighthouse accessibility is 100 on every public page (2026-11-14). Keep these when changing the components:
+Lighthouse accessibility is 100 on every public page (2026-11-14), and every page fits a 320 px wide screen (the WCAG reflow test, same as 400% zoom) without sideways scrolling. `/accessibility` is the public statement: it may only claim what has really been checked. Update its "Last reviewed" date and "Known limitations" list when the site changes (new photos, videos, embedded forms), and never write "compliant" or "certified" there without a formal outside audit. Keep these when changing the components:
 - **Skip link:** "Skip to main content" is the first Tab stop (`SiteChrome.tsx`); it jumps to `<main id="main-content">`. The consultation page has its own layout and no skip link.
 - **Moving content can be paused:** the hero has a Pause/Play button for the background video and the gold shine on the headline (`.confident-shine.is-paused`). With reduced motion the video never starts. Don't add autoplaying motion longer than 5 seconds without a pause control. The video has no sound, so it needs no captions.
 - **Keyboard:** the before/after slider is a `role="slider"` (arrows, Page Up/Down, Home/End); the FAQ buttons use `aria-expanded`/`aria-controls` and closed answers are `inert`; the chat is a named dialog, Escape closes it and focus goes back to the button that opened it.
+- **Mobile menu:** a show/hide menu (`aria-expanded`, links follow the button in Tab order). Escape closes it and puts focus back on the menu button.
 - **Error text** on forms is `text-red-700` (red-500 fails contrast on white).
 - **Prices:** a crossed-out price is a `<del>` with sr-only "Regular price:" / "Offer price:" so screen readers don't read two bare numbers.
 - Pictures shown as CSS backgrounds or `aria-hidden` need their meaning in text nearby (the slider's `aria-label` describes both photos).

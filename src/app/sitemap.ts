@@ -17,6 +17,7 @@ const PAGES: {
   { path: "/book", changeFrequency: "monthly", priority: 0.8 },
   { path: "/consultation", changeFrequency: "monthly", priority: 0.9 },
   { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/accessibility", changeFrequency: "yearly", priority: 0.3 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

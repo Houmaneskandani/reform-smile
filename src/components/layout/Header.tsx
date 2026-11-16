@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -31,6 +31,7 @@ function isActiveLink(pathname: string, href: string) {
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const scrolled = useSyncExternalStore(
     subscribeToScroll,
     getIsScrolled,
@@ -38,11 +39,14 @@ export default function Header() {
   );
   const pathname = usePathname();
 
-  // Close the mobile menu with the Escape key
+  // Close the mobile menu with the Escape key. Focus goes back to the menu button, so a
+  // keyboard user who was on a menu link doesn't lose their place (the link disappears).
   useEffect(() => {
     if (!mobileMenuOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMobileMenuOpen(false);
+      if (e.key !== "Escape") return;
+      setMobileMenuOpen(false);
+      menuButtonRef.current?.focus();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -165,6 +169,7 @@ export default function Header() {
 
             {/* Menu button — below lg */}
             <button
+              ref={menuButtonRef}
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className={`lg:hidden p-2 cursor-pointer transition-colors ${

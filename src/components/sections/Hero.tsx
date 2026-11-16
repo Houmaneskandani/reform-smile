@@ -131,7 +131,7 @@ export default function Hero() {
       <div className="relative section-container pt-24 md:pt-44 pb-6 md:pb-28">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left: Content */}
-          <div className="text-center lg:text-left">
+          <div className="min-w-0 text-center lg:text-left">
             {/* Badge — top on desktop, moved below CTA on mobile */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -182,7 +182,7 @@ export default function Hero() {
               <div className="relative group">
                 <a
                   href="/consultation"
-                  className="relative inline-flex items-center justify-center gap-3 bg-gold hover:bg-gold-dark text-navy-dark font-bold px-9 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-gold/25 hover:shadow-xl hover:scale-[1.03] overflow-hidden text-lg whitespace-nowrap"
+                  className="relative inline-flex items-center justify-center gap-3 bg-gold hover:bg-gold-dark text-navy-dark font-bold px-9 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-gold/25 hover:shadow-xl hover:scale-[1.03] overflow-hidden text-lg sm:whitespace-nowrap"
                 >
                   {/* Shine sweep */}
                   <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-20deg]" />
@@ -223,7 +223,7 @@ export default function Hero() {
               <div className="relative group hidden md:block">
                 <a
                   href={`tel:${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}`}
-                  className="relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border-2 border-white/30 text-white hover:bg-white hover:text-navy transition-all duration-300 font-semibold whitespace-nowrap hover:border-white"
+                  className="relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border-2 border-white/30 text-white hover:bg-white hover:text-navy transition-all duration-300 font-semibold sm:whitespace-nowrap hover:border-white"
                 >
                   {/* Phone icon with wiggle on hover */}
                   <motion.span
