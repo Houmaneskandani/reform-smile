@@ -8,7 +8,7 @@ import { telHref } from "@/content/format";
 // must be updated whenever the site starts collecting something new (a new form field, a new
 // tracker, the Marketing Ava lead forward, text-message consent…).
 // It is NOT the practice's HIPAA Notice of Privacy Practices, which covers patient records.
-const LAST_UPDATED = "November 13, 2026";
+const LAST_UPDATED = "November 16, 2026";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -64,6 +64,13 @@ export default function PrivacyPage() {
               When you use the chat assistant, we receive the messages you type. The assistant
               gives general information only. It is not a dentist and does not give medical
               advice.
+            </p>
+            <p>
+              If you tap the microphone in the chat to speak instead of typing, your browser turns
+              your speech into text. Most browsers do this by sending the recording to their
+              maker (for example Google for Chrome, Apple for Safari), under that company&rsquo;s
+              privacy policy. We receive only the text that appears in the message box, and only
+              if you send it. We never receive or keep the recording. If you prefer, simply type.
             </p>
             <p>
               Please do not send detailed medical history, insurance numbers or payment details

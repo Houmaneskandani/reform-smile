@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send, Bot, User } from "lucide-react";
+import { useState, useRef, useEffect, useSyncExternalStore } from "react";
+import { MessageCircle, X, Send, Bot, User, Mic, CalendarCheck, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SITE_CONFIG } from "@/lib/constants";
 import { pricing } from "@/content";
-import { formatMoney, isOfferLive } from "@/content/format";
+import { formatMoney, isOfferLive, telHref } from "@/content/format";
 import { trackEvent } from "@/lib/tracking";
 import { OPEN_CHAT_EVENT } from "@/components/ui/StickyBookNow";
 
@@ -17,6 +17,14 @@ type Message = {
 // Limits enforced by the chat API (src/app/api/chat/route.ts).
 const MAX_HISTORY = 20;
 const MAX_MESSAGE_CHARS = 2000;
+
+// One-tap questions shown under the greeting, before the patient has typed anything.
+const SUGGESTED_QUESTIONS = [
+  "How much do implants cost?",
+  "Am I a candidate for implants?",
+  "Do you offer financing?",
+  "Does the procedure hurt?",
+];
 
 const CONNECTION_ERROR_REPLY = `Sorry, I'm having trouble connecting. Please call us at ${SITE_CONFIG.phone} for immediate help!`;
 
@@ -99,12 +107,15 @@ async function getDemoReply(message: string): Promise<string> {
   return getMockResponse(message);
 }
 
-// Asks the chat API for a reply. Falls back to the demo answers when the AI isn't
-// configured (the API answers { fallback: true }) or can't be reached at all.
-async function getReply(conversation: Message[]): Promise<string> {
+// Asks the chat API for a reply. The live assistant streams its answer (newline-delimited
+// JSON, see src/app/api/chat/route.ts): `onText` gets the reply so far each time more arrives.
+// Falls back to the demo answers when the AI isn't configured (the API answers
+// { fallback: true }) or can't be reached at all. Resolves with the final reply.
+async function getReply(conversation: Message[], onText: (text: string) => void): Promise<string> {
   const latest = conversation[conversation.length - 1].content;
+  let response: Response;
   try {
-    const response = await fetch("/api/chat", {
+    response = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -114,21 +125,97 @@ async function getReply(conversation: Message[]): Promise<string> {
         })),
       }),
     });
+  } catch {
+    return getDemoReply(latest); // network failure
+  }
+
+  if (response.ok && response.body && response.headers.get("content-type")?.includes("ndjson")) {
+    return readStream(response.body, onText);
+  }
+
+  try {
     const data: unknown = await response.json();
     const { reply, fallback } = (typeof data === "object" && data !== null ? data : {}) as {
       reply?: unknown;
       fallback?: unknown;
     };
     const replyText = typeof reply === "string" && reply.trim() ? reply : null;
-
     if (response.ok && replyText) return replyText;
     if (!response.ok && fallback === true) return getDemoReply(latest);
     // e.g. 429 "too many messages" — the API sends a friendly reply to show as-is.
     return replyText ?? CONNECTION_ERROR_REPLY;
   } catch {
-    // Network failure or a response that isn't JSON.
-    return getDemoReply(latest);
+    return getDemoReply(latest); // a response that isn't JSON
   }
+}
+
+async function readStream(body: ReadableStream<Uint8Array>, onText: (text: string) => void): Promise<string> {
+  const reader = body.getReader();
+  const decoder = new TextDecoder();
+  let text = "";
+  let buffered = "";
+  const apply = (line: string) => {
+    if (!line.trim()) return;
+    try {
+      const event = JSON.parse(line) as { d?: unknown; reset?: unknown; replace?: unknown };
+      if (event.reset === true) text = "";
+      if (typeof event.d === "string") text += event.d;
+      if (typeof event.replace === "string") text = event.replace;
+      onText(text);
+    } catch {
+      // Ignore a malformed line rather than breaking the whole reply.
+    }
+  };
+  try {
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffered += decoder.decode(value, { stream: true });
+      const lines = buffered.split("\n");
+      buffered = lines.pop() ?? "";
+      lines.forEach(apply);
+    }
+    apply(buffered);
+  } catch {
+    // The connection dropped mid-reply: keep what arrived, or show the error message.
+  }
+  return text.trim() ? text : CONNECTION_ERROR_REPLY;
+}
+
+// ---------------------------------------------------------------------------
+// Speaking instead of typing: the browser's own speech recognition (Chrome, Edge, Safari,
+// iPhone, Android). Firefox has none, so the microphone button simply doesn't appear there.
+// The browser sends the recording to its maker (Google or Apple) to turn it into text; the
+// privacy policy says so. TypeScript's DOM types don't include this API yet, hence the
+// minimal types below.
+// ---------------------------------------------------------------------------
+type SpeechRecognitionResultLike = { isFinal: boolean; 0: { transcript: string } };
+type SpeechRecognitionLike = {
+  lang: string;
+  interimResults: boolean;
+  continuous: boolean;
+  onresult: ((event: { resultIndex: number; results: ArrayLike<SpeechRecognitionResultLike> }) => void) | null;
+  onerror: ((event: { error: string }) => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+  abort: () => void;
+};
+type SpeechRecognitionConstructor = new () => SpeechRecognitionLike;
+
+function getSpeechRecognition(): SpeechRecognitionConstructor | null {
+  if (typeof window === "undefined") return null;
+  const w = window as unknown as {
+    SpeechRecognition?: SpeechRecognitionConstructor;
+    webkitSpeechRecognition?: SpeechRecognitionConstructor;
+  };
+  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
+}
+
+const subscribeNever = () => () => {};
+/** True in browsers that support speech recognition (always false while prerendering). */
+function useSpeechSupported(): boolean {
+  return useSyncExternalStore(subscribeNever, () => getSpeechRecognition() !== null, () => false);
 }
 
 // Escape the text first so a message can never be rendered as HTML, then apply the
@@ -159,6 +246,12 @@ export default function AIChatAssistant() {
   ]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
+  // True from sending a message until the reply has finished arriving.
+  const [streaming, setStreaming] = useState(false);
+  const [listening, setListening] = useState(false);
+  const [micNote, setMicNote] = useState("");
+  const speechSupported = useSpeechSupported();
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -179,6 +272,12 @@ export default function AIChatAssistant() {
     window.addEventListener(OPEN_CHAT_EVENT, openFromBar);
     return () => window.removeEventListener(OPEN_CHAT_EVENT, openFromBar);
   }, []);
+
+  // Stop the microphone when the chat closes or the component goes away.
+  useEffect(() => {
+    if (!open) recognitionRef.current?.abort();
+  }, [open]);
+  useEffect(() => () => recognitionRef.current?.abort(), []);
 
   useEffect(() => {
     if (open) {
@@ -207,25 +306,89 @@ export default function AIChatAssistant() {
     target?.focus();
   }, [open]);
 
-  const sendMessage = async () => {
-    const text = input.trim();
-    if (!text || typing) return;
+  const stopListening = () => {
+    recognitionRef.current?.stop();
+  };
+
+  const toggleListening = () => {
+    if (listening) {
+      stopListening();
+      return;
+    }
+    const Recognition = getSpeechRecognition();
+    if (!Recognition) return;
+    const recognition = new Recognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = true; // words appear while the patient is still speaking
+    recognition.continuous = false; // stops by itself after a pause
+    const before = input.trim();
+    recognition.onresult = (event) => {
+      let spoken = "";
+      for (let i = 0; i < event.results.length; i++) spoken += event.results[i][0].transcript;
+      setInput(`${before ? before + " " : ""}${spoken.trim()}`.slice(0, MAX_MESSAGE_CHARS));
+    };
+    recognition.onerror = (event) => {
+      if (event.error === "not-allowed" || event.error === "service-not-allowed") {
+        setMicNote("Microphone access is blocked. Allow it in your browser, or type your question.");
+      } else if (event.error === "no-speech") {
+        setMicNote("I didn't hear anything. Tap the microphone and try again.");
+      } else if (event.error !== "aborted") {
+        setMicNote("Voice input isn't working right now. Please type your question.");
+      }
+    };
+    recognition.onend = () => {
+      setListening(false);
+      recognitionRef.current = null;
+      inputRef.current?.focus();
+    };
+    recognitionRef.current = recognition;
+    setMicNote("");
+    try {
+      recognition.start();
+      setListening(true);
+      try {
+        trackEvent("chat_voice_used");
+      } catch {
+        // Analytics must never block the chat.
+      }
+    } catch {
+      recognitionRef.current = null;
+      setMicNote("Voice input isn't working right now. Please type your question.");
+    }
+  };
+
+  const sendMessage = async (preset?: string) => {
+    const text = (preset ?? input).trim();
+    if (!text || typing || streaming) return;
+    if (listening) recognitionRef.current?.abort();
+    setMicNote("");
 
     const userMsg: Message = { role: "user", content: text };
     const conversation = [...messages, userMsg];
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setTyping(true);
+    setStreaming(true);
     try {
-      trackEvent("chat_message_sent");
+      trackEvent(preset ? "chat_suggestion_used" : "chat_message_sent");
     } catch {
       // Analytics must never block the chat (e.g. storage blocked in private browsing).
     }
 
-    const reply = await getReply(conversation);
-    setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
-    setTyping(false);
+    // The reply bubble appears with the first words and grows as the rest arrives. It always
+    // sits right after this conversation, so each update replaces it.
+    const showText = (text: string) => {
+      setTyping(false);
+      setMessages((prev) => [...prev.slice(0, conversation.length), { role: "assistant", content: text }]);
+    };
+    const reply = await getReply(conversation, (text) => {
+      if (text) showText(text);
+    });
+    showText(reply);
+    setStreaming(false);
   };
+
+  const showSuggestions = messages.length === 1 && !typing;
 
   return (
     <>
@@ -288,6 +451,8 @@ export default function AIChatAssistant() {
               className="flex-1 overflow-y-auto px-4 py-4 space-y-4"
               role="log"
               aria-live="polite"
+              // Screen readers wait for the whole reply instead of reading every partial update.
+              aria-busy={streaming}
               aria-label="Chat messages"
             >
               {messages.map((msg, i) => (
@@ -317,6 +482,22 @@ export default function AIChatAssistant() {
                 </div>
               ))}
 
+              {/* One-tap questions before the patient has asked anything */}
+              {showSuggestions && (
+                <div className="pl-9 flex flex-wrap gap-2" aria-label="Suggested questions" role="group">
+                  {SUGGESTED_QUESTIONS.map((question) => (
+                    <button
+                      key={question}
+                      type="button"
+                      onClick={() => sendMessage(question)}
+                      className="rounded-full border border-navy/20 bg-white px-3 py-1.5 text-[12px] text-navy hover:bg-navy hover:text-white transition-colors cursor-pointer text-left"
+                    >
+                      {question}
+                    </button>
+                  ))}
+                </div>
+              )}
+
               {/* Typing indicator */}
               {typing && (
                 <div className="flex gap-2.5">
@@ -339,6 +520,26 @@ export default function AIChatAssistant() {
 
             {/* Input */}
             <div className="border-t border-gray-lighter px-4 py-3 flex-shrink-0">
+              {/* Always-visible next steps. A plain <a> for /consultation: it has its own layout,
+                  and client-side navigation into it crashes (see CLAUDE.md). */}
+              <div className="flex gap-2 mb-3">
+                <a
+                  href="/consultation"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-navy hover:bg-navy-light text-white text-[12px] font-semibold py-2 transition-colors"
+                >
+                  <CalendarCheck size={14} aria-hidden="true" />
+                  Book free consultation
+                </a>
+                <a
+                  href={telHref(SITE_CONFIG.phone)}
+                  onClick={() => trackEvent("phone_clicked")}
+                  className="inline-flex items-center justify-center gap-1.5 rounded-full border border-navy/25 text-navy hover:bg-cream text-[12px] font-semibold px-4 py-2 transition-colors"
+                  aria-label={`Call us at ${SITE_CONFIG.phone}`}
+                >
+                  <Phone size={14} aria-hidden="true" />
+                  Call us
+                </a>
+              </div>
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -353,20 +554,41 @@ export default function AIChatAssistant() {
                   onChange={(e) => setInput(e.target.value)}
                   maxLength={MAX_MESSAGE_CHARS}
                   aria-label="Type your message"
-                  placeholder="Ask about implants, costs..."
+                  placeholder={listening ? "Listening…" : "Ask about implants, costs..."}
                   className="flex-1 bg-gray-lighter rounded-full px-4 py-2.5 text-[16px] md:text-sm text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30"
                 />
+                {speechSupported && (
+                  <button
+                    type="button"
+                    onClick={toggleListening}
+                    aria-pressed={listening}
+                    aria-label={listening ? "Stop listening" : "Speak your message"}
+                    title={listening ? "Stop listening" : "Speak your message"}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer transition-colors ${
+                      listening
+                        ? "bg-red-700 text-white motion-safe:animate-pulse"
+                        : "bg-gray-lighter text-navy hover:bg-cream-dark"
+                    }`}
+                  >
+                    <Mic size={16} aria-hidden="true" />
+                  </button>
+                )}
                 <button
                   type="submit"
-                  disabled={!input.trim() || typing}
+                  disabled={!input.trim() || typing || streaming}
                   className="w-10 h-10 rounded-full bg-gold hover:bg-gold-dark text-navy-dark flex items-center justify-center cursor-pointer transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                   aria-label="Send message"
                 >
                   <Send size={16} />
                 </button>
               </form>
-              <p className="text-[10px] text-gray-light text-center mt-2">
-                AI assistant — for medical advice, please book a consultation
+              {micNote && (
+                <p role="status" className="text-[11px] text-red-700 mt-2 text-center">
+                  {micNote}
+                </p>
+              )}
+              <p className="text-[10px] text-gray text-center mt-2">
+                AI assistant · Please don&rsquo;t share personal health details · For medical advice, book a consultation
               </p>
             </div>
           </motion.div>

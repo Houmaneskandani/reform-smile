@@ -1,17 +1,25 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { SERVICES, SITE_CONFIG } from "@/lib/constants";
-import { pricing } from "@/content";
+import { faq, pricing } from "@/content";
 import { formatMoney, formatPriceRange, isOfferLive } from "@/content/format";
 import { createRateLimiter, getClientIp, isSameOrigin } from "@/lib/server/request-guards";
 
 // The AI chat assistant's server side. The Anthropic key is read here, on the server only —
 // it never reaches the browser. Without a key the widget falls back to its demo answers.
+//
+// Replies stream back as newline-delimited JSON (application/x-ndjson), one object per line:
+//   {"d": "text"}       more reply text, appended to what is shown
+//   {"reset": true}     a fallback model took over: throw away the text shown so far
+//   {"replace": "text"} show exactly this instead (refusal, empty reply, error mid-stream)
+// Errors before the reply starts (bad request, rate limit, API down) are plain JSON with a
+// status code and a `reply` to show, as before.
 
 export const runtime = "nodejs";
 // Hard ceiling for one chat turn on the hosting platform (the SDK timeout below stays inside it).
 export const maxDuration = 60;
 
-const MODEL = "claude-opus-5-5";
+// A fast, lower-cost model is plenty for front-desk questions.
+const MODEL = "claude-sonnet-5-5";
 const MAX_HISTORY = 20; // messages sent to the model per turn
 const MAX_MESSAGE_CHARS = 2000;
 const MAX_BODY_CHARS = 100_000;
@@ -29,6 +37,10 @@ const BONE_GRAFT_RANGE = formatPriceRange(pricing.boneGraftMin, pricing.boneGraf
 const BONE_GRAFT_LINE = BONE_GRAFT_RANGE
   ? `- Bone grafting: ${BONE_GRAFT_RANGE} (if needed)`
   : "- Bone grafting (if needed): the cost varies and is discussed during the free consultation";
+
+// The homepage FAQ (content/faq.json, edited in the website editor), so the chat gives the
+// same answers as the website.
+const FAQ_LINES = faq.items.map((item) => `Q: ${item.question}\nA: ${item.answer}`).join("\n\n");
 
 // Built per request so "limited time offer" disappears as soon as the offer ends.
 function systemPrompt(now: Date): string {
@@ -52,7 +64,7 @@ OUR DOCTOR:
 
 PRACTICE INFORMATION:
 - Practice: ${SITE_CONFIG.name}
-- Doctor: our doctor is a DDS — specialist in full arch restorations and All-on-X procedures
+- Doctor: our doctor is a DDS whose practice focuses on full arch restorations and All-on-X procedures. Never call the doctor a "specialist" or "board certified".
 - Services:
 ${SERVICE_LINES}
 - Free consultations available — includes comprehensive exam + 3D CT scan
@@ -70,6 +82,13 @@ COST RANGES (general estimates only):
 ${BONE_GRAFT_LINE}
 - Always note: "Exact pricing is determined during your free consultation"
 
+OUR WEBSITE'S FREQUENTLY ASKED QUESTIONS (answer in line with these; where they differ from the cost list above, the cost list wins):
+${FAQ_LINES}
+
+BOOKING:
+- Under the chat there are two buttons: "Book free consultation" and "Call us". When someone wants to book or seems ready, tell them to tap "Book free consultation" below, or call ${SITE_CONFIG.phone}.
+- You cannot book appointments, check availability or take contact details in this chat yourself.
+
 RESPONSE STYLE:
 - Warm, empathetic, professional — like a helpful receptionist
 - Keep responses short (2-3 sentences max)
@@ -85,6 +104,7 @@ const RATE_LIMIT_REPLY = `You've sent quite a few messages in a short time. Plea
 const BUSY_REPLY = `I'm answering a lot of questions right now. Please try again in a minute, or call us at ${SITE_CONFIG.phone} for immediate help.`;
 const BAD_REQUEST_REPLY = `Sorry, I couldn't read that message. Please try rephrasing it, or call us at ${SITE_CONFIG.phone} and our team will be glad to help.`;
 const FORBIDDEN_REPLY = `Sorry, I couldn't process that request. Please call us at ${SITE_CONFIG.phone} — our team is happy to help.`;
+const STREAM_CUT_NOTE = `(Sorry, my reply was cut off. Please ask again, or call us at ${SITE_CONFIG.phone}.)`;
 const ERROR_REPLY = `Sorry, I'm having trouble connecting right now. Please call us at ${SITE_CONFIG.phone} for immediate help!`;
 
 // ---------------------------------------------------------------------------
@@ -167,6 +187,41 @@ function badRequest() {
   );
 }
 
+/** Turns the model's stream of events into the widget's NDJSON lines (see the top of this file). */
+function streamReply(events: AsyncIterable<Anthropic.Beta.BetaRawMessageStreamEvent>): ReadableStream<Uint8Array> {
+  const encoder = new TextEncoder();
+  return new ReadableStream({
+    async start(controller) {
+      const send = (line: object) => controller.enqueue(encoder.encode(JSON.stringify(line) + "\n"));
+      let text = "";
+      try {
+        for await (const event of events) {
+          if (event.type === "content_block_start" && event.content_block.type === "fallback") {
+            // The model before this point declined; its partial text must not be shown.
+            text = "";
+            send({ reset: true });
+          } else if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+            text += event.delta.text;
+            send({ d: event.delta.text });
+          } else if (event.type === "message_delta" && event.delta.stop_reason === "refusal") {
+            send({ replace: REFUSAL_REPLY });
+            text = REFUSAL_REPLY;
+          }
+        }
+        // A reply cut off at max_tokens keeps whatever was written; an empty one gets a next step.
+        if (!text.trim()) send({ replace: EMPTY_REPLY });
+      } catch (error) {
+        // The connection to the model broke mid-reply. Log on the server only.
+        const id = error instanceof Anthropic.APIError ? error.requestID : undefined;
+        console.error("[api/chat] Stream interrupted:", error instanceof Error ? error.message : error, id);
+        send({ replace: text.trim() ? `${text.trim()}\n\n${STREAM_CUT_NOTE}` : ERROR_REPLY });
+      } finally {
+        controller.close();
+      }
+    },
+  });
+}
+
 export async function POST(request: Request) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
@@ -198,7 +253,9 @@ export async function POST(request: Request) {
   if (!messages) return badRequest();
 
   try {
-    const response = await getClient(apiKey).beta.messages.create({
+    // With stream: true, the request itself still fails (and lands in the catch below) on an
+    // HTTP error, so errors before the reply starts keep their status codes.
+    const events = await getClient(apiKey).beta.messages.create({
       model: MODEL,
       max_tokens: 4096,
       betas: ["server-side-fallback-2026-07-01"],
@@ -206,22 +263,15 @@ export async function POST(request: Request) {
       output_config: { effort: "low" },
       system: systemPrompt(new Date()),
       messages,
+      stream: true,
     });
-
-    // Check why the model stopped before reading its content.
-    if (response.stop_reason === "refusal") {
-      return Response.json({ reply: REFUSAL_REPLY });
-    }
-
-    const text = response.content
-      .filter((block): block is Anthropic.Beta.BetaTextBlock => block.type === "text")
-      .map((block) => block.text)
-      .join("\n\n")
-      .trim();
-
-    // A reply cut off at max_tokens still returns whatever text was written; an empty
-    // reply (for any stop reason) gets the canned next step instead.
-    return Response.json({ reply: text || EMPTY_REPLY });
+    return new Response(streamReply(events), {
+      headers: {
+        "Content-Type": "application/x-ndjson; charset=utf-8",
+        "Cache-Control": "no-store",
+        "X-Content-Type-Options": "nosniff",
+      },
+    });
   } catch (error) {
     // Log details on the server only — the client gets a generic message.
     if (error instanceof Anthropic.AuthenticationError || error instanceof Anthropic.PermissionDeniedError) {

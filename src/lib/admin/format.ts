@@ -87,6 +87,8 @@ const ACTION_NAMES: Record<string, string> = {
   cost_estimator_completed: "Finished the cost estimator",
   chat_opened: "Opened the chat",
   chat_message_sent: "Sent a chat message",
+  chat_suggestion_used: "Tapped a suggested chat question",
+  chat_voice_used: "Spoke to the chat (microphone)",
 };
 export const actionName = (key: string) => ACTION_NAMES[key] ?? key.replace(/_/g, " ");
 

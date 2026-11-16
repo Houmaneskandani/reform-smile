@@ -23,7 +23,9 @@ type EventName =
   | "consultation_booked"
   | "phone_clicked"
   | "chat_opened"
-  | "chat_message_sent";
+  | "chat_message_sent"
+  | "chat_suggestion_used"
+  | "chat_voice_used";
 
 type EventData = Record<string, string | number | boolean>;
 

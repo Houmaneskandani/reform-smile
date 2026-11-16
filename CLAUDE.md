@@ -146,7 +146,8 @@ src/
 │   ├── keystatic/              # Website editor UI at /keystatic. Outside (site): no site CSS, chrome or trackers.
 │   │                           #   404 in production until Keystatic Cloud is set up; locally only under dev:admin
 │   │                           #   (local-mode.ts is that switch)
-│   ├── api/chat/route.ts       # Server-side AI chat (Claude). Reads ANTHROPIC_API_KEY on the server only
+│   ├── api/chat/route.ts       # Server-side AI chat (Claude). Reads ANTHROPIC_API_KEY on the server only;
+│   │                           #   streams the reply as NDJSON (see "AI chat")
 │   ├── api/track/route.ts      # Stores the site's own anonymous visit statistics (Neon, DATABASE_URL)
 │   ├── api/keystatic/[...params]/route.ts # Editor's local read/write API: `npm run dev:admin` on this computer only, always 404 in production
 │   ├── sitemap.ts              # /sitemap.xml — built from SITE_CONFIG.url
@@ -252,6 +253,15 @@ The headshot is `DOCTOR_PHOTO` in `src/lib/constants.ts` (used by the homepage d
 
 ### Homepage layout
 Hero → trust bar → credential badges → limited offer (when on) → services → process → doctor → before/after → cost estimator → reviews → FAQ → final call to action. The treatment quiz (`SmileQuiz`) closes the Services page instead. The hero's first frame (`public/images/video/hero-poster.jpg`) is a preloaded image under the video, and the headline animates with CSS (`.hero-rise`), so the first screen never waits for JavaScript. The headline must stay plain text with real spaces: animated per-word spans once made Google read it as one word. On phones the chat opens from the sticky bottom bar (`StickyBookNow` fires `OPEN_CHAT_EVENT`); the floating chat bubble is tablet and desktop only.
+
+### AI chat
+`src/components/AIChatAssistant.tsx` (the widget) and `src/app/api/chat/route.ts` (the server).
+- **Off until `ANTHROPIC_API_KEY` is set** in Vercel (Production; no `NEXT_PUBLIC_`). Without it the widget answers with built-in demo replies matched by keywords. Set a monthly spending limit in the Anthropic Console.
+- **Model:** `claude-sonnet-5-5` with low effort and Anthropic's server-side fallback, chosen for speed and cost on front-desk questions.
+- **What it knows:** the prompt is built from `SERVICES`, `pricing` (prices, the offer while it is live) and the FAQ (`content/faq.json`), so editor changes reach the chat with the next deploy. It never names the doctor, never calls the doctor a "specialist" or "board certified", never quotes a "regular" price, and cannot book or take contact details.
+- **Streaming:** the reply arrives as newline-delimited JSON (`{"d"}` more text, `{"reset"}` a fallback model took over, `{"replace"}` show this instead). Errors before the reply starts stay plain JSON with a status code and a `reply`. The message list is `aria-busy` while a reply streams, so screen readers read it once.
+- **Widget:** suggested questions before the first message, "Book free consultation" (a plain `<a>`, see "Navigation between consultation page and other pages") and "Call us" buttons, and a microphone button that uses the browser's own speech recognition (Chrome, Edge, Safari, phones; hidden in Firefox). The browser sends the recording to Google or Apple; the privacy policy says so. Anything that would send chat leads somewhere (Marketing Ava, email) needs a HIPAA decision first and coordination with the Marketing Ava session.
+- **Statistics:** `chat_opened`, `chat_message_sent`, `chat_suggestion_used`, `chat_voice_used` (never the message text).
 
 ### Privacy policy
 `/privacy` (`src/app/(site)/privacy/page.tsx`) is a **draft** written from what the site actually does. Dr. Ava (ideally with her attorney) should review it. Update it whenever the site collects something new: a form field, a tracker, the Marketing Ava lead forward, text-message consent. It is not the practice's HIPAA Notice of Privacy Practices.
@@ -445,6 +455,7 @@ Without this key, production forms show "please call us" (they never pretend to 
 3. **Website editor first:** once the editor is live in production, leave this unset until the editor has moved to `admin.<domain>` ("Admin panel → Moving it to admin.<domain>"). GA's script (gtag.js from googletagmanager.com) would otherwise run on the same origin as her editor sign-in token
 
 ### Step 3b: Activate the AI chat (optional, pay-per-use)
+See "AI chat" above for what it does.
 1. Create an API key at https://console.anthropic.com (set a monthly spend limit there)
 2. `vercel env add ANTHROPIC_API_KEY production` — **no `NEXT_PUBLIC_` prefix**
 3. Redeploy. Without the key the chat answers with built-in demo replies. `/api/chat` has input validation, a same-site check and a per-visitor rate limit.
