@@ -12,7 +12,12 @@ import { OPEN_CHAT_EVENT } from "@/components/ui/StickyBookNow";
 type Message = {
   role: "assistant" | "user";
   content: string;
+  // The server's signature of a live AI reply. Sent back with the conversation; the server
+  // leaves out assistant messages without a valid one (greeting, demo answers, error notes).
+  sig?: string;
 };
+
+type Reply = { text: string; sig?: string };
 
 // Limits enforced by the chat API (src/app/api/chat/route.ts).
 const MAX_HISTORY = 20;
@@ -111,22 +116,24 @@ async function getDemoReply(message: string): Promise<string> {
 // JSON, see src/app/api/chat/route.ts): `onText` gets the reply so far each time more arrives.
 // Falls back to the demo answers when the AI isn't configured (the API answers
 // { fallback: true }) or can't be reached at all. Resolves with the final reply.
-async function getReply(conversation: Message[], onText: (text: string) => void): Promise<string> {
+async function getReply(conversation: Message[], onText: (text: string) => void): Promise<Reply> {
   const latest = conversation[conversation.length - 1].content;
+  const demo = async (): Promise<Reply> => ({ text: await getDemoReply(latest) });
   let response: Response;
   try {
     response = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        messages: conversation.slice(-MAX_HISTORY).map((m) => ({
-          role: m.role,
-          content: m.content.slice(0, MAX_MESSAGE_CHARS),
-        })),
+        messages: conversation.slice(-MAX_HISTORY).map((m) =>
+          m.role === "user"
+            ? { role: m.role, content: m.content.slice(0, MAX_MESSAGE_CHARS) }
+            : { role: m.role, content: m.content, ...(m.sig ? { sig: m.sig } : {}) }
+        ),
       }),
     });
   } catch {
-    return getDemoReply(latest); // network failure
+    return demo(); // network failure
   }
 
   if (response.ok && response.body && response.headers.get("content-type")?.includes("ndjson")) {
@@ -140,24 +147,29 @@ async function getReply(conversation: Message[], onText: (text: string) => void)
       fallback?: unknown;
     };
     const replyText = typeof reply === "string" && reply.trim() ? reply : null;
-    if (response.ok && replyText) return replyText;
-    if (!response.ok && fallback === true) return getDemoReply(latest);
+    if (response.ok && replyText) return { text: replyText };
+    if (!response.ok && fallback === true) return demo();
     // e.g. 429 "too many messages" — the API sends a friendly reply to show as-is.
-    return replyText ?? CONNECTION_ERROR_REPLY;
+    return { text: replyText ?? CONNECTION_ERROR_REPLY };
   } catch {
-    return getDemoReply(latest); // a response that isn't JSON
+    return demo(); // a response that isn't JSON
   }
 }
 
-async function readStream(body: ReadableStream<Uint8Array>, onText: (text: string) => void): Promise<string> {
+async function readStream(body: ReadableStream<Uint8Array>, onText: (text: string) => void): Promise<Reply> {
   const reader = body.getReader();
   const decoder = new TextDecoder();
   let text = "";
+  let sig: string | undefined;
   let buffered = "";
   const apply = (line: string) => {
     if (!line.trim()) return;
     try {
-      const event = JSON.parse(line) as { d?: unknown; reset?: unknown; replace?: unknown };
+      const event = JSON.parse(line) as { d?: unknown; reset?: unknown; replace?: unknown; sig?: unknown };
+      if (typeof event.sig === "string") {
+        sig = event.sig;
+        return;
+      }
       if (event.reset === true) text = "";
       if (typeof event.d === "string") text += event.d;
       if (typeof event.replace === "string") text = event.replace;
@@ -179,7 +191,7 @@ async function readStream(body: ReadableStream<Uint8Array>, onText: (text: strin
   } catch {
     // The connection dropped mid-reply: keep what arrived, or show the error message.
   }
-  return text.trim() ? text : CONNECTION_ERROR_REPLY;
+  return text.trim() ? { text, sig } : { text: CONNECTION_ERROR_REPLY };
 }
 
 // ---------------------------------------------------------------------------
@@ -377,14 +389,14 @@ export default function AIChatAssistant() {
 
     // The reply bubble appears with the first words and grows as the rest arrives. It always
     // sits right after this conversation, so each update replaces it.
-    const showText = (text: string) => {
+    const showText = (text: string, sig?: string) => {
       setTyping(false);
-      setMessages((prev) => [...prev.slice(0, conversation.length), { role: "assistant", content: text }]);
+      setMessages((prev) => [...prev.slice(0, conversation.length), { role: "assistant", content: text, sig }]);
     };
     const reply = await getReply(conversation, (text) => {
       if (text) showText(text);
     });
-    showText(reply);
+    showText(reply.text, reply.sig);
     setStreaming(false);
   };
 
