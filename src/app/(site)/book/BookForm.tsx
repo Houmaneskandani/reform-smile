@@ -8,6 +8,8 @@ import { useState } from "react";
 import { submitForm } from "@/lib/submitForm";
 import { Calendar, Check, Phone } from "lucide-react";
 import { SERVICES, SITE_CONFIG } from "@/lib/constants";
+import type { LeadForm } from "@/lib/leads";
+import SmsConsentField from "@/components/SmsConsentField";
 
 const bookingSchema = z.object({
   firstName: z.string().min(2, "First name is required"),
@@ -19,6 +21,7 @@ const bookingSchema = z.object({
   preferredTime: z.string().min(1, "Please select a preferred time"),
   isNewPatient: z.string().min(1, "Please select"),
   notes: z.string().optional(),
+  smsConsent: z.boolean().optional(), // only shown while the lead forward is on
   botcheck: z.string().optional(), // spam honeypot — must stay empty
 });
 
@@ -44,7 +47,8 @@ const timeSlots = [
   "4:00 PM",
 ];
 
-export default function BookForm() {
+/** `leadForm` is set by the page while the lead forward to Marketing Ava is on. */
+export default function BookForm({ leadForm }: { leadForm?: LeadForm }) {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<BookingFormData>({
@@ -53,7 +57,7 @@ export default function BookForm() {
 
   const onSubmit = async (data: BookingFormData) => {
     setSubmitError(null);
-    const result = await submitForm(data as Record<string, string>, "Appointment Request");
+    const result = await submitForm(data, "Appointment Request", { lead: leadForm });
     if (result.success) {
       setSubmitted(true);
     } else {
@@ -196,6 +200,8 @@ export default function BookForm() {
                       className={`${inputClass} resize-none`}
                     />
                   </div>
+
+                  {leadForm && <SmsConsentField id="book-smsConsent" registration={register("smsConsent")} />}
 
                   {/* Spam honeypot — hidden from people; bots that fill it are ignored */}
                   <input

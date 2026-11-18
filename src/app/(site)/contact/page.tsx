@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ContactHero from "./ContactHero";
 import ContactContent from "./ContactContent";
+import { leadForwardingEnabled } from "@/lib/server/lead-forwarding";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -13,7 +14,7 @@ export default function ContactPage() {
   return (
     <>
       <ContactHero />
-      <ContactContent />
+      <ContactContent leadForm={leadForwardingEnabled() ? "contact" : undefined} />
     </>
   );
 }

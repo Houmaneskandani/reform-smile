@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ConsultationPage from "./ConsultationPage";
+import { leadForwardingEnabled } from "@/lib/server/lead-forwarding";
 
 export const metadata: Metadata = {
   title: "Schedule Your Free Consultation",
@@ -9,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <ConsultationPage />;
+  return <ConsultationPage leadForm={leadForwardingEnabled() ? "consultation" : undefined} />;
 }

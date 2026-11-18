@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import BookHero from "./BookHero";
 import BookForm from "./BookForm";
+import { leadForwardingEnabled } from "@/lib/server/lead-forwarding";
 
 export const metadata: Metadata = {
   title: "Book an Appointment",
@@ -13,7 +14,7 @@ export default function BookPage() {
   return (
     <>
       <BookHero />
-      <BookForm />
+      <BookForm leadForm={leadForwardingEnabled() ? "book" : undefined} />
     </>
   );
 }

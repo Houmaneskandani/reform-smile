@@ -8,6 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
 import { submitForm } from "@/lib/submitForm";
+import type { LeadForm } from "@/lib/leads";
+import SmsConsentField from "@/components/SmsConsentField";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -15,12 +17,14 @@ const contactSchema = z.object({
   phone: z.string().min(7, "Phone number is required"),
   subject: z.string().min(2, "Subject is required"),
   message: z.string().min(10, "Message must be at least 10 characters"),
+  smsConsent: z.boolean().optional(), // only shown while the lead forward is on
   botcheck: z.string().optional(), // spam honeypot — must stay empty
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
-export default function ContactContent() {
+/** `leadForm` is set by the page while the lead forward to Marketing Ava is on. */
+export default function ContactContent({ leadForm }: { leadForm?: LeadForm }) {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -34,7 +38,7 @@ export default function ContactContent() {
 
   const onSubmit = async (data: ContactFormData) => {
     setSubmitError(null);
-    const result = await submitForm(data as Record<string, string>, "Contact Form");
+    const result = await submitForm(data, "Contact Form", { lead: leadForm });
     if (result.success) {
       setSubmitted(true);
     } else {
@@ -229,6 +233,8 @@ export default function ContactContent() {
                     />
                     {errors.message && <p id="contact-message-error" className="text-red-700 text-xs mt-1">{errors.message.message}</p>}
                   </div>
+
+                  {leadForm && <SmsConsentField id="contact-smsConsent" registration={register("smsConsent")} />}
 
                   {/* Spam honeypot — hidden from people; bots that fill it are ignored */}
                   <input

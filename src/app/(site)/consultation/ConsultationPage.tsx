@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
 import { submitForm } from "@/lib/submitForm";
+import type { LeadForm } from "@/lib/leads";
+import SmsConsentField from "@/components/SmsConsentField";
 import Image from "next/image";
 import { Phone, Check, Star, Shield, Clock, ArrowRight } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -19,6 +21,7 @@ const consultationSchema = z.object({
   phone: z.string().min(7, "Phone number is required"),
   concern: z.string().min(1, "Please select your primary concern"),
   message: z.string().optional(),
+  smsConsent: z.boolean().optional(), // only shown while the lead forward is on
   botcheck: z.string().optional(), // spam honeypot — must stay empty
 });
 
@@ -41,7 +44,8 @@ const concerns = [
   "Other",
 ];
 
-export default function ConsultationPage() {
+/** `leadForm` is set by the page while the lead forward to Marketing Ava is on. */
+export default function ConsultationPage({ leadForm }: { leadForm?: LeadForm }) {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<ConsultationFormData>({
@@ -50,7 +54,7 @@ export default function ConsultationPage() {
 
   const onSubmit = async (data: ConsultationFormData) => {
     setSubmitError(null);
-    const result = await submitForm(data as Record<string, string>, "Free Consultation Request");
+    const result = await submitForm(data, "Free Consultation Request", { lead: leadForm });
     if (result.success) {
       setSubmitted(true);
     } else {
@@ -279,6 +283,8 @@ export default function ConsultationPage() {
                           className="w-full px-4 py-3.5 rounded-xl border border-gray-lighter bg-gray-lighter/30 text-dark placeholder:text-gray-light focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors text-sm resize-none"
                         />
                       </div>
+
+                      {leadForm && <SmsConsentField id="consult-smsConsent" registration={register("smsConsent")} />}
 
                       {/* Spam honeypot — hidden from people; bots that fill it are ignored */}
                       <input

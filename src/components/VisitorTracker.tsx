@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { sendSiteEvent } from "@/lib/analytics/client";
+import { rememberFirstTouch } from "@/lib/leadSource";
 
 // Records the site's own anonymous visit statistics (see src/lib/analytics/client.ts for what is
 // sent and what never is): a page view on every page, clicks on links and buttons, how far each
@@ -54,6 +55,8 @@ export default function VisitorTracker() {
   useEffect(() => {
     if (!pathname) return;
     sendSiteEvent({ type: "pageview", path: pathname });
+    // Where this visit came from, kept in the tab for a form lead (src/lib/leadSource.ts).
+    rememberFirstTouch();
     secondsOnPage.current = 0;
     visibleSince.current = document.visibilityState === "visible" ? Date.now() : null;
     scrollStepsSent.current = new Set();

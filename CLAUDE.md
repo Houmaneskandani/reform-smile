@@ -149,6 +149,8 @@ src/
 │   ├── api/chat/route.ts       # Server-side AI chat (Claude). Reads ANTHROPIC_API_KEY on the server only;
 │   │                           #   streams the reply as NDJSON (see "AI chat")
 │   ├── api/track/route.ts      # Stores the site's own anonymous visit statistics (Neon, DATABASE_URL)
+│   ├── api/lead/route.ts       # Forwards Contact/Book/Consultation leads to Marketing Ava. OFF (404) until
+│   │                           #   its four env vars are set; see "Leads to Marketing Ava"
 │   ├── api/keystatic/[...params]/route.ts # Editor's local read/write API: `npm run dev:admin` on this computer only, always 404 in production
 │   ├── sitemap.ts              # /sitemap.xml — built from SITE_CONFIG.url
 │   └── robots.ts               # /robots.txt — built from SITE_CONFIG.url; disallows /api/ and /keystatic
@@ -193,7 +195,11 @@ src/
     │                           #   queries.ts (the dashboard's read queries)
     ├── admin/                  # access.ts (who may open /admin), format.ts (dashboard wording and numbers)
     ├── server/request-guards.ts # Same-site check, client IP, rate limiter (shared by the API routes)
-    ├── submitForm.ts           # Web3Forms submit — never fakes success in production; honeypot spam check
+    ├── submitForm.ts           # Web3Forms submit (+ /api/lead while the lead forward is on) — never fakes
+    │                           #   success in production; honeypot spam check
+    ├── leads.ts                # Lead forward: fields per form, text-message consent wording (v1)
+    ├── leadSource.ts           # First-touch utm_* + referring site, kept in sessionStorage for a lead
+    ├── server/lead-forwarding.ts # Lead forward settings (env vars), field mapping, the call to Marketing Ava
     └── tracking.ts             # Conversion events (only after cookie consent)
 public/
 ├── logo.png, logo-on-light.png, logo-on-dark.png, logo-emblem.png
@@ -268,6 +274,15 @@ Hero → trust bar → credential badges → limited offer (when on) → service
 - **Streaming:** the reply arrives as newline-delimited JSON (`{"d"}` more text, `{"reset"}` a fallback model took over, `{"replace"}` show this instead, `{"sig"}` the reply's signature, always last). Errors before the reply starts stay plain JSON with a status code and a `reply`. The message list is `aria-busy` while a reply streams, so screen readers read it once.
 - **Widget:** suggested questions before the first message, "Book free consultation" (a plain `<a>`, see "Navigation between consultation page and other pages") and "Call us" buttons, and a microphone button that uses the browser's own speech recognition (Chrome, Edge, Safari, phones; hidden in Firefox). The browser sends the recording to Google or Apple; the privacy policy says so. Anything that would send chat leads somewhere (Marketing Ava, email) needs a HIPAA decision first and coordination with the Marketing Ava session.
 - **Statistics:** `chat_opened`, `chat_message_sent`, `chat_suggestion_used`, `chat_voice_used` (never the message text).
+
+### Leads to Marketing Ava (built 2026-11-18, OFF until Houman switches it on)
+The Contact, Book and Free Consultation forms can also send each request to Marketing Ava (the practice's patient communication system, a separate project and session: "MARKETING AGENT"). The contract is `docs/WEBSITE-LEADS.md` in the Marketing Ava repo; change it there first.
+- **Switch:** four server-only env vars, all or nothing: `MARKETING_AVA_URL`, `AVA_FORM_ID_CONTACT`, `AVA_FORM_ID_BOOK`, `AVA_FORM_ID_CONSULTATION` (values in `.env.example`'s comments and the contract). Pages read them at build time, so redeploy after changing them. Only some of them set, or a malformed value, fails the build with a message. **Turning it on is Houman's decision:** real patient contact details then land in Marketing Ava's database, and the HIPAA/BAA question with the practice is still open. When switching on, also update `LAST_UPDATED` on `/privacy`.
+- **While off:** `/api/lead` is a 404, the forms show no text-message box and `/privacy` doesn't mention the patient communication system or texts. Everything works by email as before.
+- **While on:** `submitForm` sends the email (Web3Forms) and `/api/lead` at the same time; the patient sees success if **either** confirms. `/api/lead` (same-site check, per-IP limit) forwards only the fields in `LEAD_FIELDS` (`src/lib/leads.ts`): never subject, message or notes. It maps the booking time to Morning/Afternoon, drops a phone number Marketing Ava would reject, waits at most 5 s, never follows redirects, and logs only the form name and status code. The honeypot is checked before anything is sent.
+- **Text-message consent:** an optional, unticked box with fixed wording (`SMS_CONSENT_TEXT`, version v1). Changing the wording, or the consultation form's seven "concern" options, needs the Marketing Ava session told the same day.
+- **Source:** first-touch `utm_source`/`utm_medium`/`utm_campaign` and the referring site's address (no path or query) are kept in sessionStorage per tab (`src/lib/leadSource.ts`, not with GPC/DNT) and sent only with a lead, plus the form's page path. This is the lighter option agreed for leads; never send the visit id.
+- **Testing:** never send test data to the production form ids (every accepted request is a real lead in the live dashboard). Use a fake server on 127.0.0.1 (http is allowed for localhost only) with made-up UUIDs, or ask the Marketing Ava session for a test form id.
 
 ### Privacy policy
 `/privacy` (`src/app/(site)/privacy/page.tsx`) is a **draft** written from what the site actually does. Dr. Ava (ideally with her attorney) should review it. Update it whenever the site collects something new: a form field, a tracker, the Marketing Ava lead forward, text-message consent. It is not the practice's HIPAA Notice of Privacy Practices.
@@ -430,6 +445,7 @@ Sites Dr. Ava used as inspiration:
 | 2026-11-13 | First-party visitor statistics in the website's own Neon database | Houman wanted to see what visitors do. Anonymous, cookieless and kept in the practice's own database: nothing goes to Google or Meta, and nothing links a visit to a patient |
 | 2026-11-13 | Admin dashboard at `/admin` with Clerk login + `ADMIN_EMAILS` | Houman chose the website over Marketing Ava for the dashboard and Clerk for the login. Clerk runs only on `/admin` |
 | 2026-11-14 | Offer: "Full Mouth Dental Implants", $11,900 per arch, $45,000 crossed out; veneers split into their own $9,000 price | Requested through the Marketing Ava session (Houman approved). A crossed-out price must be one actually charged recently (CA B&P §17501, FTC 16 CFR 233.1): the editor field says so, and Dr. Ava must confirm it |
+| 2026-11-18 | Lead forward to Marketing Ava built, shipped switched off | Houman asked for form leads in the Marketing Ava dashboard; Web3Forms email stays the backup, free text never leaves the email, and switching on waits on the HIPAA/BAA decision |
 | 2026-11-14 | Real headshot via `DOCTOR_PHOTO`; WCAG 2.1 AA fixes (skip link, pause button, keyboard slider, dialog/accordion semantics, contrast) | Her real photo replaces the AI one; accessibility lawsuits target dental sites and Lighthouse now scores 100 everywhere |
 
 ## Production Launch Checklist

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_CONFIG } from "@/lib/constants";
 import { telHref } from "@/content/format";
+import { leadForwardingEnabled } from "@/lib/server/lead-forwarding";
 
 // DRAFT, written from what this website actually does (see CLAUDE.md → "Privacy policy").
 // It needs a review by the practice (and ideally its attorney) before it is relied on, and it
@@ -26,6 +27,11 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 export default function PrivacyPage() {
+  // The patient communication system (Marketing Ava) and text messages are described only while
+  // the lead forward is on, together with the forms' text-message box. When it is switched on,
+  // also update LAST_UPDATED above.
+  const leadForwarding = leadForwardingEnabled();
+
   return (
     <>
       <section className="bg-navy py-24 md:py-28">
@@ -60,6 +66,12 @@ export default function PrivacyPage() {
               private feedback from our review page, we receive your rating, your message and
               any name or contact details you choose to add.
             </p>
+            {leadForwarding && (
+              <p>
+                These forms also have an optional box to agree to text messages. If you tick it,
+                we record that you agreed, and when.
+              </p>
+            )}
             <p>
               When you use the chat assistant, we receive the messages you type. The assistant
               gives general information only. It is not a dentist and does not give medical
@@ -116,6 +128,13 @@ export default function PrivacyPage() {
             <ul className="list-disc pl-6 space-y-2">
               <li>answer your questions and schedule your visit;</li>
               <li>contact you about the appointment or consultation you asked for;</li>
+              {leadForwarding && (
+                <li>
+                  send you text messages about your appointment request, reminders and offers,
+                  only if you ticked the box to agree. Reply STOP to any message to stop them, or
+                  HELP for help. Agreeing is never a condition of treatment or purchase;
+                </li>
+              )}
               <li>keep the website working, secure and useful.</li>
             </ul>
             <p>We do not sell your personal information.</p>
@@ -130,6 +149,15 @@ export default function PrivacyPage() {
               <li>Vercel, which hosts the website;</li>
               <li>Neon, which stores our anonymous visit statistics;</li>
               <li>Web3Forms, which delivers form submissions to our office by email;</li>
+              {leadForwarding && (
+                <li>
+                  our patient communication system, which receives your name, email address,
+                  phone number, the service or concern and the preferred date and time from the
+                  contact, appointment and free consultation forms (never your message), plus the
+                  website or ad campaign that brought you to our site, so our team can follow up
+                  with you. It sends text messages only if you agreed to receive them;
+                </li>
+              )}
               <li>Anthropic, which powers the chat assistant&rsquo;s replies;</li>
               <li>the analytics and advertising providers named above, only if you accept cookies.</li>
             </ul>
