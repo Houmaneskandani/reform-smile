@@ -29,23 +29,34 @@ export default function GalleryGrid() {
               className="rounded-2xl overflow-hidden shadow-md border border-gray-lighter hover:shadow-xl transition-shadow duration-300"
             >
               {/* Before / After side by side */}
-              <div className="grid grid-cols-2 gap-px bg-gray-lighter">
-                <div className="relative aspect-[4/3] bg-cream overflow-hidden">
-                  {item.before ? (
-                    <Image src={item.before} alt={`${item.title} — before`} fill className="object-cover" sizes="(min-width: 768px) 50vw, 100vw" />
-                  ) : null}
-                  <span className="absolute top-3 left-3 bg-navy/80 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                    Before
-                  </span>
+              <div className="relative group">
+                <div className="grid grid-cols-2 gap-px bg-gray-lighter">
+                  <div className="relative aspect-[4/3] bg-cream overflow-hidden">
+                    {item.before ? (
+                      <Image src={item.before} alt={`${item.title} — before`} fill className="object-cover" sizes="(min-width: 768px) 50vw, 100vw" />
+                    ) : null}
+                    <span className="absolute top-3 left-3 bg-navy/80 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                      Before
+                    </span>
+                  </div>
+                  <div className="relative aspect-[4/3] bg-cream-dark/30 overflow-hidden">
+                    {item.after ? (
+                      <Image src={item.after} alt={`${item.title} — after`} fill className="object-cover" sizes="(min-width: 768px) 50vw, 100vw" />
+                    ) : null}
+                    <span className="absolute top-3 left-3 bg-gold text-navy-dark text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                      After
+                    </span>
+                  </div>
                 </div>
-                <div className="relative aspect-[4/3] bg-cream-dark/30 overflow-hidden">
-                  {item.after ? (
-                    <Image src={item.after} alt={`${item.title} — after`} fill className="object-cover" sizes="(min-width: 768px) 50vw, 100vw" />
-                  ) : null}
-                  <span className="absolute top-3 left-3 bg-gold text-navy-dark text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                    After
+                {/* Hover overlay */}
+                <a
+                  href="/book"
+                  className="absolute inset-0 bg-navy/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  <span className="bg-gold text-navy font-semibold text-sm px-6 py-3 rounded-full tracking-wide hover:bg-gold/90 transition-colors">
+                    Book an Appointment
                   </span>
-                </div>
+                </a>
               </div>
 
               {/* Info */}
