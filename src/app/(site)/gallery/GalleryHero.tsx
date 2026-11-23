@@ -21,8 +21,7 @@ export default function GalleryHero() {
             Smile Gallery
           </h1>
           <p className="text-white/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            See the life-changing smile transformations achieved by the Reform
-            Dental team.
+            See what Reform Dental team can help you achieve
           </p>
         </motion.div>
       </div>
