@@ -18,7 +18,7 @@ export default function GalleryHero() {
             Smile Gallery
           </p>
           <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
-            Real Patients, <span className="text-gold-ink italic">Real Results</span>
+            Smile Gallery
           </h1>
           <p className="text-white/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
             See the life-changing smile transformations achieved by the Reform
