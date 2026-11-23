@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 
-function CompareSlider({
+export function CompareSlider({
   beforeSrc,
   afterSrc,
   description,
