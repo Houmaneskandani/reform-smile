@@ -1,14 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const cases = [
-  { id: 1, title: "Full Arch Restoration", procedure: "All-on-4", description: "Patient with multiple missing upper teeth restored with permanent implants." },
-  { id: 2, title: "Complete Smile Makeover", procedure: "All-on-6", description: "Severely worn teeth replaced with natural-looking implant prosthetics." },
-  { id: 3, title: "Upper & Lower Restoration", procedure: "Full Arch", description: "Complete upper and lower arch restoration for a brand new smile." },
-  { id: 4, title: "Single Arch Transformation", procedure: "All-on-4", description: "Lower arch restored with four implants and a permanent prosthetic." },
-  { id: 5, title: "Secure, Stable Dentures", procedure: "Snap-On Dentures", description: "Loose traditional dentures replaced with implant-supported dentures that snap securely into place." },
-  { id: 6, title: "Single Tooth Replacement", procedure: "Single Implant", description: "A missing tooth replaced with a titanium implant and a custom, natural-looking crown." },
+  { id: 1, title: "Full Arch Restoration", procedure: "All-on-4", description: "Patient with multiple missing upper teeth restored with permanent implants.", before: "/images/cases/case-1-before.jpg", after: "/images/cases/case-1-after.jpg" },
+  { id: 2, title: "Complete Smile Makeover", procedure: "All-on-6", description: "Severely worn teeth replaced with natural-looking implant prosthetics.", before: null, after: null },
+  { id: 3, title: "Upper & Lower Restoration", procedure: "Full Arch", description: "Complete upper and lower arch restoration for a brand new smile.", before: null, after: null },
+  { id: 4, title: "Single Arch Transformation", procedure: "All-on-4", description: "Lower arch restored with four implants and a permanent prosthetic.", before: null, after: null },
+  { id: 5, title: "Secure, Stable Dentures", procedure: "Snap-On Dentures", description: "Loose traditional dentures replaced with implant-supported dentures that snap securely into place.", before: null, after: null },
+  { id: 6, title: "Single Tooth Replacement", procedure: "Single Implant", description: "A missing tooth replaced with a titanium implant and a custom, natural-looking crown.", before: null, after: null },
 ];
 
 export default function GalleryGrid() {
@@ -29,16 +30,18 @@ export default function GalleryGrid() {
             >
               {/* Before / After side by side */}
               <div className="grid grid-cols-2 gap-px bg-gray-lighter">
-                <div className="relative aspect-[4/3] bg-cream">
-                  <div className="w-full h-full flex items-center justify-center">
-                  </div>
+                <div className="relative aspect-[4/3] bg-cream overflow-hidden">
+                  {item.before ? (
+                    <Image src={item.before} alt={`${item.title} — before`} fill className="object-cover" sizes="(min-width: 768px) 50vw, 100vw" />
+                  ) : null}
                   <span className="absolute top-3 left-3 bg-navy/80 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                     Before
                   </span>
                 </div>
-                <div className="relative aspect-[4/3] bg-cream-dark/30">
-                  <div className="w-full h-full flex items-center justify-center">
-                  </div>
+                <div className="relative aspect-[4/3] bg-cream-dark/30 overflow-hidden">
+                  {item.after ? (
+                    <Image src={item.after} alt={`${item.title} — after`} fill className="object-cover" sizes="(min-width: 768px) 50vw, 100vw" />
+                  ) : null}
                   <span className="absolute top-3 left-3 bg-gold text-navy-dark text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                     After
                   </span>
