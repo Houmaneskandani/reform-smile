@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const cases = [
   { id: 1, title: "Full Arch Restoration", procedure: "All-on-4", description: "Patient with multiple missing upper teeth restored with permanent implants.", before: "/images/cases/case-1-before.jpg", after: "/images/cases/case-1-after.jpg" },
-  { id: 2, title: "Complete Smile Makeover", procedure: "All-on-6", description: "Severely worn teeth replaced with natural-looking implant prosthetics.", before: null, after: null },
+  { id: 2, title: "Complete Smile Makeover", procedure: "All-on-6", description: "Severely worn teeth replaced with natural-looking implant prosthetics.", before: "/images/cases/case-2-before.jpg", after: "/images/cases/case-2-after.jpg" },
   { id: 3, title: "Upper & Lower Restoration", procedure: "Full Arch", description: "Complete upper and lower arch restoration for a brand new smile.", before: null, after: null },
   { id: 4, title: "Single Arch Transformation", procedure: "All-on-4", description: "Lower arch restored with four implants and a permanent prosthetic.", before: null, after: null },
   { id: 5, title: "Secure, Stable Dentures", procedure: "Snap-On Dentures", description: "Loose traditional dentures replaced with implant-supported dentures that snap securely into place.", before: null, after: null },
