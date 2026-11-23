@@ -7,7 +7,7 @@ const cases = [
   { id: 1, title: "Full Arch Restoration", procedure: "All-on-4", before: "/images/cases/case-1-before.jpg", after: "/images/cases/case-1-after.jpg" },
   { id: 2, title: "Complete Smile Makeover", procedure: "All-on-6", before: "/images/cases/case-2-before.jpg", after: "/images/cases/case-2-after.jpg" },
   { id: 3, title: "Upper & Lower Restoration", procedure: "Full Arch", before: "/images/cases/case-3-before.jpg", after: "/images/cases/case-3-after.jpg" },
-  { id: 4, title: "Single Arch Transformation", procedure: "All-on-4", before: null, after: null },
+  { id: 4, title: "Single Arch Transformation", procedure: "All-on-4", before: "/images/cases/case-4-before.jpg", after: "/images/cases/case-4-after.jpg" },
   { id: 5, title: "Secure, Stable Dentures", procedure: "Snap-On Dentures", before: null, after: null },
   { id: 6, title: "Single Tooth Replacement", procedure: "Single Implant", before: null, after: null },
 ];
