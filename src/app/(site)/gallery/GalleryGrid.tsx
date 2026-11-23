@@ -61,12 +61,7 @@ export default function GalleryGrid() {
 
               {/* Info */}
               <div className="p-6 bg-white">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h3 className="font-heading text-lg text-navy">{item.title}</h3>
-                  </div>
-                  <span className="text-gold-ink text-sm font-semibold whitespace-nowrap">{item.procedure}</span>
-                </div>
+                <h3 className="font-heading text-lg text-navy">{item.title}</h3>
               </div>
             </motion.div>
           ))}
