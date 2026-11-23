@@ -13,7 +13,7 @@ const trustItems = [
   },
   {
     icon: Award,
-    title: "500+ Implants Placed",
+    title: "1000+ Implants Placed",
     description: "Proven expertise you can trust",
   },
   {

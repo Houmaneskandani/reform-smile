@@ -9,7 +9,7 @@ import Button from "@/components/ui/Button";
 const credentials = [
   { icon: GraduationCap, label: "Doctor of Dental Surgery" },
   { icon: Award, label: "Advanced Implant Training" },
-  { icon: Users, label: "500+ Implants Placed" },
+  { icon: Users, label: "1000+ Implants Placed" },
 ];
 
 export default function About() {
