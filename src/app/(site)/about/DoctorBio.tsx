@@ -52,7 +52,7 @@ export default function DoctorBio() {
             className="lg:col-span-3"
           >
             <h2 className="font-heading text-4xl md:text-5xl text-navy mb-8 leading-tight">
-              Dr. Ava, DDS
+              Dr. Ava, DDS, FICOI, AFAAID
             </h2>
 
             <div className="space-y-6 text-gray text-[17px] leading-relaxed mb-14">

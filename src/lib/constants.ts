@@ -48,7 +48,7 @@ export const DOCTOR_PHOTO = {
   src: "/images/dr-ava-headshot.webp", // her real headshot (2026-11-14); temporary until a photo shoot
   width: 1000,
   height: 1000,
-  alt: "Dr. Ava, DDS — Reform Dental & Implant Center",
+  alt: "Dr. Ava, DDS, FICOI, AFAAID — Reform Dental & Implant Center",
 } as const;
 
 export const NAV_LINKS = [

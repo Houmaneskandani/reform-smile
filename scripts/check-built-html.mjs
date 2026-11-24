@@ -104,7 +104,7 @@ for (const route of prerenderedPages) {
 
 // The headshot's alt text, as written in an HTML attribute or in the page's React data.
 const ALLOWED_HEADSHOT_ALT =
-  /Dr\. Ava, DDS (?:—|&#x2014;|\\u2014) Reform Dental (?:&amp;|&|\\u0026) Implant Center/g;
+  /Dr\. Ava, DDS(?:, [A-Z]+)* (?:—|&#x2014;|\\u2014) Reform Dental (?:&amp;|&|\\u0026) Implant Center/g;
 const DOCTOR_NAME = /\bDr\.?\s*Ava\b/gi;
 
 /** Reports every DOCTOR_NAME match in the text, except in the headshot's alt text. */
