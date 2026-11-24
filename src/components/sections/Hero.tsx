@@ -261,7 +261,7 @@ export default function Hero() {
               className="hidden md:flex justify-center lg:justify-start gap-12 border-t border-white/10 pt-10"
             >
               <div className="text-center lg:text-left">
-                <p className="text-gold-ink text-3xl md:text-4xl font-heading font-bold">500+</p>
+                <p className="text-gold-ink text-3xl md:text-4xl font-heading font-bold">1,000+</p>
                 <p className="text-white/75 text-xs mt-2 uppercase tracking-wider">Successful Implants</p>
               </div>
               <div className="text-center lg:text-left">
