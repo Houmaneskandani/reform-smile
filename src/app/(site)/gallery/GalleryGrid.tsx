@@ -9,7 +9,7 @@ const cases = [
   { id: 3, title: "Upper & Lower Restoration", before: "/images/cases/case-3-before.jpg", after: "/images/cases/case-3-after.jpg" },
   { id: 4, title: "Single Arch Transformation", before: "/images/cases/case-4-before.jpg", after: "/images/cases/case-4-after.jpg" },
   { id: 5, title: "Full Arch Implants Transformation", before: "/images/cases/case-5-before.jpg", after: "/images/cases/case-5-after.jpg" },
-  { id: 6, title: "Single Tooth Replacement", before: "/images/cases/case-6-before.jpg", after: "/images/cases/case-6-after.jpg" },
+  { id: 6, title: "Full Mouth AOX Implants and Restorations", before: "/images/cases/case-6-before.jpg", after: "/images/cases/case-6-after.jpg" },
   { id: 7, title: "Full Mouth Rehabilitation", before: "/images/cases/case-7-before.jpg", after: "/images/cases/case-7-after.jpg" },
   { id: 8, title: "Cosmetic Veneers", before: "/images/cases/case-8-before.jpg", after: "/images/cases/case-8-after.jpg" },
 ];
